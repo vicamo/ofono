@@ -1,0 +1,58 @@
+#!/bin/bash
+
+if [ -z "${ANDROID_BUILD_TOP}" ]; then
+    echo "ANDROID_BUILD_TOP not set" >&2;
+    exit 1;
+fi
+
+source ${ANDROID_BUILD_TOP}/build/envsetup.sh
+
+TARGET_OS=`get_build_var TARGET_OS`
+TARGET_ARCH=`get_build_var TARGET_ARCH`
+TARGET_OUT_HEADERS=`get_abs_build_var TARGET_OUT_HEADERS`
+TARGET_OUT_INTERMEDIATES=`get_abs_build_var TARGET_OUT_INTERMEDIATES`
+TARGET_OUT_INTERMEDIATE_LIBRARIES=`get_abs_build_var TARGET_OUT_INTERMEDIATE_LIBRARIES`
+TARGET_GLOBAL_LD_DIRS=`get_build_var TARGET_GLOBAL_LD_DIRS | sed "s,-L,${ANDROID_BUILD_TOP}/,g"`
+TARGET_PROJECT_INCLUDES=`get_build_var TARGET_PROJECT_INCLUDES | sed "s,\(\S\+\),-I${ANDROID_BUILD_TOP}/\1,g"`
+TARGET_C_INCLUDES=`get_build_var TARGET_C_INCLUDES | sed "s,\(\S\+\),-I${ANDROID_BUILD_TOP}/\1,g"`
+TARGET_GLOBAL_CFLAGS=`get_build_var TARGET_GLOBAL_CFLAGS | sed "s, \(system/\S\+\), ${ANDROID_BUILD_TOP}/\1,g"`
+
+# Ensure we have essential libs and crt*.o
+cd ${ANDROID_BUILD_TOP}
+make `get_build_var TARGET_DEFAULT_SYSTEM_SHARED_LIBRARIES` gzip
+cd -
+
+#export CC="${ANDROID_EABI_TOOLCHAIN}/${TARGET_ARCH}-${TARGET_OS}-androideabi-gcc"
+export CFLAGS=" \
+    ${TARGET_GLOBAL_CFLAGS} \
+    `get_build_var TARGET_thumb_CFLAGS` \
+    -fno-rtti"
+export LDFLAGS=" \
+    -nostdlib \
+    -Wl,--gc-sections \
+    `get_build_var TARGET_GLOBAL_LDFLAGS` \
+    -Wl,-rpath-link=${TARGET_OUT_INTERMEDIATE_LIBRARIES} \
+    -L${TARGET_OUT_INTERMEDIATE_LIBRARIES} \
+    "
+export LIBS=" \
+    `get_build_var TARGET_DEFAULT_SYSTEM_SHARED_LIBRARIES | sed 's,lib,-l,g'` \
+    `get_abs_build_var TARGET_CRTBEGIN_DYNAMIC_O` \
+    `get_abs_build_var TARGET_CRTEND_O` \
+    `get_build_var TARGET_LIBGCC` \
+    "
+export CPPFLAGS=" \
+    -isystem \
+    ${TARGET_PROJECT_INCLUDES} \
+    ${TARGET_C_INCLUDES} \
+    `get_build_var TARGET_GLOBAL_CPPFLAGS` \
+    "
+
+if [ -f config.status ]; then
+    make maintainer-clean
+fi
+
+./bootstrap && \
+    ./configure --host=${TARGET_ARCH}-${TARGET_OS}-androideabi \
+                --prefix=${TARGET_OUT_INTERMEDIATES} \
+                $*
+
