@@ -30,7 +30,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <syslog.h>
+#ifdef HAVE_EXECINFO_H
 #include <execinfo.h>
+#endif
 #include <dlfcn.h>
 
 #include "ofono.h"
@@ -113,6 +115,7 @@ void ofono_debug(const char *format, ...)
 	va_end(ap);
 }
 
+#ifdef HAVE_EXECINFO_H
 static void print_backtrace(unsigned int offset)
 {
 	void *frames[99];
@@ -214,12 +217,15 @@ static void print_backtrace(unsigned int offset)
 	close(outfd[1]);
 	close(infd[0]);
 }
+#endif /* HAVE_EXECINFO_H */
 
 static void signal_handler(int signo)
 {
 	ofono_error("Aborting (signal %d) [%s]", signo, program_exec);
 
+#ifdef HAVE_EXECINFO_H
 	print_backtrace(2);
+#endif
 
 	exit(EXIT_FAILURE);
 }

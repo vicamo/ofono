@@ -143,6 +143,9 @@ AM_CONDITIONAL(UDEV, test "${enable_udev}" = "yes")
 AC_CHECK_HEADER([search.h], [AC_DEFINE([HAVE_SEARCH_H], 1,
 				[Define to 1 if you have the <search.h> header file.])])
 
+AC_CHECK_HEADER([execinfo.h], [AC_DEFINE([HAVE_EXECINFO_H], 1,
+				[Define to 1 if you have the <execinfo.h> header file.])])
+
 AC_ARG_ENABLE(atmodem, AC_HELP_STRING([--disable-atmodem],
 				[disable ETSI AT modem support]),
 					[enable_atmodem=${enableval}])
