@@ -193,6 +193,14 @@ fi
 AM_CONDITIONAL(BLUEZ4, test "${enable_bluetooth}" != "no" && test "${enable_bluez4}" = "yes")
 AM_CONDITIONAL(BLUETOOTH, test "${enable_bluetooth}" != "no")
 
+if (test "${enable_bluetooth}" != "no"); then
+	AC_CHECK_MEMBER([struct bt_security.key_size],
+			[AC_DEFINE([HAVE_BT_SECURITY_KEY_SIZE], 1,
+				[Define if struct bt_security has member field key_size.])],
+			[],
+			[[#include <bluetooth/bluetooth.h>]])
+fi
+
 AC_ARG_WITH([provisiondb], AC_HELP_STRING([--with-provisiondb=FILE],
 	[location of provision database]), [path_provisiondb=${withval}])
 

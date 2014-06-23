@@ -511,6 +511,7 @@ static int set_priority(int sock, uint32_t prio)
 	return 0;
 }
 
+#ifdef HAVE_BT_SECURITY_KEY_SIZE
 static gboolean get_key_size(int sock, int *size, GError **err)
 {
 	struct bt_security sec;
@@ -525,6 +526,7 @@ static gboolean get_key_size(int sock, int *size, GError **err)
 
 	return FALSE;
 }
+#endif
 
 static gboolean l2cap_set(int sock, int sec_level, uint16_t imtu,
 				uint16_t omtu, uint8_t mode, int master,
@@ -889,10 +891,12 @@ static gboolean l2cap_get(int sock, GError **err, BtIOOption opt1,
 						va_arg(args, int *), err))
 				return FALSE;
 			break;
+#ifdef HAVE_BT_SECURITY_KEY_SIZE
 		case BT_IO_OPT_KEY_SIZE:
 			if (!get_key_size(sock, va_arg(args, int *), err))
 				return FALSE;
 			break;
+#endif
 		case BT_IO_OPT_PSM:
 			*(va_arg(args, uint16_t *)) = src.l2_psm ?
 					btohs(src.l2_psm) : btohs(dst.l2_psm);
