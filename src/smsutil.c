@@ -62,6 +62,10 @@
 #define MAX_TIMEZONE 56
 #define MIN_TIMEZONE -48
 
+#ifndef HAVE_VERSIONSORT
+int(*versionsort)(const struct dirent **, const struct dirent **) = NULL;
+#endif
+
 static GSList *sms_assembly_add_fragment_backup(struct sms_assembly *assembly,
 					const struct sms *sms, time_t ts,
 					const struct sms_address *addr,

@@ -60,6 +60,9 @@ AC_ARG_ENABLE(threads, AC_HELP_STRING([--enable-threads],
 AC_CHECK_FUNC(signalfd, dummy=yes,
 			AC_MSG_ERROR(signalfd support is required))
 
+AC_CHECK_FUNC([versionsort],
+	      [AC_DEFINE([HAVE_VERSIONSORT], 1, [Define 1 if versionsort() is available.])])
+
 AC_CHECK_LIB(dl, dlopen, dummy=yes,
 			AC_MSG_ERROR(dynamic linking loader is required))
 
