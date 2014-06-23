@@ -30,7 +30,9 @@
 #include <inttypes.h>
 #include <errno.h>
 #include <sys/uio.h>
+#if defined(HAVE_SEARCH_H)
 #include <search.h>
+#endif
 #include <arpa/inet.h>
 #include <net/if.h>
 
