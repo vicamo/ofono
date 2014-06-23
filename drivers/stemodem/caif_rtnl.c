@@ -29,6 +29,7 @@
 #include <net/if.h>
 #include <net/if_arp.h>
 #include <fcntl.h>
+#include <sys/socket.h>
 #include <linux/rtnetlink.h>
 
 #include <glib.h>
