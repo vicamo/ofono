@@ -60,6 +60,9 @@ AC_ARG_ENABLE(threads, AC_HELP_STRING([--enable-threads],
 AC_CHECK_FUNC(strchrnul,
 	AC_DEFINE(HAVE_STRCHRNUL, 1, [Define 1 if platform has strchrnul]))
 
+AC_CHECK_FUNC([versionsort],
+	      [AC_DEFINE([HAVE_VERSIONSORT], 1, [Define 1 if versionsort() is available.])])
+
 AC_CHECK_LIB(dl, dlopen, dummy=yes,
 			AC_MSG_ERROR(dynamic linking loader is required))
 
