@@ -519,6 +519,16 @@ const char *ss_control_type_to_string(enum ss_control_type type)
 	return NULL;
 }
 
+#if !defined(HAVE_STRCHRNUL)
+char* _strchrnul(const char *s, int c)
+{
+	while (*s && *s != c) s++;
+	return (char *)s;
+}
+
+#define strchrnul _strchrnul
+#endif /* !HAVE_STRCHRNUL */
+
 #define NEXT_FIELD(str, dest)			\
 	do {					\
 		dest = str;			\
