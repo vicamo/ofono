@@ -28,7 +28,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <net/if.h>
+#if defined(__linux__)
 #include <linux/if_tun.h>
+#endif
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
 
@@ -133,6 +135,7 @@ const char *ppp_net_get_interface(struct ppp_net *net)
 
 struct ppp_net *ppp_net_new(GAtPPP *ppp, int fd)
 {
+#if defined(__linux__)
 	struct ppp_net *net;
 	GIOChannel *channel = NULL;
 	struct ifreq ifr;
@@ -206,6 +209,7 @@ error:
 badalloc:
 	if (fd >= 0)
 		close(fd);
+#endif /* __linux__ */
 
 	return NULL;
 }

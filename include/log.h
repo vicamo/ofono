@@ -49,6 +49,12 @@ struct ofono_debug_desc {
 	unsigned int flags;
 } __attribute__((aligned(8)));
 
+#if 1//defined(__OSX__)
+#define DBG_DESC_SECTION "__DATA,__debug"
+#else
+#define DBG_DESC_SECTION "__debug"
+#endif
+
 /**
  * DBG:
  * @fmt: format string
@@ -59,7 +65,7 @@ struct ofono_debug_desc {
  */
 #define DBG(fmt, arg...) do { \
 	static struct ofono_debug_desc __ofono_debug_desc \
-	__attribute__((used, section("__debug"), aligned(8))) = { \
+	__attribute__((used, section(DBG_DESC_SECTION), aligned(8))) = { \
 		.file = __FILE__, .flags = OFONO_DEBUG_FLAG_DEFAULT, \
 	}; \
 	if (__ofono_debug_desc.flags & OFONO_DEBUG_FLAG_PRINT) \

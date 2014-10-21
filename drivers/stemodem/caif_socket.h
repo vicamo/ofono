@@ -8,7 +8,7 @@
 #ifndef _LINUX_CAIF_SOCKET_H
 #define _LINUX_CAIF_SOCKET_H
 
-#include <linux/types.h>
+#include <sys/types.h>
 
 #ifdef __KERNEL__
 #include <linux/socket.h>
@@ -158,22 +158,22 @@ struct sockaddr_caif {
 	sa_family_t  family;
 	union {
 		struct {
-			__u8  type;		/* type: enum caif_at_type */
+			uint8_t  type;		/* type: enum caif_at_type */
 		} at;				/* CAIFPROTO_AT */
 		struct {
 			char	  service[16];
 		} util;				/* CAIFPROTO_UTIL */
 		union {
-			__u32 connection_id;
-			__u8  nsapi;
+			uint32_t connection_id;
+			uint8_t  nsapi;
 		} dgm;				/* CAIFPROTO_DATAGRAM(_LOOP)*/
 		struct {
-			__u32 connection_id;
+			uint32_t connection_id;
 			char	  volume[16];
 		} rfm;				/* CAIFPROTO_RFM */
 		struct {
-			__u8  type;		/* type:enum caif_debug_type */
-			__u8  service;		/* service:caif_debug_service */
+			uint8_t  type;		/* type:enum caif_debug_type */
+			uint8_t  service;	/* service:caif_debug_service */
 		} dbg;				/* CAIFPROTO_DEBUG */
 	} u;
 };
@@ -185,7 +185,7 @@ struct sockaddr_caif {
  *				available. Either a high bandwidth
  *				link can be selected (CAIF_LINK_HIGH_BANDW) or
  *				or a low latency link (CAIF_LINK_LOW_LATENCY).
- *                              This option is of type __u32.
+ *                              This option is of type uint32_t.
  *				Alternatively SO_BINDTODEVICE can be used.
  *
  * @CAIFSO_REQ_PARAM:		Used to set the request parameters for a

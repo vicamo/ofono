@@ -6,9 +6,6 @@
 
 #ifndef IF_CAIF_H_
 #define IF_CAIF_H_
-#include <linux/sockios.h>
-#include <linux/types.h>
-#include <linux/socket.h>
 
 /**
  * enum ifla_caif - CAIF NetlinkRT parameters.

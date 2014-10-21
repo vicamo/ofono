@@ -28,7 +28,9 @@
 #include <string.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
+#if defined(__linux__)
 #include <linux/if_tun.h>
+#endif
 
 #include <glib.h>
 
@@ -177,6 +179,7 @@ static void tun_bytes(struct ring_buffer *rbuf, gpointer user_data)
 
 static void create_tun(GAtRawIP *rawip)
 {
+#if defined(__linux__)
 	GIOChannel *channel;
 	struct ifreq ifr;
 	int fd, err;
@@ -206,6 +209,7 @@ static void create_tun(GAtRawIP *rawip)
 	rawip->tun_io = g_at_io_new(channel);
 
 	g_io_channel_unref(channel);
+#endif /* __linux__ */
 }
 
 void g_at_rawip_open(GAtRawIP *rawip)
