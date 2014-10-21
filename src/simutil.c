@@ -1544,8 +1544,11 @@ gboolean sim_sst_is_active(unsigned char *efsst, unsigned char len,
 
 gboolean sim_cphs_is_active(unsigned char *cphs, enum sim_cphs_service index)
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wtautological-constant-out-of-range-compare"
 	if (index >= 2 * 4u)
 		return FALSE;
+#pragma GCC diagnostic pop
 
 	return ((cphs[index / 4] >> ((index % 4) * 2)) & 3) == 3;
 }
