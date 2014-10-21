@@ -16867,10 +16867,12 @@ static const struct terminal_response_test get_input_response_data_181 = {
 	},
 };
 
+#if 0
 static const unsigned char get_input_response_191b[] = {
 	0x81, 0x03, 0x01, 0x23, 0x01, 0x82, 0x02, 0x82,
 	0x81, 0x83, 0x01, 0x00, 0x8d, 0x00,
 };
+#endif
 
 static const struct terminal_response_test get_input_response_data_191 = {
 	/* Either get_input_response_191a or get_input_response_191b is ok */
@@ -17349,10 +17351,12 @@ static const unsigned char poll_interval_response_111a[] = {
 	0x81, 0x83, 0x01, 0x00, 0x84, 0x02, 0x00, 0x01,
 };
 
+#if 0
 static const unsigned char poll_interval_response_111b[] = {
 	0x81, 0x03, 0x01, 0x03, 0x00, 0x82, 0x02, 0x82,
 	0x81, 0x83, 0x01, 0x00, 0x84, 0x02, 0x01, 0x3c,
 };
+#endif
 
 static const struct terminal_response_test poll_interval_response_data_111a = {
 	/* Either poll_interval_response_111a or b is ok */
@@ -18336,9 +18340,6 @@ static const unsigned char provide_local_info_response_131[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x9d, 0x0d,
 	0x8c, 0x63, 0x58, 0xe2, 0x39, 0x8f, 0x63, 0xf9,
 	0x06, 0x45, 0x91, 0xa4, 0x90,
-};
-
-static const short bcch_channels_131[] = {
 };
 
 static const struct terminal_response_test
@@ -23488,7 +23489,7 @@ int main(int argc, char **argv)
 				&refresh_response_data_131a,
 				test_terminal_response_encoding);
 	g_test_add_data_func("/teststk/Refresh response 1.3.1B",
-				&refresh_response_data_141b,
+				&refresh_response_data_131b,
 				test_terminal_response_encoding);
 	g_test_add_data_func("/teststk/Refresh response 1.4.1A",
 				&refresh_response_data_141a,
