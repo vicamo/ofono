@@ -3555,6 +3555,8 @@ GSList *sms_text_prepare_with_alphabet(const char *to, const char *utf8,
 	template.submit.vp.relative = 0xA7; /* 24 Hours */
 	sms_address_from_string(&template.submit.daddr, to);
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wenum-conversion"
 	/*
 	 * UDHI, UDL, UD and DCS actually depend on the contents of
 	 * the text, and also on the GSM dialect we use to encode it.
@@ -3562,6 +3564,7 @@ GSList *sms_text_prepare_with_alphabet(const char *to, const char *utf8,
 	gsm_encoded = convert_utf8_to_gsm_best_lang(utf8, -1, NULL, &written, 0,
 							alphabet, &used_locking,
 							&used_single);
+#pragma GCC diagnostic pop
 	if (gsm_encoded == NULL) {
 		gsize converted;
 
