@@ -1,45 +1,70 @@
-Modem hierarchy
-===============
+<node>
+	<!--
+		org.ofono.Modem:
 
-Service		org.ofono
-Interface	org.ofono.Modem
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.Modem">
 
-Methods		dict GetProperties()
+		<!--
+			GetProperties:
 
 			Returns properties for the modem object. See
 			the properties section for available properties.
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		void SetProperty(string property, variant value)
+		<!--
+			SetProperty:
 
 			Changes the value of the specified property. Only
 			properties that are listed as readwrite are
-			changeable. On success a PropertyChanged signal
+			changeable. On success a #PropertyChanged signal
 			will be emitted.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.NotImplemented
-					 [service].Error.InvalidArguments
-					 [service].Error.NotAvailable
-					 [service].Error.AccessDenied
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotImplemented
+					 #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.NotAvailable
+					 #org.ofono.Error.AccessDenied
+					 #org.ofono.Error.Failed
+		-->
+		<method name="SetProperty">
+			<arg name="property" direction="in" type="s" />
+			<arg name="value" direction="in" type="v" />
+		</method>
 
-Signals		PropertyChanged(string name, variant value)
+		<!--
+			PropertyChanged:
 
 			This signal indicates a changed value of the given
 			property.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-Properties	boolean Powered [readwrite]
+		<!--
+			Powered:
 
 			Boolean representing the power state of the modem
 			device.
+		-->
+		<property name="Powered" type="b" access="readwrite" />
 
-		boolean Online [readwrite]
+		<!--
+			Online:
 
 			Boolean representing the rf state of the modem.
 			Online is false in flight mode.
+		-->
+		<property name="Online" type="b" access="readwrite" />
 
-		boolean Lockdown [readwrite]
+		<!--
+			Lockdown:
 
 			Boolean representing the lock state of the modem.
 			Setting it to true, makes the calling application hold
@@ -47,39 +72,67 @@ Properties	boolean Powered [readwrite]
 			makes the it release the modem lock. Only the
 			application that holds the lock can power up the modem.
 			If the the application exits Lockdown is set to false.
+		-->
+		<property name="Lockdown" type="b" access="readwrite" />
 
-		boolean Emergency [readonly, optional, experimental]
+		<!--
+			Emergency:
 
 			Boolean representing the emergency mode of the
 			modem. The Emergency is true if an emergency call or
 			related operation is currently active.
 
-		string Name [readonly, optional]
+			optional, experimental.
+		-->
+		<property name="Emergency" type="b" access="read" />
+
+		<!--
+			Name:
 
 			Friendly name of the modem device.  In the case of
 			Bluetooth devices (e.g. Type="sap" or "hfp") this
 			corresponds to the remote device name or it's alias.
 
-		string Manufacturer [readonly, optional]
+			Optional.
+		-->
+		<property name="Name" type="s" access="read" />
+
+		<!--
+			Manufacturer:
 
 			String representing the manufacturer of the modem
 			device.
 
 			This is usually obtained by the +CGMI AT command.
 
-		string Model [readonly, optional]
+			Optional.
+		-->
+		<property name="Manufacturer" type="s" access="read" />
+
+		<!--
+			Model:
 
 			String representing the model of the modem device.
 
 			This is usually obtained by the +CGMM AT command.
 
-		string Revision [readonly, optional]
+			Optional.
+		-->
+		<property name="Model" type="s" access="read" />
+
+		<!--
+			Revision:
 
 			String representing the revision of the modem device.
 
 			This is usually obtained by using the +CGMR AT command.
 
-		string Serial [readonly, optional]
+			Optional.
+		-->
+		<property name="Revision" type="s" access="read" />
+
+		<!--
+			Serial:
 
 			String represeting the serial number of the modem
 			device.
@@ -90,7 +143,12 @@ Properties	boolean Powered [readwrite]
 			"hfp") this corresponds to the Bluetooth Device
 			Address of the remote device.
 
-		array{string} Features [readonly]
+			Optional.
+		-->
+		<property name="Serial" type="s" access="read" />
+
+		<!--
+			Features:
 
 			List of currently enabled features. It uses simple
 			string abbreviations like "sms", "sim" etc.
@@ -101,9 +159,12 @@ Properties	boolean Powered [readwrite]
 
 			Please note that this is a convenience property,
 			equivalent results can be obtained by reading the
-			Interfaces property directly.
+			#org.ofono.Modem:Interfaces property directly.
+		-->
+		<property name="Features" type="as" access="read" />
 
-		array{string} Interfaces [readonly]
+		<!--
+			Interfaces:
 
 			Set of interfaces currently supported by the mode
 			device. The set depends on the state of the device
@@ -113,39 +174,39 @@ Properties	boolean Powered [readwrite]
 			Each string in the array is an interface from the
 			set supported by oFono by modem objects.  The set
 			includes:
-				org.ofono.AssistedSatelliteNavigation
-				org.ofono.AudioSettings
-				org.ofono.CallBarring
-				org.ofono.CallForwarding
-				org.ofono.CallMeter
-				org.ofono.CallSettings
-				org.ofono.CallVolume
-				org.ofono.CellBroadcast
-				org.ofono.Handsfree
-				org.ofono.LocationReporting
-				org.ofono.MessageManager
-				org.ofono.MessageWaiting
-				org.ofono.NetworkRegistration
-				org.ofono.Phonebook
-				org.ofono.PushNotification
-				org.ofono.RadioSettings
-				org.ofono.SimManager
-				org.ofono.SmartMessaging
-				org.ofono.SimToolkit
-				org.ofono.SupplementaryServices
-				org.ofono.TextTelephony
-				org.ofono.VoiceCallManager
+				#org.ofono.AssistedSatelliteNavigation
+				#org.ofono.AudioSettings
+				#org.ofono.CallBarring
+				#org.ofono.CallForwarding
+				#org.ofono.CallMeter
+				#org.ofono.CallSettings
+				#org.ofono.CallVolume
+				#org.ofono.CellBroadcast
+				#org.ofono.Handsfree
+				#org.ofono.LocationReporting
+				#org.ofono.MessageManager
+				#org.ofono.MessageWaiting
+				#org.ofono.NetworkRegistration
+				#org.ofono.Phonebook
+				#org.ofono.PushNotification
+				#org.ofono.RadioSettings
+				#org.ofono.SimManager
+				#org.ofono.SmartMessaging
+				#org.ofono.SimToolkit
+				#org.ofono.SupplementaryServices
+				#org.ofono.TextTelephony
+				#org.ofono.VoiceCallManager
 
 			It is possible for extension interfaces (e.g. APIs
 			that are not part of the oFono standard API) to be
 			available in this list.  Also note that child object
-			interfaces, such as org.ofono.Message,
-			org.ofono.VoiceCall, org.ofono.NetworkOperator,
+			interfaces, such as #org.ofono.Message,
+			#org.ofono.VoiceCall, #org.ofono.NetworkOperator,
 			will never be part of this list.
 
 			Please note that the set of Interfaces can and does
-			change frequently (e.g. due to change in Powered
-			and Online properties.)  If a given interface is no
+			change frequently (e.g. due to change in #Powered
+			and #Online properties.)  If a given interface is no
 			longer available, then the application should assume
 			that all data for that interface has become invalid,
 			e.g. calls have been dropped, network registration
@@ -154,11 +215,14 @@ Properties	boolean Powered [readwrite]
 			The set of possible interfaces supported is also
 			dependent on the modem hardware and driver support.
 			For example, HFP devices only support
-			org.ofono.VoiceCallManager,
-			org.ofono.NetworkRegistration, org.ofono.Handsfree and
-			org.ofono.CallVolume interfaces.
+			#org.ofono.VoiceCallManager,
+			#org.ofono.NetworkRegistration, #org.ofono.Handsfree
+			and #org.ofono.CallVolume interfaces.
+		-->
+		<property name="Interfaces" type="as" access="read" />
 
-		string Type [readonly]
+		<!--
+			Type:
 
 			Indicates whether the modem is virtual or a real
 			hardware one. This information should only be used
@@ -168,3 +232,8 @@ Properties	boolean Powered [readwrite]
 			supported by this modem.
 
 			Possible values are "test", "hfp", "sap" and "hardware".
+		-->
+		<property name="Type" type="s" access="read" />
+
+	</interface>
+</node>
