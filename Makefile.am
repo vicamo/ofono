@@ -60,6 +60,65 @@ builtin_cflags =
 
 noinst_LTLIBRARIES += gdbus/libgdbus-internal.la
 
+gdbus_iface_prefix = org.ofono
+gdbus_docbook = ofono-gdbus-doc
+
+define build-gdbus-codegen
+$(AM_V_GEN) $(GDBUS_CODEGEN) \
+	--interface-prefix $(gdbus_iface_prefix) \
+	--c-namespace=Ofono \
+	--generate-docbook $(gdbus_docbook) \
+	--generate-c-code $(PRIVATE_FILE_NAME) \
+	--c-generate-object-manager \
+	$<
+endef
+
+# $(1): input introspection xml, e.g. "doc/org.ofono.Modem.xml"
+# output: "org.ofono.Modem"
+define generated-gdbus-iface
+$(basename $(notdir $(1)))
+endef
+
+# $(1): input introspection xml, e.g. "doc/org.ofono.Modem.xml"
+# output: "ofono/modem", "ofono/cdma-connectionmanager"
+define generated-gdbus-file-name
+ofono/$(shell echo $(patsubst $(gdbus_iface_prefix).%,%,$(call generated-gdbus-iface,$(1))) | tr A-Z a-z | sed s,\\.,-,)
+endef
+
+# $(1): input introspection xml, e.g. "doc/org.ofono.Modem.xml"
+define generated-gdbus-sources
+$(addprefix $(call generated-gdbus-file-name,$(1)),.c .h)
+endef
+
+# $(1): input introspection xml, e.g. "doc/org.ofono.Modem.xml"
+define generated-gdbus-docbook
+$(gdbus_docbook)-$(notdir $(1))
+endef
+
+# $(1): input introspection xml, e.g. "doc/org.ofono.Modem.xml"
+define generated-gdbus-files
+$(call generated-gdbus-sources,(1)) \
+	$(call generated-gdbus-docbook,$(1))
+endef
+
+# $(1): C targets, e.g. "ofono/modem.h ofono/modem.c"
+# $(2): docbook target, e.g. "ofono-gdbus-doc-org.ofono.Modem.xml"
+# $(3): input introspection xml, e.g. "doc/org.ofono.Modem.xml"
+define def-gdbus-codegen
+$(2): PRIVATE_FILE_NAME := $(basename $(word 1,$(1)))
+$(2): $(3)
+	$$(build-gdbus-codegen)
+
+$(1): $(3) | $(2)
+endef
+
+define transform-gdbus-introspection-xml
+$(call def-gdbus-codegen, \
+	$(call generated-gdbus-sources,$(1)), \
+	$(call generated-gdbus-docbook,$(1)), \
+	$(1))
+endef
+
 gdbus_xml_files = \
 	doc/org.ofono.AssistedSatelliteNavigation.xml \
 	doc/org.ofono.AudioSettings.xml \
@@ -105,9 +164,111 @@ gdbus_xml_files = \
 	doc/org.ofono.VoiceCall.xml \
 	doc/org.ofono.VoiceCallManager.xml
 
+$(foreach xml, $(gdbus_xml_files), \
+	$(eval $(call transform-gdbus-introspection-xml,$(xml))))
+
+all_generated_gdbus_sources = \
+	$(foreach xml,$(gdbus_xml_files), \
+		$(call generated-gdbus-sources,$(xml)))
+
+all_generated_gdbus_docbook = \
+	$(foreach xml,$(gdbus_xml_files), \
+		$(call generated-gdbus-docbook,$(xml)))
+
 gdbus_libgdbus_internal_la_SOURCES = gdbus/gdbus.h \
 				gdbus/mainloop.c gdbus/watch.c \
 				gdbus/object.c gdbus/client.c gdbus/polkit.c
+
+# This should be $(all_generated_gdbus_sources), but it just doesn't work. :(
+nodist_gdbus_libgdbus_internal_la_SOURCES = \
+	ofono/assistedsatellitenavigation.c \
+	ofono/assistedsatellitenavigation.h \
+	ofono/audiosettings.c \
+	ofono/audiosettings.h \
+	ofono/callbarring.c \
+	ofono/callbarring.h \
+	ofono/callforwarding.c \
+	ofono/callforwarding.h \
+	ofono/callmeter.c \
+	ofono/callmeter.h \
+	ofono/callsettings.c \
+	ofono/callsettings.h \
+	ofono/callvolume.c \
+	ofono/callvolume.h \
+	ofono/cdma-connectionmanager.c \
+	ofono/cdma-connectionmanager.h \
+	ofono/cdma-messagemanager.c \
+	ofono/cdma-messagemanager.h \
+	ofono/cdma-networkregistration.c \
+	ofono/cdma-networkregistration.h \
+	ofono/cdma-voicecallmanager.c \
+	ofono/cdma-voicecallmanager.h \
+	ofono/cellbroadcast.c \
+	ofono/cellbroadcast.h \
+	ofono/connectioncontext.c \
+	ofono/connectioncontext.h \
+	ofono/connectionmanager.c \
+	ofono/connectionmanager.h \
+	ofono/dundee-device.c \
+	ofono/dundee-device.h \
+	ofono/dundee-manager.c \
+	ofono/dundee-manager.h \
+	ofono/handsfree.c \
+	ofono/handsfree.h \
+	ofono/handsfreeaudioagent.c \
+	ofono/handsfreeaudioagent.h \
+	ofono/handsfreeaudiocard.c \
+	ofono/handsfreeaudiocard.h \
+	ofono/handsfreeaudiomanager.c \
+	ofono/handsfreeaudiomanager.h \
+	ofono/locationreporting.c \
+	ofono/locationreporting.h \
+	ofono/manager.c \
+	ofono/manager.h \
+	ofono/message.c \
+	ofono/message.h \
+	ofono/messagemanager.c \
+	ofono/messagemanager.h \
+	ofono/messagewaiting.c \
+	ofono/messagewaiting.h \
+	ofono/modem.c \
+	ofono/modem.h \
+	ofono/networkoperator.c \
+	ofono/networkoperator.h \
+	ofono/networkregistration.c \
+	ofono/networkregistration.h \
+	ofono/phonebook.c \
+	ofono/phonebook.h \
+	ofono/positioningrequestagent.c \
+	ofono/positioningrequestagent.h \
+	ofono/pushnotification.c \
+	ofono/pushnotification.h \
+	ofono/pushnotificationagent.c \
+	ofono/pushnotificationagent.h \
+	ofono/radiosettings.c \
+	ofono/radiosettings.h \
+	ofono/simmanager.c \
+	ofono/simmanager.h \
+	ofono/simtoolkit.c \
+	ofono/simtoolkit.h \
+	ofono/simtoolkitagent.c \
+	ofono/simtoolkitagent.h \
+	ofono/siri.c \
+	ofono/siri.h \
+	ofono/smartmessaging.c \
+	ofono/smartmessaging.h \
+	ofono/smartmessagingagent.c \
+	ofono/smartmessagingagent.h \
+	ofono/supplementaryservices.c \
+	ofono/supplementaryservices.h \
+	ofono/texttelephony.c \
+	ofono/texttelephony.h \
+	ofono/voicecall.c \
+	ofono/voicecall.h \
+	ofono/voicecallmanager.c \
+	ofono/voicecallmanager.h
+
+gdbus_libgdbus_internal_la_LIBADD = $(GIO_LIBS)
 
 gatchat_sources = gatchat/gatchat.h gatchat/gatchat.c \
 				gatchat/gatresult.h gatchat/gatresult.c \
@@ -590,7 +751,9 @@ src_ofonod_LDADD = gdbus/libgdbus-internal.la $(builtin_libadd) \
 src_ofonod_LDFLAGS = -Wl,--export-dynamic \
 				-Wl,--version-script=$(srcdir)/src/ofono.ver
 
-BUILT_SOURCES = $(local_headers) src/builtin.h
+BUILT_SOURCES = $(local_headers) src/builtin.h \
+	$(all_generated_gdbus_sources) \
+	$(all_generated_gdbus_docbook)
 
 CLEANFILES = $(BUILT_SOURCES) $(rules_DATA)
 
@@ -602,7 +765,7 @@ else
 build_plugindir = $(plugindir)
 endif
 
-AM_CFLAGS = @DBUS_CFLAGS@ @GLIB_CFLAGS@ $(builtin_cflags) \
+AM_CFLAGS = @DBUS_CFLAGS@ @GLIB_CFLAGS@ @GIO_CFLAGS@ $(builtin_cflags) \
 					-DOFONO_PLUGIN_BUILTIN \
 					-DPLUGINDIR=\""$(build_plugindir)"\"
 

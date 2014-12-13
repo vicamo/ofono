@@ -76,6 +76,14 @@ if (test "${enable_threads}" = "yes"); then
 	GLIB_LIBS="$GLIB_LIBS $GTHREAD_LIBS"
 fi
 
+PKG_CHECK_MODULES(GIO, gio-2.0 >= 2.30 gio-unix-2.0, [],
+				AC_MSG_ERROR(GIO >= 2.28 is required))
+AC_SUBST(GIO_CFLAGS)
+AC_SUBST(GIO_LIBS)
+
+GDBUS_CODEGEN=`$PKG_CONFIG --variable=gdbus_codegen gio-2.0`
+AC_SUBST(GDBUS_CODEGEN)
+
 PKG_CHECK_MODULES(DBUS, dbus-1 >= 1.4, dummy=yes,
 				AC_MSG_ERROR(D-Bus >= 1.4 is required))
 AC_SUBST(DBUS_CFLAGS)
