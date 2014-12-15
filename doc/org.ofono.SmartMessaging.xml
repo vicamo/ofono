@@ -1,11 +1,13 @@
-Smart Messaging hierarchy
-===============
+<node>
+	<!--
+		org.ofono.SmartMessaging:
 
-Service		org.ofono
-Interface	org.ofono.SmartMessaging
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.SmartMessaging">
 
-Methods		object SendAppointment(string to, array{bytes} appointment)
+		<!--
+			SendAppointment:
 
 			Sends a vCalendar object in appointment to the number
 			in to.  The object in appointment is not interpreted
@@ -13,20 +15,46 @@ Methods		object SendAppointment(string to, array{bytes} appointment)
 			fit into a single SMS, it is fragmented as appropriate.
 			This method call returns the object path of the queued
 			SMS.
+		-->
+		<method name="SendAppointment">
+			<arg name="to" direction="in" type="s" />
+			<arg name="appointment" direction="in" type="ay" />
+			<arg name="message" direction="out" type="o" />
+		</method>
 
-		object SendBusinessCard(string to, array{bytes} card)
+		<!--
+			SendBusinessCard:
 
 			Sends a vCard object in card to the number in to. The
 			object in card is not interpreted by oFono in any way.
 			If the object is too large to fit into a single SMS,
 			it is fragmented as appropriate.  This method call
 			returns the object path of the queued SMS.
+		-->
+		<method name="SendBusinessCard">
+			<arg name="to" direction="in" type="s" />
+			<arg name="card" direction="in" type="ay" />
+			<arg name="message" direction="out" type="o" />
+		</method>
 
-		void RegisterAgent(object path)
+		<!--
+			RegisterAgent:
 
 			Registers an agent which will be called whenever a
 			new Smart Messaging based SMS arrives.
+		-->
+		<method name="RegisterAgent">
+			<arg name="agent" direction="in" type="o" />
+		</method>
 
-		void UnregisterAgent(object path)
+		<!--
+			UnregisterAgent:
 
 			Unregisters an agent.
+		-->
+		<method name="UnregisterAgent">
+			<arg name="agent" direction="in" type="o" />
+		</method>
+
+	</interface>
+</node>
