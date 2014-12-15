@@ -1,49 +1,79 @@
-MessageWaiting hierarchy
-===============
+<node>
+	<!--
+		org.ofono.MessageWaiting:
 
-Service		org.ofono
-Interface	org.ofono.MessageWaiting
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.MessageWaiting">
 
-Methods		dict GetProperties()
+		<!--
+			GetProperties:
 
 			Returns properties for the MessageWaiting object. See
 			the properties section for available properties.
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		void SetProperty(string property, variant value)
+		<!--
+			SetProperty:
 
 			Changes the value of the specified property. Only
 			properties that are listed as readwrite are
 			changeable. On success a PropertyChanged signal
 			will be emitted.
 
-			Possible Errors: [service].Error.InvalidArguments
-					 [service].Error.InvalidFormat
-					 [service].Error.NotSupported
-					 [service].Error.SimNotReady
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.InvalidFormat
+					 #org.ofono.Error.NotSupported
+					 #org.ofono.Error.SimNotReady
+					 #org.ofono.Error.Failed
+		-->
+		<method name="SetProperty">
+			<arg name="name" direction="in" type="s" />
+			<arg name="value" direction="in" type="v" />
+		</method>
 
-Signals		PropertyChanged(string name, variant value)
+		<!--
+			PropertyChanged:
 
 			This signal indicates a changed value of the given
 			property.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-Properties	boolean VoicemailWaiting [readonly]
+		<!--
+			VoicemailWaiting:
 
 			Boolean representing whether there is a voicemail
 			message waiting for the user on the voicemail server.
+		-->
+		<property name="VoicemailWaiting" type="b" access="read" />
 
-		byte VoicemailMessageCount [readonly]
+		<!--
+			VoicemailMessageCount:
 
 			The total number of voicemail messages waiting.
 			Values of 255 indicate 255 messages or more.  Value
 			0 when VoicemailWaiting is true indicates that the
 			mailbox is not empty and the message count is not
 			known.
+		-->
+		<property name="VoicemailMessageCount" type="y" access="read" />
 
-		string VoicemailMailboxNumber [readwrite]
+		<!--
+			VoicemailMailboxNumber:
 
 			String containing the dialing number to be used for
 			voice mailbox access.  This number is generally
 			pre-provisioned on the SIM.  However, the user can
 			change this number if required.
+		-->
+		<property name="VoicemailMailboxNumber" type="s" access="readwrite" />
+
+	</interface>
+</node>
