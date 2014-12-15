@@ -1,35 +1,54 @@
-Text Telephony hierarchy
-========================
+<node>
+	<!--
+		org.ofono.TextTelephony:
 
-Service		org.ofono
-Interface	org.ofono.TextTelephony
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.TextTelephony">
 
-Methods		dict GetProperties()
+		<!--
+			GetProperties:
 
 			Returns all Text Telephony properties. See the
 			properties section for available properties.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.Failed
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		void SetProperty(string name, variant value)
+		<!--
+			SetProperty:
 
 			Changes the value of the specified property. Only
 			properties that are listed as read-write are
 			changeable. On success a PropertyChanged signal
 			will be emitted.
 
-			Possible Errors: [service].Error.InvalidArguments
-					 [service].Error.InProgress
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.InProgress
+					 #org.ofono.Error.Failed
+		-->
+		<method name="SetProperty">
+			<arg name="name" direction="in" type="s" />
+			<arg name="value" direction="in" type="v" />
+		</method>
 
-Signals		PropertyChanged(string property, variant value)
+		<!--
+			PropertyChanged:
 
 			This signal indicates a changed value of the given
 			property.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-Properties	boolean	Enabled [readwrite]
+		<!--
+			Enabled:
 
 			This property will enable or disable the text
 			telephony feature in the modem.
@@ -37,3 +56,8 @@ Properties	boolean	Enabled [readwrite]
 			Text telephony (TTY), also known as Cellular Text Modem
 			(CTM), is a feature present in some modems that allow
 			them to be used by hearing impaired people.
+		-->
+		<property name="Enabled" type="b" access="readwrite" />
+
+	</interface>
+</node>
