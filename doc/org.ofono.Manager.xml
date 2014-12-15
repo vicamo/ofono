@@ -1,11 +1,13 @@
-Manager hierarchy
-=================
+<node>
+	<!--
+		org.ofono.Manager:
 
-Service		org.ofono
-Interface	org.ofono.Manager
-Object path	/
+		Object path: /
+	-->
+	<interface name="org.ofono.Manager">
 
-Methods		array{object,dict} GetModems()
+		<!--
+			GetModems:
 
 			Get an array of modem objects and properties
 			that represents the currently attached modems.
@@ -14,15 +16,33 @@ Methods		array{object,dict} GetModems()
 			application starts up.  Further modem additions
 			and removal shall be monitored via ModemAdded and
 			ModemRemoved signals.
+		-->
+		<method name="GetModems">
+			<arg name="modems" direction="out" type="a{oa{sv}}" />
+		</method>
 
-Signals		ModemAdded(object path, dict properties)
+		<!--
+			ModemAdded:
 
 			Signal that is sent when a new modem is added.  It
 			contains the object path of new modem and also its
 			properties.
+		-->
+		<signal name="ModemAdded">
+			<arg name="modem" type="o" />
+			<arg name="properties" type="a{sv}" />
+		</signal>
 
-		ModemRemoved(object path)
+		<!--
+			ModemRemoved:
 
 			Signal that is sent when a modem has been removed.
 			The object path is no longer accessible after this
 			signal and only emitted for reference.
+		-->
+		<signal name="ModemRemoved">
+			<arg name="modem" type="o" />
+		</signal>
+
+	</interface>
+</node>
