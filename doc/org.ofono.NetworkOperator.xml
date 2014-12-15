@@ -1,16 +1,23 @@
-Network operator hierarchy
-==========================
+<node>
+	<!--
+		org.ofono.NetworkOperator:
 
-Service		org.ofono
-Interface	org.ofono.NetworkOperator
-Object path	[variable prefix]/{modem0,modem1,...}/{operator0,operator1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}/{operator0,operator1,...}
+	-->
+	<interface name="org.ofono.NetworkOperator">
 
-Methods		dict GetProperties()
+		<!--
+			GetProperties:
 
 			Returns all network operator properties. See the
 			properties section for available properties.
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		void Register()
+		<!--
+			Register:
 
 			Attempts to register to this network operator.
 
@@ -18,40 +25,65 @@ Methods		dict GetProperties()
 			be observed by tracking the NetworkRegistration Status
 			property.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.NotImplemented
-					 [service].Error.Failed
-					 [service].Error.AccessDenied
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotImplemented
+					 #org.ofono.Error.Failed
+					 #org.ofono.Error.AccessDenied
+		-->
+		<method name="Register" />
 
-Signals		PropertyChanged(string property, variant value)
+		<!--
+			PropertyChanged:
 
 			This signal indicates a changed value of the given
 			property.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-Properties	string Name [readonly]
+		<!--
+			Name:
 
 			Contains the name of the operator, suitable for using
 			as a string handle in a UI widget used for manual
 			network selection. For a proper display name of the
 			current operator, use the Name property of the
 			NetworkRegistration interface instead.
+		-->
+		<property name="Name" type="s" access="read" />
 
-		string Status [readonly]
+		<!--
+			Status:
 
 			Contains the status of the operator.
 
 			The possible values are: "unknown", "available",
 						 "current" and "forbidden"
+		-->
+		<property name="Status" type="s" access="read" />
 
-		string MobileCountryCode [readonly, optional]
+		<!--
+			MobileCountryCode:
 
 			Contains the Mobile Country Code (MCC).
 
-		string MobileNetworkCode [readonly, optional]
+			Optional.
+		-->
+		<property name="MobileCountryCode" type="s" access="read" />
+
+		<!--
+			MobileNetworkCode:
 
 			Contains the Mobile Network Code (MNC)
 
-		array{string} Technologies [readonly, optional]
+			Optional.
+		-->
+		<property name="MobileNetworkCode" type="s" access="read" />
+
+		<!--
+			Technologies:
 
 			Contains a list of technologies currently available
 			from this network provider.
@@ -59,8 +91,20 @@ Properties	string Name [readonly]
 			The possible values are: "gsm", "edge", "umts", "hspa",
 							"lte"
 
-		string AdditionalInformation [readonly, optional]
+			Optional.
+		-->
+		<property name="Technologies" type="as" access="read" />
+
+		<!--
+			AdditionalInformation:
 
 			Contains a short description of the operator.  This is
 			typically stored on the SIM and might be available
 			only for select operators.
+
+			Optional.
+		-->
+		<property name="AdditionalInformation" type="s" access="read" />
+
+	</interface>
+</node>
