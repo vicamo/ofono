@@ -1,33 +1,54 @@
-Message hierarchy
-===============
+<node>
+	<!--
+		org.ofono.Message:
 
-Service		org.ofono
-Interface	org.ofono.Message
-Object path	[variable prefix]/{modem0,modem1,...}/{message_01,...}
+		Object path: [variable prefix]/{modem0,modem1,...}/{message_01,...}
+	-->
+	<interface name="org.ofono.Message">
 
-Methods		dict GetProperties()
+		<!--
+			GetProperties:
 
 			Returns properties for the message object. See
 			the properties section for available properties.
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		void Cancel()
+		<!--
+			Cancel:
 
 			Cancel a message that was previously sent. Only
 			messages that are waiting on queue can be cancelled and
 			it's not possible to cancel messages that already had
 			some parts sent.
 
-			Possible Errors: [service].Error.AccessDenied
+			Possible Errors: #org.ofono.Error.AccessDenied
+		-->
+		<method name="Cancel" />
 
-Signals		PropertyChanged(string name, variant value)
+		<!--
+			PropertyChanged:
 
 			This signal indicates a changed value of the given
 			property.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-Properties	string State
+		<!--
+			State:
 
 			Contains the state of the message object.  Possible
 			values are:
 				"pending",
 				"sent",
 				"failed"
+		-->
+		<property name="State" type="s" access="read" />
+
+	</interface>
+</node>
