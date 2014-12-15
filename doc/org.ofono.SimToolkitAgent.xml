@@ -1,13 +1,13 @@
-SimToolkitAgent Hierarchy
-===============
+<node>
+	<!--
+		org.ofono.SimToolkitAgent:
 
-Service		unique name
-Interface	org.ofono.SimToolkitAgent
-Object path	freely definable
+		Object path: freely definable
+	-->
+	<interface name="org.ofono.SimToolkitAgent">
 
-Methods		byte RequestSelection(string title, byte icon_id,
-					array{struct(string, byte)} items,
-					int16 default)
+		<!--
+			RequestSelection:
 
 			Tells the agent to ask the user to select an item
 			from the menu.  The default is set the the default
@@ -16,25 +16,34 @@ Methods		byte RequestSelection(string title, byte icon_id,
 			This function should return the index of the item or
 			an error given below.
 
-			Possible Errors: [service].Error.SimToolkit.GoBack
-					 [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.GoBack
+					 #org.ofono.Error.SimToolkit.EndSession
 
 			Implementation notes:
 
 			- Data / Navigation type not indicated
 			- Soft key preferred not indicated
 			- Help available ignored
+		-->
+		<method name="RequestSelection">
+			<arg name="title" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="items" direction="in" type="a(sy)" />
+			<arg name="default" direction="in" type="n" />
+			<arg name="selection" direction="out" type="y" />
+		</method>
 
-		void DisplayText(string text, byte icon_id, boolean urgent)
+		<!--
+			DisplayText:
 
 			Tells the agent to display text from the SIM.  The
 			boolean urgent parameter tells the agent whether this
 			is an urgent message and all other messages should be
 			cleared prior to the display of this text.
 
-			Possible Errors: [service].Error.SimToolkit.GoBack
-					 [service].Error.SimToolkit.EndSession
-					 [service].Error.SimToolkit.Busy
+			Possible Errors: #org.ofono.Error.SimToolkit.GoBack
+					 #org.ofono.Error.SimToolkit.EndSession
+					 #org.ofono.Error.SimToolkit.Busy
 
 			Implementation notes:
 
@@ -63,10 +72,15 @@ Methods		byte RequestSelection(string title, byte icon_id,
 			  timeout is used for the method call.  Once another
 			  proactive command arrives, and the DisplayText is
 			  still pending, Cancel() is called.
+		-->
+		<method name="DisplayText">
+			<arg name="text" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="urgent" direction="in" type="b" />
+		</method>
 
-		string RequestInput(string alpha, byte icon_id,
-				string default, byte min, byte max,
-				boolean hide_typing)
+		<!--
+			RequestInput:
 
 			Tells the agent to request an input string from the
 			user.  The alpha parameter and icon_id gives context
@@ -76,8 +90,8 @@ Methods		byte RequestSelection(string title, byte icon_id,
 			parameter hide_typing indicates whether user's typing
 			should be opaque.
 
-			Possible Errors: [service].Error.SimToolkit.GoBack
-					 [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.GoBack
+					 #org.ofono.Error.SimToolkit.EndSession
 
 			Implementation notes:
 
@@ -86,51 +100,99 @@ Methods		byte RequestSelection(string title, byte icon_id,
 			  character set functionality from SMS be applied
 			  here?  If not, then an extra gsm vs ucs2 acceptance
 			  argument needs to be added.
+		-->
+		<method name="RequestInput">
+			<arg name="alpha" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="default" direction="in" type="s" />
+			<arg name="min" direction="in" type="y" />
+			<arg name="max" direction="in" type="y" />
+			<arg name="hide_typing" direction="in" type="b" />
+			<arg name="input" direction="out" type="s" />
+		</method>
 
-		string RequestDigits(string alpha, byte icon_id,
-					string default, byte min, byte max,
-					boolean hide_typing)
+		<!--
+			RequestDigits:
 
 			Same as GetInput but only digit characters (0-9, *#+)
 			are expected.
 
-			Possible Errors: [service].Error.SimToolkit.GoBack
-					 [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.GoBack
+					 #org.ofono.Error.SimToolkit.EndSession
+		-->
+		<method name="RequestDigits">
+			<arg name="alpha" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="default" direction="in" type="s" />
+			<arg name="min" direction="in" type="y" />
+			<arg name="max" direction="in" type="y" />
+			<arg name="hide_typing" direction="in" type="b" />
+			<arg name="digits" direction="out" type="s" />
+		</method>
 
-		string RequestKey(string alpha, byte icon_id)
+		<!--
+			RequestKey:
 
 			Tells the agent to request a single input key from
 			the user.  The alpha parameter contains the context
 			for the request.
 
-			Possible Errors: [service].Error.SimToolkit.GoBack
-					 [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.GoBack
+					 #org.ofono.Error.SimToolkit.EndSession
+		-->
+		<method name="RequestKey">
+			<arg name="alpha" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="key" direction="out" type="s" />
+		</method>
 
-		string RequestDigit(string alpha, byte icon_id)
+		<!--
+			RequestDigit:
 
 			Same as above, but only digits (0-9, *#+) are
 			expected.
 
-			Possible Errors: [service].Error.SimToolkit.GoBack
-					 [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.GoBack
+					 #org.ofono.Error.SimToolkit.EndSession
+		-->
+		<method name="RequestDigit">
+			<arg name="alpha" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="digit" direction="out" type="s" />
+		</method>
 
-		string RequestQuickDigit(string alpha, byte icon_id)
+		<!--
+			RequestQuickDigit:
 
 			Same as above but the entered digit shall not be
 			displayed and the response shall be sent immediately
 			after the key press. "+" is not allowed for user input.
 
-			Possible Errors: [service].Error.SimToolkit.GoBack
-					 [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.GoBack
+					 #org.ofono.Error.SimToolkit.EndSession
+		-->
+		<method name="RequestQuickDigit">
+			<arg name="alpha" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="quick_digit" direction="out" type="s" />
+		</method>
 
-		boolean RequestConfirmation(string alpha, byte icon_id)
+		<!--
+			RequestConfirmation:
 
 			Asks the agent to get confirmation from the user.
 
-			Possible Errors: [service].Error.SimToolkit.GoBack
-					 [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.GoBack
+					 #org.ofono.Error.SimToolkit.EndSession
+		-->
+		<method name="RequestConfirmation">
+			<arg name="alpha" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="confirm" direction="out" type="b" />
+		</method>
 
-		boolean ConfirmCallSetup(string information, byte icon_id)
+		<!--
+			ConfirmCallSetup:
 
 			Asks the agent to request user to confirm an
 			outgoing call setup.  If confirmed, the next new
@@ -139,9 +201,16 @@ Methods		byte RequestSelection(string title, byte icon_id,
 			inform the user.  Hanging up before the call is
 			connected will cause EndSession reply to be sent.
 
-			Possible Errors: [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.EndSession
+		-->
+		<method name="ConfirmCallSetup">
+			<arg name="information" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="confirm" direction="out" type="b" />
+		</method>
 
-		void PlayTone(string tone, string text, byte icon_id)
+		<!--
+			PlayTone:
 
 			Tells the agent to play an audio tone once.  The
 			method should return once the tone is finished
@@ -169,9 +238,16 @@ Methods		byte RequestSelection(string title, byte icon_id,
 				"question"
 				"message-received"
 
-			Possible Errors: [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.EndSession
+		-->
+		<method name="PlayTone">
+			<arg name="tone" direction="in" type="s" />
+			<arg name="text" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+		</method>
 
-		void LoopTone(string tone, string text, byte icon_id)
+		<!--
+			LoopTone:
 
 			Tells the agent to reproduce an audio tone in a
 			loop until the method call is cancelled.  See
@@ -179,10 +255,16 @@ Methods		byte RequestSelection(string title, byte icon_id,
 			The text parameter contains an optional text to
 			be displayed to the user.
 
-			Possible Errors: [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.EndSession
+		-->
+		<method name="LoopTone">
+			<arg name="tone" direction="in" type="s" />
+			<arg name="text" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+		</method>
 
-		void DisplayActionInformation(string text,
-						byte icon_id)
+		<!--
+			DisplayActionInformation:
 
 			Supplies a text string and/or icon concerning the
 			current activity in the terminal and UICC.  The
@@ -191,16 +273,29 @@ Methods		byte RequestSelection(string title, byte icon_id,
 			method returns it is assumed that the user has
 			explicitly dismissed the dialog and no Cancel() is
 			sent.
+		-->
+		<method name="DisplayActionInformation">
+			<arg name="text" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+		</method>
 
-		boolean ConfirmLaunchBrowser(string information,
-						byte icon_id, string url)
+		<!--
+			ConfirmLaunchBrowser:
 
 			Asks the agent to request user to confirm launch
 			browser. If confirmed, then the agent should send
 			confirmation message to oFono and then should open
 			the launch browser with the given url.
+		-->
+		<method name="ConfirmLaunchBrowser">
+			<arg name="information" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="url" direction="in" type="s" />
+			<arg name="confirm" direction="out" type="b" />
+		</method>
 
-		void DisplayAction(string text, byte icon_id)
+		<!--
+			DisplayAction:
 
 			Supplies a text string and/or icon concerning the
 			current activity in the terminal and UICC. The
@@ -208,26 +303,50 @@ Methods		byte RequestSelection(string title, byte icon_id,
 			until the call is canceled using Cancel() or until the
 			user decides to end the session.
 
-			Possible Errors: [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.EndSession
+		-->
+		<method name="DisplayAction">
+			<arg name="text" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+		</method>
 
-		boolean ConfirmOpenChannel(string information,
-						byte icon_id) [experimental]
+		<!--
+			ConfirmOpenChannel:
 
 			Asks the agent to request user to confirm the channel
 			set-up.
 
-			Possible Errors: [service].Error.SimToolkit.EndSession
+			Possible Errors: #org.ofono.Error.SimToolkit.EndSession
+		-->
+		<method name="ConfirmOpenChannel">
+			<arg name="information" direction="in" type="s" />
+			<arg name="icon_id" direction="in" type="y" />
+			<arg name="confirm" direction="out" type="b" />
+		</method>
 
-		void Cancel() [noreply]
+		<!--
+			Cancel:
 
 			Asks the agent to cancel any ongoing operation in
 			progress.  This is usually either because the agent
 			is taking too long to respond, the Sim Application
 			has terminated the session or a task has finished.
+		-->
+		<method name="Cancel">
+			<annotation name="org.freedesktop.DBus.Method.NoReply" value="true" />
+		</method>
 
-		void Release() [noreply]
+		<!--
+			Release:
 
 			Agent is being released, possibly because of oFono
 			terminating, SimToolkit interface torn down or modem
 			off.  If the agent is registered as a global agent,
 			no UnregisterAgent call is expected.
+		-->
+		<method name="Release">
+			<annotation name="org.freedesktop.DBus.Method.NoReply" value="true" />
+		</method>
+
+	</interface>
+</node>
