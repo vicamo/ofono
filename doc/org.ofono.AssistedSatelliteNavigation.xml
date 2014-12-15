@@ -1,11 +1,13 @@
-Assisted Satellite Navigation hierarchy [experimental]
-==========================================================
+<node>
+	<!--
+		org.ofono.AssistedSatelliteNavigation:
 
-Service		org.ofono
-Interface	org.ofono.AssistedSatelliteNavigation
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.AssistedSatelliteNavigation">
 
-Methods		void SendPositioningElement(string xml_element)
+		<!--
+			SendPositioningElement:
 
 			Send an XML element conforming to the XML DTD for <pos>
 			as defined in 3GPP 27.007 Table 8.55-2. This xml is
@@ -14,13 +16,31 @@ Methods		void SendPositioningElement(string xml_element)
 			This includes assistance data requests and the results
 			of positioning procedures. This method maps directly to
 			the 3GPP 27.007 AT+CPOS command.
+		-->
+		<method name="SendPositioningElement">
+			<arg name="xml" direction="in" type="s" />
+		</method>
 
-		void RegisterPositioningRequestAgent(object path)
+		<!--
+			RegisterPositioningRequestAgent:
 
 			Registers an agent which will be called whenever a
 			CPOSR AT response is received. The Agent must respond
-			to requests using SendPositioningElement.
+			to requests using
+			#org.ofono.AssistedSatelliteNavigation:SendPositioningElement.
+		-->
+		<method name="RegisterPositioningRequestAgent">
+			<arg name="path" direction="in" type="o" />
+		</method>
 
-		void UnregisterPositioningRequestAgent(object path)
+		<!--
+			UnregisterPositioningRequestAgent:
 
 			Un-registers the agent.
+		-->
+		<method name="UnregisterPositioningRequestAgent">
+			<arg name="xml" direction="in" type="o" />
+		</method>
+
+	</interface>
+</node>

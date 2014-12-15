@@ -1,11 +1,13 @@
-PositioningRequestAgent hierarchy
-==================================
+<node>
+	<!--
+		org.ofono.PositioningRequestAgent:
 
-Service		unique name
-Interface	org.ofono.PositioningRequestAgent
-Object path	freely definable
+		Object path: freely definable
+	-->
+	<interface name="org.ofono.PositioningRequestAgent">
 
-Methods		void Request(string xml_element)
+		<!--
+			Request:
 
 			Receive an XML element conforming to the XML DTD for
 			<pos> in 3GPP 27.007. This xml is used for transferring
@@ -14,16 +16,30 @@ Methods		void Request(string xml_element)
 			measurement requests and assistance data. This method
 			maps directly to the 3GPP defined +CPOSR unsolicited
 			result code.
+		-->
+		<method name="Request">
+			<arg name="xml_element" direction="in" type="s" />
+		</method>
 
-		void ResetAssistanceData()
+		<!--
+			ResetAssistanceData:
 
 			A request has been received from the network that all
 			assistance data should be reset.  This is used for 3gpp
 			performance tests.
+		-->
+		<method name="ResetAssistanceData" />
 
-		void Release()
+		<!--
+			Release:
 
 			Agent is being released, possibly because of oFono
-			terminating, AssistedSatelliteNavigation interface
-			is being torn down or modem off.
-			No UnregisterPositioningRequestAgent call is needed.
+			terminating, #org.ofono.AssistedSatelliteNavigation
+			interface is being torn down or modem off. No
+			#org.ofono.AssistedSatelliteNavigation:UnregisterPositioningRequestAgent
+			call is needed.
+		-->
+		<method name="Release" />
+
+	</interface>
+</node>
