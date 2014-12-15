@@ -1,11 +1,13 @@
-Handsfree Audio Manager hierarchy [experimental]
-=================================
+<node>
+	<!--
+		org.ofono.HandsfreeAudioManager:
 
-Service		org.ofono
-Interface	org.ofono.HandsfreeAudioManager
-Object path	/
+		Object path: /
+	-->
+	<interface name="org.ofono.HandsfreeAudioManager">
 
-Methods		array{object,dict} GetCards()
+		<!--
+			GetCards:
 
 			Get an array of card objects and properties
 			that represent the currently attached devices.
@@ -14,8 +16,13 @@ Methods		array{object,dict} GetCards()
 			application starts up. Further device additions
 			and removal shall be monitored via CardAdded and
 			CardRemoved signals.
+		-->
+		<method name="GetCards">
+			<arg name="cards" direction="out" type="a{oa{sv}}" />
+		</method>
 
-		void Register(object path, array{byte})
+		<!--
+			Register:
 
 			Registers a Handsfree Audio agent with a specific
 			path (freely selectable by the audio subsystem) and
@@ -25,26 +32,50 @@ Methods		array{object,dict} GetCards()
 				1	CVSD
 				2	mSBC
 
-			Possible Errors: [service].Error.InvalidArguments
-					 [service].Error.InUse
+			Possible Errors: #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.InUse
+		-->
+		<method name="Register">
+			<arg name="agent" direction="in" type="o" />
+			<arg name="codecs" direction="in" type="ay" />
+		</method>
 
-		void Unregister(object path)
+		<!--
+			Unregister:
 
 			Unregisters a Handsfree Audio agent registered
 			through the Register method.
 
-			Possible Errors: [service].Error.NotFound
-					 [service].Error.InvalidArguments
-					 [service].Error.NotAllowed
+			Possible Errors: #org.ofono.Error.NotFound
+					 #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.NotAllowed
+		-->
+		<method name="Unregister">
+			<arg name="agent" direction="in" type="o" />
+		</method>
 
-Signals		CardAdded(object path, dict properties)
+		<!--
+			CardAdded:
 
 			Signal that is sent when a new card is added.  It
 			contains the object path of new card and its
 			properties.
+		-->
+		<signal name="CardAdded">
+			<arg name="card" type="o" />
+			<arg name="properties" type="a{sv}" />
+		</signal>
 
-		CardRemoved(object path)
+		<!--
+			CardRemoved:
 
 			Signal that is sent when a card has been removed.
 			The object path is no longer accessible after this
 			signal and only emitted for reference.
+		-->
+		<signal name="CardRemoved">
+			<arg name="card" type="o" />
+		</signal>
+
+	</interface>
+</node>
