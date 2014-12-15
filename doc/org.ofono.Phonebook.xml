@@ -1,11 +1,13 @@
-Phonebook hierarchy
-===============
+<node>
+	<!--
+		org.ofono.Phonebook:
 
-Service		org.ofono
-Interface	org.ofono.Phonebook
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.Phonebook">
 
-Methods		string Import()
+		<!--
+			Import:
 
 			Returns the contents of the SIM and ME phonebook in
 			VCard 3.0 format.  If several entries are determined
@@ -15,4 +17,11 @@ Methods		string Import()
 			The phonebook is returned as a single UTF8 encoded
 			string with zero or more VCard entries.
 
-			Possible Errors: [service].Error.InProgress
+			Possible Errors: #org.ofono.Error.InProgress
+		-->
+		<method name="Import">
+			<arg name="vcards" direction="out" type="s" />
+		</method>
+
+	</interface>
+</node>
