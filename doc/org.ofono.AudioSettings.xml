@@ -1,21 +1,34 @@
-Audio settings hierarchy
-========================
+<node>
+	<!--
+		org.ofono.AudioSettings:
 
-Service		org.ofono
-Interface	org.ofono.AudioSettings
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.AudioSettings">
 
-Methods		dict GetProperties()
+		<!--
+			GetProperties:
 
 			Returns all audio settings properties. See the
 			properties section for available properties.
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-Signals		PropertyChanged(string property, variant value)
+		<!--
+			PropertyChanged:
 
 			This signal indicates a changed value of the given
 			property.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-Properties	boolean Active [readonly] [EXPERIMENTAL]
+		<!--
+			Active:
 
 			Indicates if an audio PCM stream is active or not.
 
@@ -23,9 +36,21 @@ Properties	boolean Active [readonly] [EXPERIMENTAL]
 			where the audio data can be routed to the host
 			application processor will support this.
 
-		string Mode [readonly, optional] [EXPERIMENTAL]
+			EXPERIMENTAL.
+		-->
+		<property name="Active" type="b" access="read" />
+
+		<!--
+			Mode:
 
 			Indicates the audio mode setting.
 
 			This is highly modem specific audio string. Every
 			modem might use different ones.
+
+			Optional, EXPERIMENTAL.
+		-->
+		<property name="Mode" type="s" access="read" />
+
+	</interface>
+</node>
