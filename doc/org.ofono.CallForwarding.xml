@@ -1,17 +1,25 @@
-Call Forwarding hierarchy
-===============
-Service		org.ofono
-Interface	org.ofono.CallForwarding
-Object path	[variable prefix]/{modem0,modem1,...}
+<node>
+	<!--
+		org.ofono.CallForwarding:
 
-Methods		dict GetProperties()
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.CallForwarding">
+
+		<!--
+			GetProperties:
 
 			Contains the properties for this object.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.NotImplemented
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotImplemented
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		void DisableAll(string type)
+		<!--
+			DisableAll:
 
 			Disables all call forwarding rules for type.
 			Type can be one of:
@@ -19,48 +27,74 @@ Methods		dict GetProperties()
 				"conditional" - Disables all conditional rules,
 					e.g. busy, no reply and not reachable.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.NotImplemented
-					 [service].Error.InvalidArguments
-					 [service].Error.InvalidFormat
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotImplemented
+					 #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.InvalidFormat
+					 #org.ofono.Error.Failed
+		-->
+		<method name="DisableAll">
+			<arg name="type" direction="in" type="s" />
+		</method>
 
-		void SetProperty(string property, variant value)
+		<!--
+		SetProperty:
 
 			Sets the given property value to that specified in
 			call parameter.
 
-			Possible Errors: [service].Error.NotAvailable
-					 [service].Error.InProgress
-					 [service].Error.NotImplemented
-					 [service].Error.InvalidArguments
-					 [service].Error.InvalidFormat
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.NotAvailable
+					 #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotImplemented
+					 #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.InvalidFormat
+					 #org.ofono.Error.Failed
+		-->
+		<method name="SetProperty">
+			<arg name="name" direction="in" type="s" />
+			<arg name="value" direction="in" type="v" />
+		</method>
 
-Signals		PropertyChanged(string property, variant value)
+		<!--
+			PropertyChanged:
 
 			Signal is emitted whenever a property has changed.
 			The new value is passed as the signal argument.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-Properties	string VoiceUnconditional [readwrite]
+		<!--
+			VoiceUnconditional:
 
 			Contains the value of the voice unconditional call
 			forwarding property.  If the value is an empty string,
 			then this call forwarding rule is not active.
 			Otherwise the rule is active with the string value
 			as the phone number.
+		-->
+		<property name="VoiceUnconditional" type="s" access="readwrite" />
 
-		string VoiceBusy [readwrite]
+		<!--
+			VoiceBusy:
 
 			Contains the value of the voice "Busy" call forwarding
 			rule.
+		-->
+		<property name="VoiceBusy" type="s" access="readwrite" />
 
-		string VoiceNoReply [readwrite]
+		<!--
+			VoiceNoReply:
 
 			Contains the value of the voice "No Reply" call
 			forwarding rule.
+		-->
+		<property name="VoiceNoReply" type="s" access="readwrite" />
 
-		uint16 VoiceNoReplyTimeout [readwrite]
+		<!--
+			VoiceNoReplyTimeout:
 
 			Contains the value of the voice "No Reply" timeout in
 			seconds. The timeout can be between 1 and 30 seconds.
@@ -68,13 +102,24 @@ Properties	string VoiceUnconditional [readwrite]
 			property's value if GetProperties() has not been
 			previously called or the VoiceNoReply property
 			has not been set.
+		-->
+		<property name="VoiceNoReplyTimeout" type="s" access="readwrite" />
 
-		string VoiceNotReachable [readwrite]
+		<!--
+			VoiceNotReachable:
 
 			Contains the value of the voice "Not Reachable" call
 			forwarding rule.
+		-->
+		<property name="VoiceNotReachable" type="s" access="readwrite" />
 
-		boolean ForwardingFlagOnSim [readonly]
+		<!--
+			ForwardingFlagOnSim:
 
 			Boolean representing the voice unconditional call
 			forwarding rule status.
+		-->
+		<property name="ForwardingFlagOnSim" type="b" access="read" />
+
+	</interface>
+</node>
