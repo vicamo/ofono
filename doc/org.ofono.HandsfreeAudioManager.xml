@@ -1,0 +1,50 @@
+Handsfree Audio Manager hierarchy [experimental]
+=================================
+
+Service		org.ofono
+Interface	org.ofono.HandsfreeAudioManager
+Object path	/
+
+Methods		array{object,dict} GetCards()
+
+			Get an array of card objects and properties
+			that represent the currently attached devices.
+
+			This method call should only be used once when an
+			application starts up. Further device additions
+			and removal shall be monitored via CardAdded and
+			CardRemoved signals.
+
+		void Register(object path, array{byte})
+
+			Registers a Handsfree Audio agent with a specific
+			path (freely selectable by the audio subsystem) and
+			list of supported codecs.  Available codec
+			identifiers:
+
+				1	CVSD
+				2	mSBC
+
+			Possible Errors: [service].Error.InvalidArguments
+					 [service].Error.InUse
+
+		void Unregister(object path)
+
+			Unregisters a Handsfree Audio agent registered
+			through the Register method.
+
+			Possible Errors: [service].Error.NotFound
+					 [service].Error.InvalidArguments
+					 [service].Error.NotAllowed
+
+Signals		CardAdded(object path, dict properties)
+
+			Signal that is sent when a new card is added.  It
+			contains the object path of new card and its
+			properties.
+
+		CardRemoved(object path)
+
+			Signal that is sent when a card has been removed.
+			The object path is no longer accessible after this
+			signal and only emitted for reference.

@@ -60,6 +60,51 @@ builtin_cflags =
 
 noinst_LTLIBRARIES += gdbus/libgdbus-internal.la
 
+gdbus_xml_files = \
+	doc/org.ofono.AssistedSatelliteNavigation.xml \
+	doc/org.ofono.AudioSettings.xml \
+	doc/org.ofono.CallBarring.xml \
+	doc/org.ofono.CallForwarding.xml \
+	doc/org.ofono.CallMeter.xml \
+	doc/org.ofono.CallSettings.xml \
+	doc/org.ofono.CallVolume.xml \
+	doc/org.ofono.cdma.ConnectionManager.xml \
+	doc/org.ofono.cdma.MessageManager.xml \
+	doc/org.ofono.cdma.NetworkRegistration.xml \
+	doc/org.ofono.cdma.VoiceCallManager.xml \
+	doc/org.ofono.CellBroadcast.xml \
+	doc/org.ofono.ConnectionContext.xml \
+	doc/org.ofono.ConnectionManager.xml \
+	doc/org.ofono.dundee.Device.xml \
+	doc/org.ofono.dundee.Manager.xml \
+	doc/org.ofono.Handsfree.xml \
+	doc/org.ofono.HandsfreeAudioAgent.xml \
+	doc/org.ofono.HandsfreeAudioCard.xml \
+	doc/org.ofono.HandsfreeAudioManager.xml \
+	doc/org.ofono.LocationReporting.xml \
+	doc/org.ofono.Manager.xml \
+	doc/org.ofono.Message.xml \
+	doc/org.ofono.MessageManager.xml \
+	doc/org.ofono.MessageWaiting.xml \
+	doc/org.ofono.Modem.xml \
+	doc/org.ofono.NetworkOperator.xml \
+	doc/org.ofono.NetworkRegistration.xml \
+	doc/org.ofono.Phonebook.xml \
+	doc/org.ofono.PositioningRequestAgent.xml \
+	doc/org.ofono.PushNotification.xml \
+	doc/org.ofono.PushNotificationAgent.xml \
+	doc/org.ofono.RadioSettings.xml \
+	doc/org.ofono.SimManager.xml \
+	doc/org.ofono.SimToolkit.xml \
+	doc/org.ofono.SimToolkitAgent.xml \
+	doc/org.ofono.Siri.xml \
+	doc/org.ofono.SmartMessaging.xml \
+	doc/org.ofono.SmartMessagingAgent.xml \
+	doc/org.ofono.SupplementaryServices.xml \
+	doc/org.ofono.TextTelephony.xml \
+	doc/org.ofono.VoiceCall.xml \
+	doc/org.ofono.VoiceCallManager.xml
+
 gdbus_libgdbus_internal_la_SOURCES = gdbus/gdbus.h \
 				gdbus/mainloop.c gdbus/watch.c \
 				gdbus/object.c gdbus/client.c gdbus/polkit.c
@@ -566,24 +611,12 @@ AM_CPPFLAGS = -I$(builddir)/include -I$(builddir)/src -I$(srcdir)/src \
 			-I$(srcdir)/btio
 
 doc_files = doc/overview.txt doc/ofono-paper.txt doc/release-faq.txt \
-		doc/manager-api.txt doc/modem-api.txt doc/network-api.txt \
-			doc/voicecallmanager-api.txt doc/voicecall-api.txt \
-			doc/call-forwarding-api.txt doc/call-settings-api.txt \
-			doc/call-meter-api.txt doc/call-barring-api.txt \
-			doc/supplementaryservices-api.txt \
-			doc/connman-api.txt doc/features.txt \
-			doc/pushnotification-api.txt \
-			doc/smartmessaging-api.txt \
-			doc/call-volume-api.txt doc/cell-broadcast-api.txt \
-			doc/messagemanager-api.txt doc/message-waiting-api.txt \
-			doc/phonebook-api.txt doc/radio-settings-api.txt \
-			doc/sim-api.txt doc/stk-api.txt \
-			doc/audio-settings-api.txt doc/text-telephony-api.txt \
-			doc/calypso-modem.txt doc/message-api.txt \
-			doc/location-reporting-api.txt \
-			doc/certification.txt doc/siri-api.txt \
+			doc/features.txt \
+			doc/calypso-modem.txt \
+			doc/certification.txt \
 			doc/telit-modem.txt
 
+doc_files += $(gdbus_xml_files)
 
 test_scripts = test/backtrace \
 		test/create-internet-context \

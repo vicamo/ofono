@@ -1,0 +1,66 @@
+Network operator hierarchy
+==========================
+
+Service		org.ofono
+Interface	org.ofono.NetworkOperator
+Object path	[variable prefix]/{modem0,modem1,...}/{operator0,operator1,...}
+
+Methods		dict GetProperties()
+
+			Returns all network operator properties. See the
+			properties section for available properties.
+
+		void Register()
+
+			Attempts to register to this network operator.
+
+			The method will return immediately, the result should
+			be observed by tracking the NetworkRegistration Status
+			property.
+
+			Possible Errors: [service].Error.InProgress
+					 [service].Error.NotImplemented
+					 [service].Error.Failed
+					 [service].Error.AccessDenied
+
+Signals		PropertyChanged(string property, variant value)
+
+			This signal indicates a changed value of the given
+			property.
+
+Properties	string Name [readonly]
+
+			Contains the name of the operator, suitable for using
+			as a string handle in a UI widget used for manual
+			network selection. For a proper display name of the
+			current operator, use the Name property of the
+			NetworkRegistration interface instead.
+
+		string Status [readonly]
+
+			Contains the status of the operator.
+
+			The possible values are: "unknown", "available",
+						 "current" and "forbidden"
+
+		string MobileCountryCode [readonly, optional]
+
+			Contains the Mobile Country Code (MCC).
+
+		string MobileNetworkCode [readonly, optional]
+
+			Contains the Mobile Network Code (MNC)
+
+		array{string} Technologies [readonly, optional]
+
+			Contains a list of technologies currently available
+			from this network provider.
+
+			The possible values are: "gsm", "edge", "umts", "hspa",
+							"lte"
+
+		string AdditionalInformation [readonly, optional]
+
+			Contains a short description of the operator.  This is
+			typically stored on the SIM and might be available
+			only for select operators.

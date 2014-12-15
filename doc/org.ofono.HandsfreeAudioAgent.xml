@@ -1,0 +1,17 @@
+Handsfree Audio Agent hierarchy [experimental]
+===============================
+
+Service		<freely defined>
+Interface	org.ofono.HandsfreeAudioAgent
+Object		<freely defined>
+
+Methods		void NewConnection(object card, fd sco, byte codec)
+
+			Notifies the handler that a new SCO connection is
+			available. Returning an error will cause oFono to
+			disconnect the SCO connection.
+
+		void Release()
+
+			Notifies the Agent that it is no longer registered
+			to oFono.

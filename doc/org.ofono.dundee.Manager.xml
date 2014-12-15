@@ -1,0 +1,28 @@
+Manager hierarchy
+=================
+
+Service		org.ofono.dundee
+Interface	org.ofono.dundee.Manager
+Object path	/
+
+Methods		array{object,dict} GetDevices()
+
+			Get an array of device objects and properties
+			that represent the currently attached devices.
+
+			This method call should only be used once when an
+			application starts up. Further device additions
+			and removal shall be monitored via DeviceAdded and
+			DeviceRemoved signals.
+
+Signals		DeviceAdded(object path, dict properties)
+
+			Signal that is sent when a new device is added.  It
+			contains the object path of new device and its
+			properties.
+
+		DeviceRemoved(object path)
+
+			Signal that is sent when a device has been removed.
+			The object path is no longer accessible after this
+			signal and only emitted for reference.
