@@ -1,23 +1,37 @@
-Push Notification hierarchy
-===============
+<node>
+	<!--
+		org.ofono.PushNotification:
 
-Service		org.ofono
-Interface	org.ofono.PushNotification
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.PushNotification">
 
-Methods		void RegisterAgent(object path)
+		<!--
+			RegisterAgent:
 
 			Registers an agent which will be called whenever a
 			new Smart Messaging based SMS arrives.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.InvalidArguments
-					 [service].Error.InvalidFormat
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.InvalidFormat
+					 #org.ofono.Error.Failed
+		-->
+		<method name="RegisterAgent">
+			<arg name="agent" direction="in" type="o" />
+		</method>
 
-		void UnregisterAgent(object path)
+		<!--
+			UnregisterAgent:
 
 			Unregisters an agent.
 
-			Possible Errors: [service].Error.InvalidArguments
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.Failed
+		-->
+		<method name="UnregisterAgent">
+			<arg name="agent" direction="in" type="o" />
+		</method>
+
+	</interface>
+</node>

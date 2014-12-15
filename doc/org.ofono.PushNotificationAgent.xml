@@ -1,11 +1,13 @@
-PushNotificationAgent Hierarchy [experimental]
-===============
+<node>
+	<!--
+		org.ofono.PushNotificationAgent:
 
-Service		unique name
-Interface	org.ofono.PushNotificationAgent
-Object path	freely definable
+		Object path: freely definable
+	-->
+	<interface name="org.ofono.PushNotificationAgent">
 
-Methods		void ReceiveNotification(array{byte} notification, dict info)
+		<!--
+			ReceiveNotification:
 
 			Requests the agent to process a new SMS that has
 			arrived containing a WAP PUSH.  The dictionary
@@ -13,9 +15,22 @@ Methods		void ReceiveNotification(array{byte} notification, dict info)
 			'SentTime' properties.
 
 			Possible Errors: None
+		-->
+		<method name="ReceiveNotification">
+			<arg name="notification" direction="in" type="ay" />
+			<arg name="info" direction="in" type="a{sv}" />
+		</method>
 
-		void Release() [noreply]
+		<!--
+			Release:
 
 			Agent is being released, possibly because of oFono
 			terminating, SMS interface is being torn down or modem
 			off.  No UnregisterAgent call is needed.
+		-->
+		<method name="Release">
+			<annotation name="org.freedesktop.DBus.Method.NoReply" value="true" />
+		</method>
+
+	</interface>
+</node>
