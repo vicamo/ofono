@@ -1,102 +1,8 @@
-SupplementaryServices hierarchy
-==========================
+<node>
+	<!--
+		org.ofono.SupplementaryServices:
 
-Service		org.ofono
-Interface	org.ofono.SupplementaryServices
-Object path	[variable prefix]/{modem0,modem1,...}
-
-Methods		string, variant Initiate(string command)
-
-			If the command is a recognized supplementary service
-			control string, the corresponding SS request is made
-			and the result is returned.
-
-			Otherwise the command is sent to the network
-			initiating a USSD session. When the request is handled
-			by the appropriate node of the network, the
-			method returns the response or an appropriate
-			error. The network may be awaiting further response
-			from the ME after returning from this method and no
-			new command can be initiated until this one is
-			cancelled or ended.
-
-			The output arguments are described in section
-			"Initiate method outptut arguments" below.
-
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.NotImplemented
-					 [service].Error.InvalidArguments
-					 [service].Error.InvalidFormat
-					 [service].Error.NotSupported
-					 [service].Error.NotAllowed
-					 [service].Error.IncorrectPassword
-					 [service].Error.NotRegistered
-					 [service].Error.Timedout
-					 [service].Error.AccessDenied
-					 [service].Error.Failed
-					 [service].Error.NotRecognized
-					 [service].Error.Terminated
-
-		string Respond(string reply)
-
-			Send a response to the network either when
-			it is awaiting further input after Initiate()
-			was called or after a network-initiated request.
-
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.NotActive
-					 [service].Error.NotImplemented
-					 [service].Error.InvalidArguments
-					 [service].Error.InvalidFormat
-					 [service].Error.Failed
-					 [service].Error.Terminated
-
-		void Cancel()
-
-			Cancel an ongoing USSD session, mobile- or
-			network-initiated.
-
-			Possible Errors: [service].Error.NotActive
-					 [service].Error.InProgress
-					 [service].Error.NotImplemented
-					 [service].Error.Failed
-
-		dict GetProperties()
-
-			Returns Supplementary Services related properties. See
-			the properties section for available properties.
-
-Signals		NotificationReceived(string message)
-
-			Signal is emitted on a network-initiated USSD
-			request for which no response is needed.
-
-		RequestReceived(string message)
-
-			Signal is emitted on a network-initiated USSD
-			request for which a response must be sent using
-			the Respond method unless it is cancelled or
-			the request is not supported.
-
-		PropertyChanged(string property, variant value)
-
-			Signal is emitted whenever a property has changed.
-			The new value is passed as the signal argument.
-
-Properties	string State [readonly]
-
-			Reflects the state of current USSD session.  The
-			values have the following meanings:
-
-			"idle"			No active USSD session.
-			"active"		A session is active between the
-						network and the ME, the ME is
-						waiting for a reply from the
-						network.
-			"user-response"		The network is waiting for the
-						user's response, client must
-						call Respond().
-
+		Object path: [variable prefix]/{modem0,modem1,...}
 
 Initiate method output arguments
 ================================
@@ -186,3 +92,139 @@ clir_status can be "disabled", "permanent", "on" or "off".
 
 More information about supplementary services is provided in
 call-barring-api.txt, call-forwarding-api.txt and call-settings-api.txt
+	-->
+	<interface name="org.ofono.SupplementaryServices">
+
+		<!--
+			Initiate:
+
+			If the command is a recognized supplementary service
+			control string, the corresponding SS request is made
+			and the result is returned.
+
+			Otherwise the command is sent to the network
+			initiating a USSD session. When the request is handled
+			by the appropriate node of the network, the
+			method returns the response or an appropriate
+			error. The network may be awaiting further response
+			from the ME after returning from this method and no
+			new command can be initiated until this one is
+			cancelled or ended.
+
+			The output arguments are described in section
+			"Initiate method outptut arguments" below.
+
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotImplemented
+					 #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.InvalidFormat
+					 #org.ofono.Error.NotSupported
+					 #org.ofono.Error.NotAllowed
+					 #org.ofono.Error.IncorrectPassword
+					 #org.ofono.Error.NotRegistered
+					 #org.ofono.Error.Timedout
+					 #org.ofono.Error.AccessDenied
+					 #org.ofono.Error.Failed
+					 #org.ofono.Error.NotRecognized
+					 #org.ofono.Error.Terminated
+		-->
+		<method name="Initiate">
+			<arg name="command" direction="in" type="s" />
+			<arg name="result" direction="out" type="sv" />
+		</method>
+
+		<!--
+			Respond:
+
+			Send a response to the network either when
+			it is awaiting further input after Initiate()
+			was called or after a network-initiated request.
+
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotActive
+					 #org.ofono.Error.NotImplemented
+					 #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.InvalidFormat
+					 #org.ofono.Error.Failed
+					 #org.ofono.Error.Terminated
+		-->
+		<method name="Respond">
+			<arg name="reply" direction="in" type="s" />
+			<arg name="result" direction="out" type="s" />
+		</method>
+
+		<!--
+			Cancel:
+
+			Cancel an ongoing USSD session, mobile- or
+			network-initiated.
+
+			Possible Errors: #org.ofono.Error.NotActive
+					 #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotImplemented
+					 #org.ofono.Error.Failed
+		-->
+		<method name="Cancel" />
+
+		<!--
+			GetProperties:
+
+			Returns Supplementary Services related properties. See
+			the properties section for available properties.
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
+
+		<!--
+			NotificationReceived:
+
+			Signal is emitted on a network-initiated USSD
+			request for which no response is needed.
+		-->
+		<signal name="NotificationReceived">
+			<arg name="message" type="s" />
+		</signal>
+
+		<!--
+			RequestReceived:
+
+			Signal is emitted on a network-initiated USSD
+			request for which a response must be sent using
+			the Respond method unless it is cancelled or
+			the request is not supported.
+		-->
+		<signal name="RequestReceived">
+			<arg name="message" type="s" />
+		</signal>
+
+		<!--
+			PropertyChanged:
+
+			Signal is emitted whenever a property has changed.
+			The new value is passed as the signal argument.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
+
+		<!--
+			State:
+
+			Reflects the state of current USSD session.  The
+			values have the following meanings:
+
+			"idle"			No active USSD session.
+			"active"		A session is active between the
+						network and the ME, the ME is
+						waiting for a reply from the
+						network.
+			"user-response"		The network is waiting for the
+						user's response, client must
+						call Respond().
+		-->
+		<property name="State" type="s" access="read" />
+
+	</interface>
+</node>
