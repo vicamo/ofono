@@ -1,32 +1,52 @@
-Call Settings hierarchy
-===============
-Service		org.ofono
-Interface	org.ofono.CallSettings
-Object path	[variable prefix]/{modem0,modem1,...}
+<node>
+	<!--
+		org.ofono.CallSettings:
 
-Methods		dict GetProperties()
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.CallSettings">
+
+		<!--
+			GetProperties:
 
 			Contains the properties for this object.
 
-			Possible Errors: [service].Error.InProgress
+			Possible Errors: #org.ofono.Error.InProgress
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		void SetProperty(string property, variant value)
+		<!--
+			SetProperty:
 
 			Sets the given property value to that specified in
 			call parameter.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.NotImplemented
-					 [service].Error.InvalidArguments
-					 [service].Error.InvalidFormat
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotImplemented
+					 #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.InvalidFormat
+					 #org.ofono.Error.Failed
+		-->
+		<method name="SetProperty">
+			<arg name="name" direction="in" type="s" />
+			<arg name="value" direction="in" type="v" />
+		</method>
 
-Signals		PropertyChanged(string property, variant value)
+		<!--
+			PropertyChanged:
 
 			Signal is emitted whenever a property has changed.
 			The new value is passed as the signal argument.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-Properties	string CallingLinePresentation [readonly]
+		<!--
+			CallingLinePresentation:
 
 			Contains the value of the calling line identification
 			presentation property.  The value indicates
@@ -37,8 +57,11 @@ Properties	string CallingLinePresentation [readonly]
 				"disabled",
 				"enabled",
 				"unknown"
+		-->
+		<property name="CallingLinePresentation" type="s" access="read" />
 
-		string CalledLinePresentation [readonly]
+		<!--
+			CalledLinePresentation:
 
 			Contains the value of the called line identification
 			presentation property.  The value indicates the state
@@ -53,8 +76,11 @@ Properties	string CallingLinePresentation [readonly]
 				"disabled",
 				"enabled",
 				"unknown"
+		-->
+		<property name="CalledLinePresentation" type="s" access="read" />
 
-		string CallingNamePresentation [readonly]
+		<!--
+			CallingNamePresentation:
 
 			Contains the value of the calling name identification
 			presentation property.  The value indicates
@@ -65,8 +91,11 @@ Properties	string CallingLinePresentation [readonly]
 				"disabled",
 				"enabled",
 				"unknown"
+		-->
+		<property name="CallingNamePresentation" type="s" access="read" />
 
-		string ConnectedLinePresentation [readonly]
+		<!--
+			ConnectedLinePresentation:
 
 			Contains the value of the connected line identification
 			presentation property.  The value indicates the state
@@ -77,8 +106,11 @@ Properties	string CallingLinePresentation [readonly]
 				"disabled",
 				"enabled",
 				"unknown"
+		-->
+		<property name="ConnectedLinePresentation" type="s" access="read" />
 
-		string ConnectedLineRestriction [readonly]
+		<!--
+			ConnectedLineRestriction:
 
 			Contains the value of the connected line identification
 			restriction property. The value indicates the state of
@@ -91,8 +123,11 @@ Properties	string CallingLinePresentation [readonly]
 				"unknown"
 
 			Not all modems can report this information.
+		-->
+		<property name="ConnectedLineRestriction" type="s" access="read" />
 
-		string CallingLineRestriction [readonly]
+		<!--
+			CallingLineRestriction:
 
 			Contains the value of the calling line identification
 			restriction property.  The value indicates the state of
@@ -109,8 +144,11 @@ Properties	string CallingLinePresentation [readonly]
 				"unknown",
 				"on",
 				"off"
+		-->
+		<property name="CallingLineRestriction" type="s" access="read" />
 
-		string HideCallerId [readwrite]
+		<!--
+			HideCallerId:
 
 			Sets whether the ID of the caller will should be
 			provided or withheld for outgoing calls.  This setting
@@ -124,8 +162,11 @@ Properties	string CallingLinePresentation [readonly]
 
 			This setting can also be changed on a per-call basis,
 			see the VoiceCallManager Dial method documentation.
+		-->
+		<property name="HideCallerId" type="s" access="readwrite" />
 
-		string VoiceCallWaiting [readwrite]
+		<!--
+			VoiceCallWaiting:
 
 			Contains the call waiting status for Voice calls.
 			If enabled, the call waiting status will be
@@ -133,3 +174,8 @@ Properties	string CallingLinePresentation [readonly]
 			Possible values are:
 				"disabled",
 				"enabled",
+		-->
+		<property name="VoiceCallWaiting" type="s" access="readwrite" />
+
+	</interface>
+</node>
