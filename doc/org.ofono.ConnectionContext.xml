@@ -1,42 +1,68 @@
-Connection Context hierarchy
-=================
+<node>
+	<!--
+		org.ofono.ConnectionContext:
 
-Service		org.ofono
-Interface	org.ofono.ConnectionContext
-Object path	[variable]
+		Object path: [variable]
+	-->
+	<interface name="org.ofono.ConnectionContext">
 
-Methods		dict GetProperties()
+		<!--
+			GetProperties:
+
 			Returns all properties for the context object.
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		void SetProperty(string property, variant value)
+		<!--
+			SetProperty:
 
 			Sets the property to a desired value
 
-			Possible Errors: [service].Error.InvalidArguments
-					 [service].Error.InvalidFormat
-					 [service].Error.Failed
-					 [service].Error.InProgress
-					 [service].Error.NotAttached
-					 [service].Error.AttachInProgress
-					 [service].Error.NotImplemented
+			Possible Errors: #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.InvalidFormat
+					 #org.ofono.Error.Failed
+					 #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotAttached
+					 #org.ofono.Error.AttachInProgress
+					 #org.ofono.Error.NotImplemented
+		-->
+		<method name="SetProperty">
+			<arg name="name" direction="in" type="s" />
+			<arg name="value" direction="in" type="v" />
+		</method>
 
-Signals		PropertyChanged(string property, variant value)
+		<!--
+			PropertyChanged:
 
 			This signal indicates a changed value of the given
 			property.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-Properties	boolean Active [readwrite]
+		<!--
+			Active:
 
 			Holds whether the context is activated.  This value
 			can be set to activate / deactivate the context.
+		-->
+		<property name="Active" type="b" access="readwrite" />
 
-		string AccessPointName [readwrite]
+		<!--
+			AccessPointName:
 
 			Holds the name of the access point.  This is
 			abbreviated as APN.  This value cannot be changed when
 			the context is active.
+		-->
+		<property name="AccessPointName" type="s" access="readwrite" />
 
-		string Type [readwrite]
+		<!--
+			Type:
 
 			Contains the intended usage type for this context.
 			The currently supported values are:
@@ -44,35 +70,54 @@ Properties	boolean Active [readwrite]
 				"mms" - Used by MMS related services
 				"wap" - Used by WAP related services
 				"ims" - Used by IMS related services
+		-->
+		<property name="Type" type="s" access="readwrite" />
 
-		string AuthenticationMethod [readwrite]
+		<!--
+			AuthenticationMethod:
+
 			Holds the PPP authentication method to use.  Valid
 			values are "pap" and "chap".  Defaults to "chap".
+		-->
+		<property name="AuthenticationMethod" type="s" access="readwrite" />
 
-		string Username [readwrite]
+		<!--
+			Username:
 
 			Holds the username to be used for authentication
 			purposes.  This value cannot be changed when the
 			context is active.
+		-->
+		<property name="Username" type="s" access="readwrite" />
 
-		string Password [readwrite]
+		<!--
+			Password:
 
 			Holds the password to be used for authentication
 			purposes.  This value cannot be changed when the
 			context is active.
+		-->
+		<property name="Password" type="s" access="readwrite" />
 
-		string Protocol [readwrite]
+		<!--
+			Protocol:
 
 			Holds the protocol for this context.  Valid values
 			are: "ip", "ipv6" and "dual".
+		-->
+		<property name="Protocol" type="s" access="readwrite" />
 
-		string Name [readwrite]
+		<!--
+			Name:
 
 			The name is a free form string that describes this
 			context.  The name should not be empty and limited
 			to a short string for display purposes.
+		-->
+		<property name="Name" type="s" access="readwrite" />
 
-		dict Settings [readonly, optional]
+		<!--
+			Settings:
 
 			Holds all the IP network settings
 
@@ -124,7 +169,12 @@ Properties	boolean Active [readwrite]
 				via this proxy.  All other values are left
 				out in this case.
 
-		dict IPv6.Settings [readonly, optional]
+			Optional.
+		-->
+		<property name="Settings" type="a{sv}" access="read" />
+
+		<!--
+			IPv6.Settings:
 
 			Holds all the IPv6 network settings
 
@@ -150,10 +200,27 @@ Properties	boolean Active [readwrite]
 
 				Holds the gateway IP for this connection.
 
-		string MessageProxy [readwrite, MMS only]
+			Optional.
+		-->
+		<property name="IPv6.Settings" type="a{sv}" access="read" />
+
+		<!--
+			MessageProxy:
 
 			Holds the MMS Proxy setting.
 
-		string MessageCenter [readwrite, MMS only]
+			Optional, MMS only.
+		-->
+		<property name="MessageProxy" type="s" access="readwrite" />
+
+		<!--
+			MessageCenter:
 
 			Holds the MMSC setting.
+
+			Optional, MMS only.
+		-->
+		<property name="MessageCenter" type="s" access="readwrite" />
+
+	</interface>
+</node>
