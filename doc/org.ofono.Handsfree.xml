@@ -1,28 +1,41 @@
-Handsfree hierarchy
-===================
+<node>
+	<!--
+		org.ofono.Handsfree:
 
-Service		org.ofono
-Interface	org.ofono.Handsfree
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.Handsfree">
 
-Methods		dict GetProperties()
+		<!--
+			GetProperties:
 
 			Returns properties for the Handsfree Interface. See the
 			properties section for available properties.
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		void SetProperty(string property, variant value)
+		<!--
+			SetProperty:
 
 			Changes the value of the specified property. Only
 			properties that are listed as readwrite are
 			changeable. On success a PropertyChanged signal
 			will be emitted.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.InvalidArguments
-					 [service].Error.NotImplemented
-					 [service].Error.NotSupported
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.NotImplemented
+					 #org.ofono.Error.NotSupported
+		-->
+		<method name="SetProperty">
+			<arg name="name" direction="in" type="s" />
+			<arg name="value" direction="in" type="v" />
+		</method>
 
-		string RequestPhoneNumber()
+		<!--
+			RequestPhoneNumber:
 
 			Request a phone number from the AG, corresponding to the
 			last voice tag recorded in the HF. The AG may accept or
@@ -31,16 +44,27 @@ Methods		dict GetProperties()
 			This functionality is generally implemented by using
 			the +BINP=1 AT command.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.InvalidArguments
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.Failed
+		-->
+		<method name="RequestPhoneNumber">
+			<arg name="number" direction="out" type="s" />
+		</method>
 
-Signals		PropertyChanged(string property, variant value)
+		<!--
+			PropertyChanged:
 
 			Signal is emitted whenever a property has changed.
 			The new value is passed as the signal argument.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-Properties	array{string} Features [readonly]
+		<!--
+			Features:
 
 			List of features supported by the AG. The currently
 			supported values are:
@@ -54,19 +78,28 @@ Properties	array{string} Features [readonly]
 				"create-multiparty"
 				"transfer"
 				"hf-indicators"
+		-->
+		<property name="Features" type="as" access="read" />
 
-		boolean InbandRinging [readonly]
+		<!--
+			InbandRinging:
 
 			Boolean representing whether inband ringing is enabled.
+		-->
+		<property name="InbandRinging" type="b" access="read" />
 
-		boolean VoiceRecognition [readwrite]
+		<!--
+			VoiceRecognition:
 
 			Boolean representing whether voice recognition is
 			currently active in the AG. This property may be written
 			to activate or deactivate the function from the HF, or
 			the AG could autonomously initiate it.
+		-->
+		<property name="VoiceRecognition" type="b" access="readwrite" />
 
-		boolean EchoCancelingNoiseReduction [readwrite, optional]
+		<!--
+			EchoCancelingNoiseReduction:
 
 			Non-persistent Boolean property representing whether
 			echo canceling and noise reduction is enabled in the
@@ -75,18 +108,36 @@ Properties	array{string} Features [readonly]
 			HF unit from enabling this feature on the AG once
 			it has been disabled.
 
-		byte BatteryChargeLevel [readonly]
+			Optional.
+		-->
+		<property name="EchoCancelingNoiseReduction" type="b" access="readwrite" />
+
+		<!--
+			BatteryChargeLevel:
 
 			The current charge level of the battery.  The value
 			can be between 0 and 5 respectively.
+		-->
+		<property name="BatteryChargeLevel" type="y" access="read" />
 
-		array{string} SubscriberNumbers [readonly]
+		<!--
+			SubscriberNumbers:
 
 			List of subscriber numbers provided by the AG.
+		-->
+		<property name="SubscriberNumbers" type="as" access="read" />
 
-		boolean DistractedDrivingReduction [readwrite, optional]
+		<!--
+			DistractedDrivingReduction:
 
 			Non-persistent property representing whether
 			distracted driving reduction mode should be enabled in
 			the AG.  Support for this feature is optional on the
 			AG.
+
+			Optional.
+		-->
+		<property name="DistractedDrivingReduction" type="b" access="readwrite" />
+
+	</interface>
+</node>
