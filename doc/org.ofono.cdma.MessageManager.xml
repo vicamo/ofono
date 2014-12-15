@@ -1,18 +1,25 @@
-CDMA Message Manager hierarchy [experimental]
-==============================
+<node>
+	<!--
+		org.ofono.cdma.MessageManager:
 
-Service		org.ofono
-Interface	org.ofono.cdma.MessageManager
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.cdma.MessageManager">
 
-Methods		dict GetProperties()
+		<!--
+			GetProperties:
 
 			Returns properties for the manager object. See
 			the properties section for available properties.
 
-			Possible Errors: [service].Error.InvalidArguments
+			Possible Errors: #org.ofono.Error.InvalidArguments
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		array{object,dict} GetMessages()
+		<!--
+			GetMessages:
 
 			Get an array of message object paths and properties
 			that represents the currently pending messages.
@@ -21,18 +28,29 @@ Methods		dict GetProperties()
 			application starts up.  Further message additions
 			and removal shall be monitored via MessageAdded and
 			MessageRemoved signals.
+		-->
+		<method name="GetMessages">
+			<arg name="messages" direction="out" type="a{oa{sv}}" />
+		</method>
 
-		void SetProperty(string name, variant value)
+		<!--
+			SetProperty:
 
 			Changes the value of the specified property. Only
 			properties that are listed as readwrite are
 			changeable. On success a PropertyChanged signal
 			will be emitted.
 
-			Possible Errors: [service].Error.InvalidArguments
-					 [service].Error.DoesNotExist
+			Possible Errors: #org.ofono.Error.InvalidArguments
+					 #org.ofono.Error.DoesNotExist
+		-->
+		<method name="SetProperty">
+			<arg name="name" direction="in" type="s" />
+			<arg name="value" direction="in" type="v" />
+		</method>
 
-		object SendMessage(dict message_info)
+		<!--
+			SendMessage:
 
 			The dictionary can contain the following keys:
 
@@ -59,54 +77,103 @@ Methods		dict GetProperties()
 			If the message could be queued successfully, this
 			method returns an object path to the created Message
 			object.
+		-->
+		<method name="SendMessage">
+			<arg name="info" direction="in" type="a{sv}" />
+			<arg name="message" direction="out" type="o" />
+		</method>
 
-Signals		PropertyChanged(string name, variant value)
+		<!--
+			PropertyChanged:
 
 			This signal indicates a changed value of the given
 			property.
+		-->
+		<signal name="PropertyChanged">
+			<arg name="name" type="s" />
+			<arg name="value" type="v" />
+		</signal>
 
-		ImmediateMessage(string message, dict info)
+		<!--
+			ImmediateMessage:
 
 			New immediate SMS received. Info has Sender,
 			LocalSentTime, SentTime, Priority, Privacy and
 			CallbackNumber information.  Sender address is given
 			in string format.  LocalSentTime and SentTime are
 			given in string form using ISO8601 format.
+		-->
+		<signal name="ImmediateMessage">
+			<arg name="message" type="s" />
+			<arg name="info" type="a{sv}" />
+		</signal>
 
-		IncomingMessage(string message, dict info)
+		<!--
+			IncomingMessage:
 
 			New incoming text SMS received. Info has Sender,
 			LocalSentTime, SentTime, Priority, Privacy, and
 			CallbackNumber.
+		-->
+		<signal name="IncomingMessage">
+			<arg name="message" type="s" />
+			<arg name="info" type="a{sv}" />
+		</signal>
 
-		MessageAdded(object path, dict properties)
+		<!--
+			MessageAdded:
 
 			This signal is emitted whenever a new Message object
 			has been created.
+		-->
+		<signal name="MessageAdded">
+			<arg name="message" type="o" />
+			<arg name="properties" type="a{sv}" />
+		</signal>
 
-		MessageRemoved(object path)
+		<!--
+			MessageRemoved:
 
 			This signal is emitted whenever a Message object
 			has been removed, e.g. when it reaches a final state.
+		-->
+		<signal name="MessageRemoved">
+			<arg name="message" type="o" />
+		</signal>
 
-Properties	boolean UseDeliveryAcknowledgement
+		<!--
+			UseDeliveryAcknowledgement:
 
 			Request to be notified when the SMSC has delivered
 			the message to the receiving user.  In effect this
 			is the same as the GSM Status Report.
+		-->
+		<property name="UseDeliveryAcknowledgement" type="b" access="readwrite" />
 
-		boolean UseUserAcknowledgement
+		<!--
+			UseUserAcknowledgement:
 
 			Request to be notified when the receiving user has
 			acknowledged the message.
+		-->
+		<property name="UseUserAcknowledgement" type="b" access="readwrite" />
 
-		boolean UseReadAcknowledgement
+		<!--
+			UseReadAcknowledgement:
 
 			Request to be notified when the receiving User has
 			read the message.
+		-->
+		<property name="UseReadAcknowledgement" type="b" access="readwrite" />
 
-		string CallbackNumber
+		<!--
+			CallbackNumber:
 
 			The call back number for the user.  If the number is
 			empty, then the optional field is not included
 			in the encoded PDU.
+		-->
+		<property name="CallbackNumber" type="s" access="readwrite" />
+
+	</interface>
+</node>
