@@ -1,11 +1,13 @@
-Manager hierarchy
-=================
+<node>
+	<!--
+		org.ofono.dundee.Manager:
 
-Service		org.ofono.dundee
-Interface	org.ofono.dundee.Manager
-Object path	/
+		Object path: /
+	-->
+	<interface name="org.ofono.dundee.Manager">
 
-Methods		array{object,dict} GetDevices()
+		<!--
+			GetDevices:
 
 			Get an array of device objects and properties
 			that represent the currently attached devices.
@@ -14,15 +16,33 @@ Methods		array{object,dict} GetDevices()
 			application starts up. Further device additions
 			and removal shall be monitored via DeviceAdded and
 			DeviceRemoved signals.
+		-->
+		<method name="GetDevices">
+			<arg name="devices" direction="out" type="a{oa{sv}}" />
+		</method>
 
-Signals		DeviceAdded(object path, dict properties)
+		<!--
+			DeviceAdded:
 
 			Signal that is sent when a new device is added.  It
 			contains the object path of new device and its
 			properties.
+		-->
+		<signal name="DeviceAdded">
+			<arg name="device" type="o" />
+			<arg name="properties" type="a{sv}" />
+		</signal>
 
-		DeviceRemoved(object path)
+		<!--
+			DeviceRemoved:
 
 			Signal that is sent when a device has been removed.
 			The object path is no longer accessible after this
 			signal and only emitted for reference.
+		-->
+		<signal name="DeviceRemoved">
+			<arg name="device" type="o" />
+		</signal>
+
+	</interface>
+</node>
