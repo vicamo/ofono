@@ -1,39 +1,62 @@
-Location Reporting Hierarchy [experimental]
-=================
+<node>
+	<!--
+		org.ofono.LocationReporting:
 
-Service		org.ofono
-Interface	org.ofono.LocationReporting
-Object path	[variable prefix]/{modem0,modem1,...}
+		Object path: [variable prefix]/{modem0,modem1,...}
+	-->
+	<interface name="org.ofono.LocationReporting">
 
-Methods		dict GetProperties()
+		<!--
+			GetProperties:
 
 			Returns all LocationReporting properties. See the
 			properties section for available properties.
+		-->
+		<method name="GetProperties">
+			<arg name="properties" direction="out" type="a{sv}" />
+		</method>
 
-		filedescriptor Request()
+		<!--
+			Request:
 
 			Asks to turn ON the NMEA stream and supplies the
 			gps device file descriptor. The external cliend should
 			use the file descriptor to receive the NMEA data.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.InUse
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.InUse
+					 #org.ofono.Error.Failed
+		-->
+		<method name="Request">
+			<arg name="stream" direction="out" type="h" />
+		</method>
 
-		void Release()
+		<!--
+			Release:
 
 			Releases the gps device file descriptor and turns
 			OFF the NMEA stream.
 
-			Possible Errors: [service].Error.InProgress
-					 [service].Error.NotAvailable
-					 [service].Error.Failed
+			Possible Errors: #org.ofono.Error.InProgress
+					 #org.ofono.Error.NotAvailable
+					 #org.ofono.Error.Failed
+		-->
+		<method name="Release" />
 
-Properties	boolean Enabled [readonly]
+		<!--
+			Enabled:
 
 			Boolean representing the state of the NMEA stream.
+		-->
+		<property name="Enabled" type="b" access="read" />
 
-		string Type [readonly]
+		<!--
+			Type:
 
 			Holds the type of the device. Currently only NMEA is
 			supported.
+		-->
+		<property name="Type" type="s" access="read" />
+
+	</interface>
+</node>
