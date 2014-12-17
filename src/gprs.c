@@ -532,7 +532,7 @@ static void context_settings_append_ipv6_dict(struct context_settings *settings,
 						DBusMessageIter *dict)
 {
 	DBusMessageIter entry;
-	const char *key = "IPv6.Settings";
+	const char *key = "IPv6Settings";
 
 	dbus_message_iter_open_container(dict, DBUS_TYPE_DICT_ENTRY,
 						NULL, &entry);
@@ -581,7 +581,7 @@ static void pri_context_signal_settings(struct pri_context *ctx,
 				context_settings_append_ipv4);
 
 	if (ipv6)
-		signal_settings(ctx, "IPv6.Settings",
+		signal_settings(ctx, "IPv6Settings",
 				context_settings_append_ipv6);
 }
 

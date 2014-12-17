@@ -174,7 +174,7 @@
 		<property name="Settings" type="a{sv}" access="read" />
 
 		<!--
-			IPv6.Settings:
+			IPv6Settings:
 
 			Holds all the IPv6 network settings
 
@@ -202,7 +202,7 @@
 
 			Optional.
 		-->
-		<property name="IPv6.Settings" type="a{sv}" access="read" />
+		<property name="IPv6Settings" type="a{sv}" access="read" />
 
 		<!--
 			MessageProxy:

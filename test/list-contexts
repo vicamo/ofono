@@ -24,7 +24,7 @@ for path, properties in modems:
 		print("    [ %s ]" % (path))
 
 		for key in properties.keys():
-			if key in ["Settings"] or key in ["IPv6.Settings"]:
+			if key in ["Settings"] or key in ["IPv6Settings"]:
 				val = "{"
 				for i in properties[key].keys():
 					val += " " + i + "="
