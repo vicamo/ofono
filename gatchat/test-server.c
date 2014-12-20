@@ -34,10 +34,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <signal.h>
-#include <sys/signalfd.h>
 #include <errno.h>
 
 #include <glib.h>
+#include <glib-unix.h>
+
 #include <utmp.h>
 #include <pty.h>
 
@@ -1055,63 +1056,9 @@ static void test_server(int type)
 
 static gboolean signal_cb(GIOChannel *channel, GIOCondition cond, gpointer data)
 {
-	int signal_fd = GPOINTER_TO_INT(data);
-	struct signalfd_siginfo si;
-	ssize_t res;
+	server_cleanup();
 
-	if (cond & (G_IO_NVAL | G_IO_ERR))
-		return FALSE;
-
-	res = read(signal_fd, &si, sizeof(si));
-	if (res != sizeof(si))
-		return FALSE;
-
-	switch (si.ssi_signo) {
-	case SIGINT:
-		server_cleanup();
-		break;
-	case SIGTERM:
-		server_cleanup();
-		break;
-	default:
-		break;
-	}
-
-	return TRUE;
-}
-
-static int create_signal_io(void)
-{
-	sigset_t mask;
-	GIOChannel *signal_io;
-	int signal_fd, signal_source;
-
-	sigemptyset(&mask);
-	sigaddset(&mask, SIGTERM);
-	sigaddset(&mask, SIGINT);
-
-	if (sigprocmask(SIG_BLOCK, &mask, NULL) < 0) {
-		g_error("Can't set signal mask");
-		return 1;
-	}
-
-	signal_fd = signalfd(-1, &mask, 0);
-	if (signal_fd < 0) {
-		g_error("Can't create signal filedescriptor");
-		return 1;
-	}
-
-	signal_io = g_io_channel_unix_new(signal_fd);
-
-	g_io_channel_set_close_on_unref(signal_io, TRUE);
-
-	signal_source = g_io_add_watch(signal_io,
-			G_IO_IN | G_IO_HUP | G_IO_ERR | G_IO_NVAL,
-			signal_cb, GINT_TO_POINTER(signal_fd));
-
-	g_io_channel_unref(signal_io);
-
-	return signal_source;
+	return G_SOURCE_CONTINUE;
 }
 
 static void usage(void)
@@ -1127,7 +1074,7 @@ static void usage(void)
 
 int main(int argc, char **argv)
 {
-	int opt, signal_source;
+	int opt, id_sigint, id_sigterm;
 	int type = 0;
 
 	while ((opt = getopt(argc, argv, "ht:")) != EOF) {
@@ -1146,7 +1093,8 @@ int main(int argc, char **argv)
 
 	test_server(type);
 
-	signal_source = create_signal_io();
+	id_sigint = g_unix_signal_add(SIGINT, signal_cb, NULL);
+	id_sigterm = g_unix_signal_add(SIGTERM, signal_cb, NULL);
 
 	mainloop = g_main_loop_new(NULL, FALSE);
 
@@ -1154,7 +1102,8 @@ int main(int argc, char **argv)
 
 	g_main_loop_unref(mainloop);
 
-	g_source_remove(signal_source);
+	g_source_remove(id_sigint);
+	g_source_remove(id_sigterm);
 
 	return 0;
 }

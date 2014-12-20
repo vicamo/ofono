@@ -29,7 +29,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <signal.h>
-#include <sys/signalfd.h>
+
+#include <glib.h>
+#include <glib-unix.h>
 
 #include <gdbus.h>
 
@@ -52,75 +54,19 @@ static gboolean quit_eventloop(gpointer user_data)
 
 static unsigned int __terminated = 0;
 
-static gboolean signal_handler(GIOChannel *channel, GIOCondition cond,
-							gpointer user_data)
+static gboolean signal_handler(gpointer user_data)
 {
-	struct signalfd_siginfo si;
-	ssize_t result;
-	int fd;
+	if (__terminated == 0) {
+		ofono_info("Terminating");
+		g_timeout_add_seconds(SHUTDOWN_GRACE_SECONDS,
+					quit_eventloop, NULL);
 
-	if (cond & (G_IO_NVAL | G_IO_ERR | G_IO_HUP))
-		return FALSE;
-
-	fd = g_io_channel_unix_get_fd(channel);
-
-	result = read(fd, &si, sizeof(si));
-	if (result != sizeof(si))
-		return FALSE;
-
-	switch (si.ssi_signo) {
-	case SIGINT:
-	case SIGTERM:
-		if (__terminated == 0) {
-			ofono_info("Terminating");
-			g_timeout_add_seconds(SHUTDOWN_GRACE_SECONDS,
-						quit_eventloop, NULL);
-
-			__dundee_device_shutdown();
-		}
-
-		__terminated = 1;
-		break;
+		__dundee_device_shutdown();
 	}
 
-	return TRUE;
-}
+	__terminated = 1;
 
-static guint setup_signalfd(void)
-{
-	GIOChannel *channel;
-	guint source;
-	sigset_t mask;
-	int fd;
-
-	sigemptyset(&mask);
-	sigaddset(&mask, SIGINT);
-	sigaddset(&mask, SIGTERM);
-
-	if (sigprocmask(SIG_BLOCK, &mask, NULL) < 0) {
-		perror("Failed to set signal mask");
-		return 0;
-	}
-
-	fd = signalfd(-1, &mask, 0);
-	if (fd < 0) {
-		perror("Failed to create signal descriptor");
-		return 0;
-	}
-
-	channel = g_io_channel_unix_new(fd);
-
-	g_io_channel_set_close_on_unref(channel, TRUE);
-	g_io_channel_set_encoding(channel, NULL, NULL);
-	g_io_channel_set_buffered(channel, FALSE);
-
-	source = g_io_add_watch(channel,
-				G_IO_IN | G_IO_HUP | G_IO_ERR | G_IO_NVAL,
-				signal_handler, NULL);
-
-	g_io_channel_unref(channel);
-
-	return source;
+	return G_SOURCE_CONTINUE;
 }
 
 static void system_bus_disconnected(DBusConnection *conn, void *user_data)
@@ -163,7 +109,8 @@ int main(int argc, char **argv)
 	GError *err = NULL;
 	DBusConnection *conn;
 	DBusError error;
-	guint signal;
+	guint id_sigint;
+	guint id_sigterm;
 
 	context = g_option_context_new(NULL);
 	g_option_context_add_main_entries(context, options, NULL);
@@ -195,7 +142,8 @@ int main(int argc, char **argv)
 
 	event_loop = g_main_loop_new(NULL, FALSE);
 
-	signal = setup_signalfd();
+	id_sigint = g_unix_signal_add(SIGINT, signal_handler, NULL);
+	id_sigterm = g_unix_signal_add(SIGTERM, signal_handler, NULL);
 
 	__ofono_log_init(argv[0], option_debug, option_detach);
 
@@ -233,7 +181,8 @@ int main(int argc, char **argv)
 	dbus_connection_unref(conn);
 
 cleanup:
-	g_source_remove(signal);
+	g_source_remove(id_sigint);
+	g_source_remove(id_sigterm);
 
 	g_main_loop_unref(event_loop);
 

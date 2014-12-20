@@ -31,11 +31,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
-#include <sys/signalfd.h>
 #include <unistd.h>
 
 #include <dbus/dbus.h>
 #include <glib.h>
+#include <glib-unix.h>
 
 #ifndef DBUS_TYPE_UNIX_FD
 #define DBUS_TYPE_UNIX_FD -1
@@ -164,60 +164,20 @@ static int setup_data_channel(DBusConnection *conn, const char *path)
 	return fd_source;
 }
 
-static gboolean signal_cb(GIOChannel *channel, GIOCondition cond, gpointer data)
+static gboolean signal_cb(gpointer data)
 {
-	int signal_fd = GPOINTER_TO_INT(data);
-	struct signalfd_siginfo si;
-	ssize_t len;
-
-	len = read(signal_fd, &si, sizeof(si));
-	if (len < 0)
-		return TRUE;
-
 	g_main_loop_quit(event_loop);
 
-	return TRUE;
-}
-
-static int setup_signals(void)
-{
-	sigset_t mask;
-	int signal_fd, signal_source;
-	GIOChannel *signal_io;
-
-	sigemptyset(&mask);
-	sigaddset(&mask, SIGTERM);
-	sigaddset(&mask, SIGINT);
-
-	if (sigprocmask(SIG_BLOCK, &mask, NULL) < 0) {
-		fprintf(stderr, "Can't set signal mask - %m");
-
-		return -1;
-	}
-
-	signal_fd = signalfd(-1, &mask, 0);
-	if (signal_fd < 0) {
-		fprintf(stderr, "Can't create signal filedescriptor - %m");
-
-		return -1;
-	}
-
-	signal_io = g_io_channel_unix_new(signal_fd);
-	g_io_channel_set_close_on_unref(signal_io, TRUE);
-	signal_source = g_io_add_watch(signal_io,
-			G_IO_IN | G_IO_HUP | G_IO_ERR | G_IO_NVAL,
-			signal_cb, GINT_TO_POINTER(signal_fd));
-	g_io_channel_unref(signal_io);
-
-	return signal_source;
+	return G_SOURCE_CONTINUE;
 }
 
 int main(int argc, char *argv[])
 {
 	DBusConnection *conn;
 	char *modem_path;
-	int signal_source;
-	int data_source;
+	int id_sigint = -1;
+	int id_sigterm = -1;
+	int data_source = -1;
 	int ret;
 
 	if (DBUS_TYPE_UNIX_FD < 0) {
@@ -241,15 +201,16 @@ int main(int argc, char *argv[])
 		goto out;
 	}
 
-	signal_source = setup_signals();
-	if (signal_source < 0)
+	id_sigint = g_unix_signal_add(SIGINT, signal_handler, NULL);
+	if (id_sigint < 0)
+		goto out;
+
+	id_sigterm = g_unix_signal_add(SIGTERM, signal_handler, NULL);
+	if (id_sigint < 0)
 		goto out;
 
 	data_source = setup_data_channel(conn, modem_path);
-	if (data_source < 0) {
-		g_source_remove(signal_source);
 		goto out;
-	}
 
 	event_loop = g_main_loop_new(NULL, FALSE);
 
@@ -257,11 +218,16 @@ int main(int argc, char *argv[])
 
 	ret = 0;
 
-	g_source_remove(signal_source);
-	g_source_remove(data_source);
+out:
+	if (id_sigint >= 0)
+		g_source_remove(id_sigint);
+	if (id_sigterm >= 0)
+		g_source_remove(id_sigterm);
+	if (data_source >= 0)
+		g_source_remove(data_source);
+
 	g_main_loop_unref(event_loop);
 
-out:
 	if (modem_path)
 		free(modem_path);
 

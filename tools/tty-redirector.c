@@ -32,12 +32,12 @@
 #include <stdbool.h>
 #include <termios.h>
 #include <signal.h>
-#include <sys/signalfd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
 #include <glib.h>
+#include <glib-unix.h>
 
 #define IFX_RESET_PATH "/sys/module/hsi_ffl_tty/parameters/reset_modem"
 
@@ -70,30 +70,11 @@ static void do_terminate(void)
 	g_timeout_add_seconds(1, shutdown_timeout, NULL);
 }
 
-static gboolean signal_handler(GIOChannel *channel, GIOCondition cond,
-							gpointer user_data)
+static gboolean signal_handler(gpointer user_data)
 {
-	struct signalfd_siginfo si;
-	ssize_t result;
-	int fd;
+	do_terminate();
 
-	if (cond & (G_IO_NVAL | G_IO_ERR | G_IO_HUP))
-		return FALSE;
-
-	fd = g_io_channel_unix_get_fd(channel);
-
-	result = read(fd, &si, sizeof(si));
-	if (result != sizeof(si))
-		return FALSE;
-
-	switch (si.ssi_signo) {
-	case SIGINT:
-	case SIGTERM:
-		do_terminate();
-		break;
-	}
-
-	return TRUE;
+	return G_SOURCE_CONTINUE;
 }
 
 static guint create_watch(int fd, GIOFunc func)
@@ -113,29 +94,6 @@ static guint create_watch(int fd, GIOFunc func)
 	g_io_channel_unref(channel);
 
 	return source;
-}
-
-static guint setup_signalfd(void)
-{
-	sigset_t mask;
-	int fd;
-
-	sigemptyset(&mask);
-	sigaddset(&mask, SIGINT);
-	sigaddset(&mask, SIGTERM);
-
-	if (sigprocmask(SIG_BLOCK, &mask, NULL) < 0) {
-		perror("Failed to set signal mask");
-		return 0;
-	}
-
-	fd = signalfd(-1, &mask, 0);
-	if (fd < 0) {
-		perror("Failed to create signal descriptor");
-		return 0;
-	}
-
-	return create_watch(fd, signal_handler);
 }
 
 static int write_file(const char *path, const char *value)
@@ -339,7 +297,8 @@ int main(int argc, char **argv)
 {
 	GOptionContext *context;
 	GError *error = NULL;
-	guint signal_watch;
+	guint id_sigint;
+	guint id_sigterm;
 	guint server_watch;
 
 	context = g_option_context_new(NULL);
@@ -366,13 +325,16 @@ int main(int argc, char **argv)
 	}
 
 	main_loop = g_main_loop_new(NULL, FALSE);
-	signal_watch = setup_signalfd();
+
+	id_sigint = g_unix_signal_add(SIGINT, signal_handler, NULL);
+	id_sigterm = g_unix_signal_add(SIGTERM, signal_handler, NULL);
 	server_watch = setup_server();
 
 	g_main_loop_run(main_loop);
 
 	g_source_remove(server_watch);
-	g_source_remove(signal_watch);
+	g_source_remove(id_sigint);
+	g_source_remove(id_sigterm);
 	g_main_loop_unref(main_loop);
 
 	g_free(option_device);
