@@ -7,43 +7,6 @@
 	<interface name="org.ofono.cdma.ConnectionManager">
 
 		<!--
-			GetProperties:
-
-			Returns all global system properties. See the
-			properties section for available properties.
-
-			Possible Errors: #org.ofono.Error.InvalidArguments
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
-			SetProperty:
-
-			Sets the property to a desired value
-
-			Possible Errors: #org.ofono.Error.InvalidArguments
-					 #org.ofono.Error.InvalidFormat
-					 #org.ofono.Error.Failed
-		-->
-		<method name="SetProperty">
-			<arg name="property" direction="in" type="s" />
-			<arg name="value" direction="in" type="v" />
-		</method>
-
-		<!--
-			PropertyChanged:
-
-			This signal indicates a changed value of the given
-			property.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="property" type="s" />
-			<arg name="value" type="v" />
-		</signal>
-
-		<!--
 			Powered:
 
 			Controls whether the CDMA data connection is

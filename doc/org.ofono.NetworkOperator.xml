@@ -7,16 +7,6 @@
 	<interface name="org.ofono.NetworkOperator">
 
 		<!--
-			GetProperties:
-
-			Returns all network operator properties. See the
-			properties section for available properties.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
 			Register:
 
 			Attempts to register to this network operator.
@@ -31,17 +21,6 @@
 					 #org.ofono.Error.AccessDenied
 		-->
 		<method name="Register" />
-
-		<!--
-			PropertyChanged:
-
-			This signal indicates a changed value of the given
-			property.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
-		</signal>
 
 		<!--
 			Name:

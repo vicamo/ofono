@@ -7,44 +7,6 @@
 	<interface name="org.ofono.ConnectionContext">
 
 		<!--
-			GetProperties:
-
-			Returns all properties for the context object.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
-			SetProperty:
-
-			Sets the property to a desired value
-
-			Possible Errors: #org.ofono.Error.InvalidArguments
-					 #org.ofono.Error.InvalidFormat
-					 #org.ofono.Error.Failed
-					 #org.ofono.Error.InProgress
-					 #org.ofono.Error.NotAttached
-					 #org.ofono.Error.AttachInProgress
-					 #org.ofono.Error.NotImplemented
-		-->
-		<method name="SetProperty">
-			<arg name="name" direction="in" type="s" />
-			<arg name="value" direction="in" type="v" />
-		</method>
-
-		<!--
-			PropertyChanged:
-
-			This signal indicates a changed value of the given
-			property.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
-		</signal>
-
-		<!--
 			Active:
 
 			Holds whether the context is activated.  This value

@@ -7,16 +7,6 @@
 	<interface name="org.ofono.LocationReporting">
 
 		<!--
-			GetProperties:
-
-			Returns all LocationReporting properties. See the
-			properties section for available properties.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
 			Request:
 
 			Asks to turn ON the NMEA stream and supplies the

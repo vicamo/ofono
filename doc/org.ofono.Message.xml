@@ -7,16 +7,6 @@
 	<interface name="org.ofono.Message">
 
 		<!--
-			GetProperties:
-
-			Returns properties for the message object. See
-			the properties section for available properties.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
 			Cancel:
 
 			Cancel a message that was previously sent. Only
@@ -27,17 +17,6 @@
 			Possible Errors: #org.ofono.Error.AccessDenied
 		-->
 		<method name="Cancel" />
-
-		<!--
-			PropertyChanged:
-
-			This signal indicates a changed value of the given
-			property.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
-		</signal>
 
 		<!--
 			State:

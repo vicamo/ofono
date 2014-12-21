@@ -7,16 +7,6 @@
 	<interface name="org.ofono.NetworkRegistration">
 
 		<!--
-			GetProperties:
-
-			Returns all network registration properties. See the
-			properties section for available properties.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
 			Register:
 
 			Attempts to register to the default network. The
@@ -70,17 +60,6 @@
 		<method name="Scan">
 			<arg name="operators" direction="out" type="a{oa{sv}}" />
 		</method>
-
-		<!--
-			PropertyChanged:
-
-			This signal indicates a changed value of the given
-			property.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
-		</signal>
 
 		<!--
 			Mode:

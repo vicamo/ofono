@@ -7,18 +7,6 @@
 	<interface name="org.ofono.cdma.MessageManager">
 
 		<!--
-			GetProperties:
-
-			Returns properties for the manager object. See
-			the properties section for available properties.
-
-			Possible Errors: #org.ofono.Error.InvalidArguments
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
 			GetMessages:
 
 			Get an array of message object paths and properties
@@ -31,22 +19,6 @@
 		-->
 		<method name="GetMessages">
 			<arg name="messages" direction="out" type="a{oa{sv}}" />
-		</method>
-
-		<!--
-			SetProperty:
-
-			Changes the value of the specified property. Only
-			properties that are listed as readwrite are
-			changeable. On success a PropertyChanged signal
-			will be emitted.
-
-			Possible Errors: #org.ofono.Error.InvalidArguments
-					 #org.ofono.Error.DoesNotExist
-		-->
-		<method name="SetProperty">
-			<arg name="name" direction="in" type="s" />
-			<arg name="value" direction="in" type="v" />
 		</method>
 
 		<!--
@@ -82,17 +54,6 @@
 			<arg name="info" direction="in" type="a{sv}" />
 			<arg name="message" direction="out" type="o" />
 		</method>
-
-		<!--
-			PropertyChanged:
-
-			This signal indicates a changed value of the given
-			property.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
-		</signal>
 
 		<!--
 			ImmediateMessage:

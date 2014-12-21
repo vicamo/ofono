@@ -7,34 +7,6 @@
 	<interface name="org.ofono.Handsfree">
 
 		<!--
-			GetProperties:
-
-			Returns properties for the Handsfree Interface. See the
-			properties section for available properties.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
-			SetProperty:
-
-			Changes the value of the specified property. Only
-			properties that are listed as readwrite are
-			changeable. On success a PropertyChanged signal
-			will be emitted.
-
-			Possible Errors: #org.ofono.Error.InProgress
-					 #org.ofono.Error.InvalidArguments
-					 #org.ofono.Error.NotImplemented
-					 #org.ofono.Error.NotSupported
-		-->
-		<method name="SetProperty">
-			<arg name="name" direction="in" type="s" />
-			<arg name="value" direction="in" type="v" />
-		</method>
-
-		<!--
 			RequestPhoneNumber:
 
 			Request a phone number from the AG, corresponding to the
@@ -51,17 +23,6 @@
 		<method name="RequestPhoneNumber">
 			<arg name="number" direction="out" type="s" />
 		</method>
-
-		<!--
-			PropertyChanged:
-
-			Signal is emitted whenever a property has changed.
-			The new value is passed as the signal argument.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
-		</signal>
 
 		<!--
 			Features:

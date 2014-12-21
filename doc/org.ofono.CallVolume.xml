@@ -7,46 +7,6 @@
 	<interface name="org.ofono.CallVolume">
 
 		<!--
-			GetProperties:
-
-			Returns properties for the CallVolume object. See
-			the properties section for available properties.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
-			SetProperty:
-
-			Changes the value of the specified property. Only
-			properties that are listed as readwrite are
-			changeable. On success a PropertyChanged signal
-			will be emitted.
-
-			Possible Errors: #org.ofono.Error.InProgress
-					 #org.ofono.Error.NotImplemented
-					 #org.ofono.Error.InvalidArguments
-					 #org.ofono.Error.InvalidFormat
-					 #org.ofono.Error.Failed
-		-->
-		<method name="SetProperty">
-			<arg name="name" direction="in" type="s" />
-			<arg name="value" direction="in" type="v" />
-		</method>
-
-		<!--
-			PropertyChanged:
-
-			This signal indicates a changed value of the given
-			property.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
-		</signal>
-
-		<!--
 			Muted:
 
 			Boolean representing whether the microphone is muted.

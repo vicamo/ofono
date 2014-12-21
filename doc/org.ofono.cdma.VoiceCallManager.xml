@@ -7,16 +7,6 @@
 	<interface name="org.ofono.cdma.VoiceCallManager">
 
 		<!--
-			GetProperties:
-
-			Returns properties for the VoiceCallManager Interface.
-			See the properties section for available properties.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
 			Dial:
 
 			Initiates a new outgoing call.  This is usually
@@ -71,33 +61,6 @@
 		<method name="SendTones">
 			<arg name="tones" direction="in" type="s" />
 		</method>
-
-		<!--
-			SetProperty:
-
-			Changes the value of the specified property. Only
-			properties that are listed as readwrite are
-			changeable. On success a PropertyChanged signal
-			will be emitted.
-
-			Possible Errors: [service].Error.InvalidArguments
-					 [service].Error.DoesNotExist
-		-->
-		<method name="SetProperty">
-			<arg name="name" direction="in" type="s" />
-			<arg name="value" direction="in" type="v" />
-		</method>
-
-		<!--
-			PropertyChanged:
-
-			Signal is emitted whenever a property has changed.
-			The new value is passed as the signal argument.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
-		</signal>
 
 		<!--
 			DisconnectReason:

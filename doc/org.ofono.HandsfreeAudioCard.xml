@@ -7,16 +7,6 @@
 	<interface name="org.ofono.HandsfreeAudioCard">
 
 		<!--
-			GetProperties:
-
-			Returns properties for the device object. See
-			the properties section for available properties.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
 			Connect:
 
 			Attempts to establish the SCO audio connection.
@@ -32,17 +22,6 @@
 					 #org.ofono.Error.NotAllowed
 		-->
 		<method name="Connect" />
-
-		<!--
-			PropertyChanged:
-
-			This signal indicates a changed value of the given
-			property.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
-		</signal>
 
 		<!--
 			RemoteAddress:

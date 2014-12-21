@@ -167,16 +167,6 @@ call-barring-api.txt, call-forwarding-api.txt and call-settings-api.txt
 		<method name="Cancel" />
 
 		<!--
-			GetProperties:
-
-			Returns Supplementary Services related properties. See
-			the properties section for available properties.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
 			NotificationReceived:
 
 			Signal is emitted on a network-initiated USSD
@@ -196,17 +186,6 @@ call-barring-api.txt, call-forwarding-api.txt and call-settings-api.txt
 		-->
 		<signal name="RequestReceived">
 			<arg name="message" type="s" />
-		</signal>
-
-		<!--
-			PropertyChanged:
-
-			Signal is emitted whenever a property has changed.
-			The new value is passed as the signal argument.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
 		</signal>
 
 		<!--

@@ -7,16 +7,6 @@
 	<interface name="org.ofono.VoiceCall">
 
 		<!--
-			GetProperties:
-
-			Returns all properties for this object. See the
-			properties section for available properties.
-		-->
-		<method name="GetProperties">
-			<arg name="properties" direction="out" type="a{sv}" />
-		</method>
-
-		<!--
 			Deflect:
 
 			Deflects the incoming or waiting call to number given
@@ -95,17 +85,6 @@
 					 #org.ofono.Error.NotImplemented
 		-->
 		<method name="Answer" />
-
-		<!--
-			PropertyChanged:
-
-			Signal is emitted whenever a property has changed.
-			The new value is passed as the signal argument.
-		-->
-		<signal name="PropertyChanged">
-			<arg name="name" type="s" />
-			<arg name="value" type="v" />
-		</signal>
 
 		<!--
 		DisconnectReason:
