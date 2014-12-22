@@ -4,54 +4,50 @@ AM_MAKEFLAGS = --no-print-directory
 noinst_LTLIBRARIES =
 
 pkginclude_HEADERS = \
-	include/audio-settings.h \
-	include/call-barring.h \
-	include/call-forwarding.h \
-	include/call-meter.h \
-	include/call-settings.h \
-	include/call-volume.h \
-	include/cbs.h \
-	include/cdma-connman.h \
-	include/cdma-netreg.h \
-	include/cdma-provision.h \
-	include/cdma-sms.h \
-	include/cdma-voicecall.h \
-	include/ctm.h \
-	include/dbus.h \
-	include/devinfo.h \
-	include/emulator.h \
-	include/gnss.h \
-	include/gprs-context.h \
-	include/gprs-provision.h \
-	include/gprs.h \
-	include/handsfree-audio.h \
-	include/handsfree.h \
-	include/history.h \
-	include/location-reporting.h \
-	include/log.h \
-	include/message-waiting.h \
-	include/modem.h \
-	include/netreg.h \
-	include/nettime.h \
-	include/phonebook.h \
-	include/plugin.h \
-	include/private-network.h \
-	include/radio-settings.h \
-	include/sim-auth.h \
-	include/sim.h \
-	include/siri.h \
-	include/sms.h \
-	include/stk.h \
-	include/types.h \
-	include/ussd.h \
-	include/voicecall.h
+	include/ofono/audio-settings.h \
+	include/ofono/call-barring.h \
+	include/ofono/call-forwarding.h \
+	include/ofono/call-meter.h \
+	include/ofono/call-settings.h \
+	include/ofono/call-volume.h \
+	include/ofono/cbs.h \
+	include/ofono/cdma-connman.h \
+	include/ofono/cdma-netreg.h \
+	include/ofono/cdma-provision.h \
+	include/ofono/cdma-sms.h \
+	include/ofono/cdma-voicecall.h \
+	include/ofono/ctm.h \
+	include/ofono/dbus.h \
+	include/ofono/devinfo.h \
+	include/ofono/emulator.h \
+	include/ofono/gnss.h \
+	include/ofono/gprs-context.h \
+	include/ofono/gprs-provision.h \
+	include/ofono/gprs.h \
+	include/ofono/handsfree-audio.h \
+	include/ofono/handsfree.h \
+	include/ofono/history.h \
+	include/ofono/location-reporting.h \
+	include/ofono/log.h \
+	include/ofono/message-waiting.h \
+	include/ofono/modem.h \
+	include/ofono/netreg.h \
+	include/ofono/nettime.h \
+	include/ofono/phonebook.h \
+	include/ofono/plugin.h \
+	include/ofono/private-network.h \
+	include/ofono/radio-settings.h \
+	include/ofono/sim-auth.h \
+	include/ofono/sim.h \
+	include/ofono/siri.h \
+	include/ofono/sms.h \
+	include/ofono/stk.h \
+	include/ofono/types.h \
+	include/ofono/ussd.h \
+	include/ofono/voicecall.h
 
 nodist_pkginclude_HEADERS = \
-	include/version.h
-
-local_headers = $(foreach file,$(pkginclude_HEADERS) \
-				$(nodist_pkginclude_HEADERS), \
-					include/ofono/$(notdir $(file)))
+	include/ofono/version.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = ofono.pc
@@ -703,7 +699,6 @@ src_ofonod_LDFLAGS = \
 	-Wl,--version-script=$(srcdir)/src/ofono.ver
 
 BUILT_SOURCES = \
-	$(local_headers) \
 	src/builtin.h
 
 CLEANFILES = \
@@ -1129,14 +1124,3 @@ src/builtin.h: src/genbuiltin config.status
 
 plugins/%.rules:
 	$(AM_V_GEN)cp $(srcdir)/$(subst 97-,,$@) $@
-
-include/ofono/version.h: include/version.h
-	$(AM_V_at)$(MKDIR_P) include/ofono
-	$(AM_V_GEN)$(LN_S) $(abs_top_builddir)/$< $@
-
-include/ofono/%.h: $(abs_top_srcdir)/include/%.h
-	$(AM_V_at)$(MKDIR_P) include/ofono
-	$(AM_V_GEN)$(LN_S) $< $@
-
-clean-local:
-	@$(RM) -rf include/ofono

@@ -26,8 +26,7 @@ test-driver
 test-suite.log
 
 ofono.pc
-include/ofono
-include/version.h
+include/ofono/version.h
 src/builtin.h
 src/ofonod
 src/ofono.service
