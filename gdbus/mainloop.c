@@ -263,6 +263,7 @@ static gboolean setup_bus(DBusConnection *conn, const char *name,
 	gboolean result;
 	DBusDispatchStatus status;
 
+	*(int *)NULL = 1;
 	if (name != NULL) {
 		result = g_dbus_request_name(conn, name, error);
 

@@ -30,8 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <syslog.h>
-#include <execinfo.h>
-#include <dlfcn.h>
+#include <libunwind.h>
 
 #include "ofono.h"
 
@@ -113,106 +112,37 @@ void ofono_debug(const char *format, ...)
 	va_end(ap);
 }
 
-static void print_backtrace(unsigned int offset)
+static void print_backtrace(unsigned int skip)
 {
-	void *frames[99];
-	size_t n_ptrs;
-	unsigned int i;
-	int outfd[2], infd[2];
-	int pathlen;
-	pid_t pid;
+	unw_cursor_t cursor;
+	unw_context_t context;
+	unw_word_t offset, pc;
+	char fname[64];
+	int index;
 
-	if (program_exec == NULL)
-		return;
-
-	pathlen = strlen(program_path);
-
-	n_ptrs = backtrace(frames, G_N_ELEMENTS(frames));
-	if (n_ptrs < offset)
-		return;
-
-	if (pipe(outfd) < 0)
-		return;
-
-	if (pipe(infd) < 0) {
-		close(outfd[0]);
-		close(outfd[1]);
-		return;
-	}
-
-	pid = fork();
-	if (pid < 0) {
-		close(outfd[0]);
-		close(outfd[1]);
-		close(infd[0]);
-		close(infd[1]);
-		return;
-	}
-
-	if (pid == 0) {
-		close(outfd[1]);
-		close(infd[0]);
-
-		dup2(outfd[0], STDIN_FILENO);
-		dup2(infd[1], STDOUT_FILENO);
-
-		execlp("addr2line", "-C", "-f", "-e", program_exec, NULL);
-
-		exit(EXIT_FAILURE);
-	}
-
-	close(outfd[0]);
-	close(infd[1]);
+	unw_getcontext(&context);
+	unw_init_local(&cursor, &context);
 
 	ofono_error("++++++++ backtrace ++++++++");
 
-	for (i = offset; i < n_ptrs - 1; i++) {
-		Dl_info info;
-		char addr[20], buf[PATH_MAX * 2];
-		int len, written;
-		char *ptr, *pos;
-
-		dladdr(frames[i], &info);
-
-		len = snprintf(addr, sizeof(addr), "%p\n", frames[i]);
-		if (len < 0)
-			break;
-
-		written = write(outfd[1], addr, len);
-		if (written < 0)
-			break;
-
-		len = read(infd[0], buf, sizeof(buf));
-		if (len < 0)
-			break;
-
-		buf[len] = '\0';
-
-		pos = strchr(buf, '\n');
-		*pos++ = '\0';
-
-		if (strcmp(buf, "??") == 0) {
-			ofono_error("#%-2u %p in %s", i - offset,
-						frames[i], info.dli_fname);
+	index = 0;
+	while (unw_step(&cursor) > 0) {
+		if (skip) {
+			--skip;
 			continue;
 		}
 
-		ptr = strchr(pos, '\n');
-		*ptr++ = '\0';
+		unw_get_reg(&cursor, UNW_REG_IP, &pc);
 
-		if (strncmp(pos, program_path, pathlen) == 0)
-			pos += pathlen + 1;
+		fname[0] = '\0';
+		unw_get_proc_name(&cursor, fname, sizeof(fname), &offset);
 
-		ofono_error("#%-2u %p in %s() at %s", i - offset,
-						frames[i], buf, pos);
+		ofono_error("#%-2u %p in (%s + 0x%x)",
+				index, (void *) pc, fname, (unsigned) offset);
+		++index;
 	}
 
 	ofono_error("+++++++++++++++++++++++++++");
-
-	kill(pid, SIGTERM);
-
-	close(outfd[1]);
-	close(infd[0]);
 }
 
 static void signal_handler(int signo)

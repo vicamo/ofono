@@ -540,7 +540,7 @@ src_ofonod_SOURCES = $(builtin_sources) src/ofono.ver \
 			src/hfp.h src/siri.c
 
 src_ofonod_LDADD = gdbus/libgdbus-internal.la $(builtin_libadd) \
-			@GLIB_LIBS@ @DBUS_LIBS@ -ldl
+			@GLIB_LIBS@ @DBUS_LIBS@ @UNWIND_LIBS@ -ldl
 
 src_ofonod_LDFLAGS = -Wl,--export-dynamic \
 				-Wl,--version-script=$(srcdir)/src/ofono.ver
@@ -557,7 +557,7 @@ else
 build_plugindir = $(plugindir)
 endif
 
-AM_CFLAGS = @DBUS_CFLAGS@ @GLIB_CFLAGS@ $(builtin_cflags) \
+AM_CFLAGS = @DBUS_CFLAGS@ @GLIB_CFLAGS@ @UNWIND_CFLAGS@ $(builtin_cflags) \
 					-DOFONO_PLUGIN_BUILTIN \
 					-DPLUGINDIR=\""$(build_plugindir)"\"
 
@@ -796,7 +796,7 @@ dundee_common_sources = $(gatchat_sources) \
 			dundee/dbus.c dundee/manager.c dundee/device.c
 
 dundee_dundee_LDADD = $(builtin_libadd) gdbus/libgdbus-internal.la \
-			@GLIB_LIBS@ @DBUS_LIBS@ -ldl
+			@GLIB_LIBS@ @DBUS_LIBS@ @UNWIND_LIBS@
 
 if DATAFILES
 dist_dbusconf_DATA += dundee/dundee.conf
