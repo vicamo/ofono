@@ -690,6 +690,7 @@ src_ofonod_SOURCES = \
 src_ofonod_LDADD = \
 	gdbus/libgdbus-internal.la \
 	$(builtin_libadd) \
+	@GMODULE_LIBS@ \
 	@GLIB_LIBS@ \
 	@DBUS_LIBS@ \
 	-ldl
@@ -716,6 +717,7 @@ endif
 AM_CFLAGS = \
 	@DBUS_CFLAGS@ \
 	@GLIB_CFLAGS@ \
+	@GMODULE_LIBS@ \
 	$(builtin_cflags) \
 	-DOFONO_PLUGIN_BUILTIN \
 	-DPLUGINDIR=\""$(build_plugindir)"\"

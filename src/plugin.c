@@ -23,16 +23,15 @@
 #include <config.h>
 #endif
 
-#include <dlfcn.h>
-
 #include <glib.h>
+#include <gmodule.h>
 
 #include "ofono.h"
 
 static GSList *plugins = NULL;
 
 struct ofono_plugin {
-	void *handle;
+	GModule *module;
 	gboolean active;
 	struct ofono_plugin_desc *desc;
 };
@@ -45,7 +44,7 @@ static gint compare_priority(gconstpointer a, gconstpointer b)
 	return plugin2->desc->priority - plugin1->desc->priority;
 }
 
-static gboolean add_plugin(void *handle, struct ofono_plugin_desc *desc)
+static gboolean add_plugin(GModule *module, struct ofono_plugin_desc *desc)
 {
 	struct ofono_plugin *plugin;
 
@@ -62,7 +61,7 @@ static gboolean add_plugin(void *handle, struct ofono_plugin_desc *desc)
 	if (plugin == NULL)
 		return FALSE;
 
-	plugin->handle = handle;
+	plugin->module = module;
 	plugin->active = FALSE;
 	plugin->desc = desc;
 
@@ -130,40 +129,41 @@ int __ofono_plugin_init(const char *pattern, const char *exclude)
 	dir = g_dir_open(PLUGINDIR, 0, NULL);
 	if (dir != NULL) {
 		while ((file = g_dir_read_name(dir)) != NULL) {
-			void *handle;
+			GModule *module;
 			struct ofono_plugin_desc *desc;
 
 			if (g_str_has_prefix(file, "lib") == TRUE ||
-					g_str_has_suffix(file, ".so") == FALSE)
+					g_str_has_suffix(file,
+						G_MODULE_SUFFIX) == FALSE)
 				continue;
 
 			filename = g_build_filename(PLUGINDIR, file, NULL);
 
-			handle = dlopen(filename, RTLD_NOW);
-			if (handle == NULL) {
+			module = g_module_open(filename, 0);
+			if (module == NULL) {
 				ofono_error("Can't load %s: %s",
-							filename, dlerror());
+						filename, g_module_error());
 				g_free(filename);
 				continue;
 			}
 
 			g_free(filename);
 
-			desc = dlsym(handle, "ofono_plugin_desc");
-			if (desc == NULL) {
+			if (g_module_symbol(module, "ofono_plugin_desc",
+						(gpointer *) &desc) == FALSE) {
 				ofono_error("Can't load symbol: %s",
-								dlerror());
-				dlclose(handle);
+							g_module_error());
+				g_module_close(module);
 				continue;
 			}
 
 			if (check_plugin(desc, patterns, excludes) == FALSE) {
-				dlclose(handle);
+				g_module_close(module);
 				continue;
 			}
 
-			if (add_plugin(handle, desc) == FALSE)
-				dlclose(handle);
+			if (add_plugin(module, desc) == FALSE)
+				g_module_close(module);
 		}
 
 		g_dir_close(dir);
@@ -196,8 +196,8 @@ void __ofono_plugin_cleanup(void)
 		if (plugin->active == TRUE && plugin->desc->exit)
 			plugin->desc->exit();
 
-		if (plugin->handle)
-			dlclose(plugin->handle);
+		if (plugin->module)
+			g_module_close(plugin->module);
 
 		g_free(plugin);
 	}
