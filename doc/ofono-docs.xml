@@ -18,26 +18,400 @@
 
     <legalnotice>
       <para>
-	Permission is granted to copy, distribute and/or modify this
-	document under the terms of the <citetitle>GNU Free
-	Documentation License</citetitle>, Version 1.1 or any later
-	version published by the Free Software Foundation with no
-	Invariant Sections, no Front-Cover Texts, and no Back-Cover
-	Texts. You may obtain a copy of the <citetitle>GNU Free
-	Documentation License</citetitle> from the Free Software
-	Foundation by visiting <ulink type="http"
-	url="http://www.fsf.org">their Web site</ulink> or by writing
-	to:
+        Permission is granted to copy, distribute and/or modify this
+        document under the terms of the <citetitle>GNU Free
+        Documentation License</citetitle>, Version 1.1 or any later
+        version published by the Free Software Foundation with no
+        Invariant Sections, no Front-Cover Texts, and no Back-Cover
+        Texts. You may obtain a copy of the <citetitle>GNU Free
+        Documentation License</citetitle> from the Free Software
+        Foundation by visiting <ulink type="http"
+        url="http://www.fsf.org">their Web site</ulink> or by writing
+        to:
 
-	<address>
-	  The Free Software Foundation, Inc.,
-	  <street>51 Franklin Street</street> - Fifth Floor,
-	  <city>Boston</city>, <state>MA</state> <postcode>02110-1301</postcode>,
-	  <country>USA</country>
-	</address>
+        <address>
+          The Free Software Foundation, Inc.,
+          <street>51 Franklin Street</street> - Fifth Floor,
+          <city>Boston</city>, <state>MA</state> <postcode>02110-1301</postcode>,
+          <country>USA</country>
+        </address>
       </para>
     </legalnotice>
   </bookinfo>
+
+  <chapter id="ref-overview">
+    <title>Overview</title>
+    <sect1>
+      <title>Mission statement</title>
+      <para>
+        The overall goal of the oFono project is to create a
+        telephony host stack for embedded/mobile and desktop systems
+        based on Linux.
+      </para>
+      <para>
+        It currently targets GSM/UMTS User Equipment (UE) based on
+        3GPP standards, but is of course not limited to that.
+        Extensions for other telephony systems like CDMA/EVDO are
+        more than welcome.
+      </para>
+      <para>
+        Within oFono there is clear abstraction between the
+        application interfaces based on D-Bus, the hardware level
+        (via drivers) and the integration with other system
+        components (plugins). The whole architecture is modular and
+        flexible.
+      </para>
+    </sect1>
+    <sect1>
+      <title>Telephony features</title>
+      <para>
+        The oFono stack will support the majority of the features
+        from the 3GPP specification, but not all of them. The whole
+        standard is pretty complex and some features are not used in
+        any mobile network so far, some of them are outdated and have
+        no relevance anymore. This paragraph tries to give some
+        insights on what has been implemented so far, what is coming
+        in the future and especially what will not be part of oFono.
+      </para>
+      <para>
+        Current implemented features:
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>Modem abstraction</term>
+          <listitem>
+            <para>
+              Currently there are two modem drivers available.
+            </para>
+            <para>
+              The "atmodem" driver handles hardware based on the 3GPP
+              TS 27.007 standard.
+            </para>
+            <para>
+              The "isimodem" driver handles Nokia based PhoNet modems.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Network registration</term>
+          <listitem>
+            <para>
+              The network registration interface contains support for
+              network detection. It also handles the automatic or
+              manual registration to a mobile network.
+            </para>
+            <para>
+              Additional information about the current network can be
+              easily retrieved and displayed to the user.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Network time indications</term>
+          <listitem>
+            <para>
+                oFono includes support for receiving Network Identity and
+                Timezone (NITZ) indications, and handles processing of
+                this information via system-specific plugins.
+            </para>
+
+            <para>
+                An example network time plugin is provided that simply
+                prints out the received time information. A more advanced,
+                real-world plugin could automatically set the system time
+                based on the received information.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Voice call handling</term>
+          <listitem>
+            <para>
+
+                The voice call interface handles simple call creation and
+                termination. It also supports 3way-calling and multi-party
+                features.
+            </para>
+            <para>
+
+                This is only for voice control. It doesn't contain support
+                for the voice data path/routing.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Advanced voice call control</term>
+          <listitem>
+
+            <para>
+                Features like COLR/CLIR/CLIP/COLP are supported by the
+                voice call handling interface.
+            </para>
+
+            <para>
+                The support for call forwarding and call waiting is also
+                present.
+            </para>
+
+            <para>
+                Interfaces for call barring and advice of charge do exist,
+                but highly depend on if the operator supports them.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Call history</term>
+          <listitem>
+
+            <para>
+                The call history is realized via a plugin interface and
+                not handled directly. This allows an easy integration with
+                storage systems like Evolution-Data-Server.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Phonebook support</term>
+          <listitem>
+
+            <para>
+                The storage of the SIM card is not used. The only supported
+                feature is to export the contacts stored on the SIM card to
+                some third-part entity.
+            </para>
+
+            <para>
+                SIM card storage is limited, slow and not flexible enough
+                for modem telephony applications.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Short message service</term>
+          <listitem>
+
+            <para>
+                The SMS support for text messages is available.  oFono
+                supports concatenated messages of up to 255 segments, UCS2 and
+                GSM alphabets as well as extended alphabets.  Delivery
+                confirmations (Status Reports) are also supported.
+            </para>
+
+            <para>
+                Selection of SMS bearer settings is supported through the
+                'Bearer' property on the SmsManager interface.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>SIM PIN handling</term>
+          <listitem>
+
+            <para>
+                SIM PIN locks, network and service provider locks are
+                supported. The SIM Manager also handles retry counter for PIN,
+                PIN2, PUK and PUK2.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Cell Broadcast</term>
+          <listitem>
+
+            <para>
+                Cell broadcasts should be fully supported by oFono, but have
+                not been well tested.  Base station name ids have been
+                confirmed to work.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>GPRS</term>
+          <listitem>
+
+            <para>
+                GPRS data connections are fully supported by oFono.  Multiple
+                active GPRS contexts are supported. IPv6 context support is
+                in progress.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Radio Access Settings</term>
+          <listitem>
+
+            <para>
+                The radio settings interface contains support for selecting
+                the access selection mode and used frequency bands, and allows
+                enabling and disabling fast dormancy on hardware that support
+                this feature.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Sim Toolkit</term>
+          <listitem>
+
+            <para>
+                The Sim Toolkit interface handles the SAT commands. Sim Toolkit
+                relies on the SimToolkit agent not only to get confirmation
+                from the user but also to inform user of the SAT initiated
+                operation status. Information on the Sim Toolkit feature
+                list can be found in features.txt.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Supplementary Services</term>
+          <listitem>
+
+            <para>
+                The Supplementary Services interface handles both recognized
+                supplementary service control string and user/network initiated
+                unstructured supplementary service data (USSD).
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>GPS/Location Services</term>
+          <listitem>
+
+            <para>
+                oFono provides a Location Reporting interface that enables
+                taking advantage of on-board GPS capabilities of modern modems.
+                oFono also provides an Assisted Satellite Navigation interface
+                that allows feeding assistance data to the GPS unit from the
+                network as well as E911 services.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <para>
+        Work in progress features:
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>GPRS</term>
+          <listitem>
+
+            <para>
+                IPv6 PS context support is under development.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Modem Emulator</term>
+          <listitem>
+
+            <para>
+                To enable DialUp Networking (over Bluetooth or USB), and to
+                allow Bluetooth HandsFree / Headset support, oFono will expose
+                some 'fake' modem to enable the communication with car kits, or
+                other devices.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <para>
+        Not implemented features:
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>SIM card storage</term>
+          <listitem>
+
+            <para>
+                The SIM card storage will not be used by oFono. It is slow,
+                limited in size and flexibility. It is an outdated interface
+                that makes no sense in a modern telephony system.
+            </para>
+
+            <para>
+                Export of stored contacts from the SIM card is supported for
+                legacy reasons and to allow a smooth transition.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>WAP support</term>
+          <listitem>
+
+            <para>
+                The WAP feature is outdated and using full Internet access
+                with an embedded browser is the future.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>MMS support</term>
+          <listitem>
+
+            <para>
+                The MMS support should not be part of oFono itself. The best
+                idea is to implement a MMS service that runs in the user
+                session and uses oFono's SMS interface to listen for
+                notifications.
+            </para>
+
+            <para>
+                Similar to the split between BlueZ and OBEX daemon.
+            </para>
+
+            <para>
+                Especially when it comes to image conversion and other tasks
+                that MMS support requires it is important to NOT do this as
+                a system daemon.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>EMS support</term>
+          <listitem>
+
+            <para>
+                This is an Ericsson specific standard and not widely spread
+                across the handset manufactures.
+            </para>
+
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>Video telephony</term>
+          <listitem>
+
+            <para>
+                Currently there are no plans to support this. The support
+                from the networks and available handsets are still limited.
+            </para>
+
+            <para>
+                This needs re-evaluation once such a service becomes more
+                prominent.
+            </para>
+
+            <para>
+                A similar split like with MMS might be a good idea.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </sect1>
+  </chapter>
 
   <index id="api-index-full">
     <title>API Index</title>
