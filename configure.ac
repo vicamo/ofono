@@ -30,6 +30,11 @@ m4_ifdef([AC_LIBTOOL_TAGS], [AC_LIBTOOL_TAGS([])])
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
+# The GTK_DOC_CHECK is not indented to cease gtkdocize's complain.
+m4_ifdef([GTK_DOC_CHECK], [
+GTK_DOC_CHECK([1.14], [--flavour no-tmpl])],
+	[AM_CONDITIONAL([ENABLE_GTK_DOC], false)])
+
 AC_ARG_ENABLE(optimization, AC_HELP_STRING([--disable-optimization],
 			[disable code optimization through compiler]), [
 	if (test "${enableval}" = "no"); then
@@ -238,5 +243,13 @@ fi
 AC_DEFINE_UNQUOTED(CONFIGDIR, "${configdir}",
 			[Directory for the configuration files])
 
-AC_OUTPUT(Makefile include/ofono/version.h src/ofono.service ofono.pc \
-		dundee/dundee.service)
+AC_CONFIG_FILES([
+Makefile
+doc/Makefile
+doc/version.xml
+include/ofono/version.h
+ofono.pc
+src/ofono.service
+dundee/dundee.service
+])
+AC_OUTPUT

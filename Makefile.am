@@ -1,5 +1,4 @@
-
-AM_MAKEFLAGS = --no-print-directory
+SUBDIR = doc
 
 noinst_LTLIBRARIES =
 
@@ -1102,6 +1101,7 @@ gatchat_test_qcdm_LDADD = @GLIB_LIBS@
 DISTCHECK_CONFIGURE_FLAGS = \
 	--disable-datafiles \
 	--enable-dundee \
+	--enable-gtk-doc \
 	--enable-tools
 
 MAINTAINERCLEANFILES = \
@@ -1113,6 +1113,7 @@ MAINTAINERCLEANFILES = \
 	config.sub \
 	configure \
 	depcomp \
+	gtk-doc.m4 \
 	install-sh \
 	ltmain.sh \
 	missing \

@@ -33,6 +33,27 @@ src/ofono.service
 dundee/dundee
 dundee/dundee.service
 
+doc/*.stamp
+doc/gtk-doc.make
+doc/html/
+doc/ofono-decl-list.txt
+doc/ofono-decl.txt
+doc/ofono-overrides.txt
+doc/ofono-sections.txt
+doc/ofono-undeclared.txt
+doc/ofono-undocumented.txt
+doc/ofono-unused.txt
+doc/ofono.args
+doc/ofono.hierarchy
+doc/ofono.interfaces
+doc/ofono.prerequisites
+doc/ofono.signals
+doc/ofono.types
+doc/tmpl/
+doc/version.xml
+doc/xml/
+gtk-doc.m4
+
 unit/test-common
 unit/test-util
 unit/test-idmap
