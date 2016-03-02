@@ -14,4 +14,6 @@ fi
 		--enable-test \
 		--enable-tools \
 		--enable-dundee \
-		--disable-datafiles $*
+		--disable-datafiles \
+		--disable-cares \
+		$*
