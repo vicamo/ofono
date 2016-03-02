@@ -1,0 +1,11 @@
+language: c
+before_install:
+  - sudo apt-get build-dep ofono
+  - sudo apt-get install mobile-broadband-provider-info
+script:
+  - ./bootstrap-configure
+  - make
+  - make install DESTDIR=$(pwd)/x && rm -rf $(pwd)/x
+  - make distcheck
+  - sudo make install
+  - make maintainer-clean
