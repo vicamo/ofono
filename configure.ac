@@ -74,6 +74,16 @@ PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.28, dummy=yes,
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
+PKG_CHECK_MODULES(GIO, gio-2.0 >= 2.26
+					gio-unix-2.0 >= 2.24,
+				dummy=yes,
+				AC_MSG_ERROR(GIO >= 2.26 is required))
+AC_SUBST(GIO_CFLAGS)
+AC_SUBST(GIO_LIBS)
+
+GDBUS_CODEGEN=`$PKG_CONFIG --variable=gdbus_codegen gio-2.0`
+AC_SUBST(GDBUS_CODEGEN)
+
 if (test "${enable_threads}" = "yes"); then
 	AC_DEFINE(NEED_THREADS, 1, [Define if threading support is required])
 	PKG_CHECK_MODULES(GTHREAD, gthread-2.0 >= 2.16, dummy=yes,

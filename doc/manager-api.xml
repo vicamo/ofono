@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+  <interface name="org.ofono.Manager">
+    <annotation name="org.gtk.GDBus.C.Name" value="Manager"/>
+
+    <!--
+      Modems:
+
+      Get an array of modem object paths that represents the currently
+      attached modems.
+
+      This property should only be used once when an application
+      starts up. Further modem additions and removal shall be
+      monitored via ModemAdded and ModemRemoved signals.
+    -->
+    <property name="Modems" type="ao" access="read"/>
+
+    <!--
+      ModemAdded:
+
+      Signal that is sent when a new modem is added. It contains the
+      object path of new modem.
+    -->
+    <signal name="ModemAdded">
+      <arg name="path" type="o"/>
+    </signal>
+
+    <!--
+      ModemRemoved:
+
+      Signal that is sent when a modem has been removed. The object
+      path is no longer accessible after this signal and only emitted
+      for reference.
+    -->
+    <signal name="ModemRemoved">
+      <arg name="path" type="o"/>
+    </signal>
+  </interface>
+</node>

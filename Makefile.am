@@ -1,6 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 AM_MAKEFLAGS = --no-print-directory
 
+EXTRA_DIST =
+BUILT_SOURCES =
 GITIGNOREFILES = \
   $(DIST_ARCHIVES)
 
@@ -90,6 +92,37 @@ gdbus_libgdbus_internal_la_SOURCES = \
   gdbus/object.c \
   gdbus/polkit.c \
   gdbus/watch.c
+
+noinst_LTLIBRARIES += ofono/dbus/libofono-dbus.la
+
+ofono_dbus_libofono_dbus_la_SOURCES = \
+  ofono/dbus/manager.c \
+  ofono/dbus/manager.h
+ofono_dbus_libofono_dbus_la_CFLAGS = \
+  $(GIO_CFLAGS)
+ofono_dbus_libofono_dbus_la_LIBADD = \
+  $(GIO_LIBS)
+
+define _make_dbus_rule
+$(1): doc/$(notdir $(1:.c=-api.xml))
+	$$(AM_V_GEN) $(GDBUS_CODEGEN) \
+	  --generate-c-code $$(basename $$@) \
+	  --c-namespace OfonoDBus \
+	  --interface-prefix org.ofono \
+	  $$<
+
+$(basename $(1)).h: $(1)
+	@true
+endef
+
+$(foreach f,$(filter %.c,$(ofono_dbus_libofono_dbus_la_SOURCES)),$(eval $(call _make_dbus_rule,$(f))))
+
+BUILT_SOURCES += $(ofono_dbus_libofono_dbus_la_SOURCES)
+
+pkgdbusincludedir = $(pkgincludedir)/dbus
+nodist_pkgdbusinclude_HEADERS = $(filter %.h,$(ofono_dbus_libofono_dbus_la_SOURCES))
+
+EXTRA_DIST += $(addprefix doc/,$(notdir $(patsubst %.h,%-api.xml,$(nodist_pkgdbusinclude_HEADERS))))
 
 gatchat_sources = \
   gatchat/crc-ccitt.c \
@@ -764,7 +797,7 @@ src_ofonod_LDFLAGS = \
   -Wl,--export-dynamic \
   -Wl,--version-script=$(srcdir)/src/ofono.ver
 
-BUILT_SOURCES = \
+BUILT_SOURCES += \
   src/builtin.h
 
 CLEANFILES = \
@@ -803,7 +836,6 @@ doc_files = \
   doc/connman-api.txt \
   doc/features.txt \
   doc/location-reporting-api.txt \
-  doc/manager-api.txt \
   doc/message-api.txt \
   doc/message-waiting-api.txt \
   doc/messagemanager-api.txt \
@@ -927,7 +959,7 @@ testdir = $(pkglibdir)/test
 test_SCRIPTS = $(test_scripts)
 endif
 
-EXTRA_DIST = \
+EXTRA_DIST += \
   $(doc_files) \
   $(test_scripts) \
   plugins/ofono-speedup.rules \
