@@ -1,6 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 AM_MAKEFLAGS = --no-print-directory
 
+GITIGNOREFILES =
+
 noinst_LTLIBRARIES =
 
 pkginclude_HEADERS = \
@@ -1227,19 +1229,9 @@ DISTCHECK_CONFIGURE_FLAGS = \
   --enable-tools
 
 MAINTAINERCLEANFILES = \
-  Makefile.in \
-  aclocal.m4 \
-  compile \
-  config.guess \
-  config.h.in \
-  config.sub \
-  configure \
-  depcomp \
-  install-sh \
-  ltmain.sh \
-  missing \
-  mkinstalldirs
-
+  $(GITIGNORE_MAINTAINERCLEANFILES_TOPLEVEL) \
+  $(GITIGNORE_MAINTAINERCLEANFILES_M4_LIBTOOL) \
+  $(GITIGNORE_MAINTAINERCLEANFILES_MAKEFILE_IN)
 
 src/builtin.h: src/genbuiltin config.status
 	$(AM_V_GEN)$(srcdir)/src/genbuiltin $(builtin_modules) > $@
@@ -1257,3 +1249,7 @@ include/ofono/%.h: $(abs_top_srcdir)/include/%.h
 
 clean-local:
 	@$(RM) -rf include/ofono
+
+GITIGNOREFILES += $(BUILT_SOURCES)
+
+-include $(top_srcdir)/git.mk
