@@ -97,7 +97,9 @@ noinst_LTLIBRARIES += ofono/dbus/libofono-dbus.la
 
 ofono_dbus_libofono_dbus_la_SOURCES = \
   ofono/dbus/manager.c \
-  ofono/dbus/manager.h
+  ofono/dbus/manager.h \
+  ofono/dbus/modem.c \
+  ofono/dbus/modem.h
 ofono_dbus_libofono_dbus_la_CFLAGS = \
   $(GIO_CFLAGS)
 ofono_dbus_libofono_dbus_la_LIBADD = \
@@ -839,7 +841,6 @@ doc_files = \
   doc/message-api.txt \
   doc/message-waiting-api.txt \
   doc/messagemanager-api.txt \
-  doc/modem-api.txt \
   doc/network-api.txt \
   doc/ofono-paper.txt \
   doc/overview.txt \
