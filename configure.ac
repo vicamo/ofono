@@ -13,6 +13,9 @@ AM_MAINTAINER_MODE
 
 AC_PREFIX_DEFAULT(/usr/local)
 
+# Define _GNU_SOURCE etc. where appropriate, e.g. for strptime() on glibc
+AC_USE_SYSTEM_EXTENSIONS
+
 PKG_PROG_PKG_CONFIG
 
 COMPILER_FLAGS
