@@ -37,7 +37,7 @@
 #include <ofono/call-forwarding.h>
 #include "common.h"
 
-#include "gril.h"
+#include "gril/gril.h"
 
 #include "rilmodem.h"
 

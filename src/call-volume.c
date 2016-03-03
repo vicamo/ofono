@@ -35,7 +35,7 @@
 #include <ofono/modem.h>
 #include <ofono/call-volume.h>
 
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 #include "ofono.h"
 #include "common.h"
 

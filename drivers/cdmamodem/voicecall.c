@@ -34,8 +34,8 @@
 #include <ofono/modem.h>
 #include <ofono/cdma-voicecall.h>
 
-#include "gatchat.h"
-#include "gatresult.h"
+#include "gatchat/gatchat.h"
+#include "gatchat/gatresult.h"
 
 #include "cdmamodem.h"
 

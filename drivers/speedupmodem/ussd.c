@@ -33,7 +33,7 @@
 #include <ofono/ussd.h>
 #include "util.h"
 
-#include "gatchat.h"
+#include "gatchat/gatchat.h"
 
 #include "speedupmodem.h"
 

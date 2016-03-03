@@ -28,7 +28,7 @@
 #include <errno.h>
 
 #include <glib.h>
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 #include <sys/time.h>
 
 #include "ofono.h"

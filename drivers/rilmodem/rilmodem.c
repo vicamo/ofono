@@ -25,7 +25,7 @@
 #endif
 
 #include <glib.h>
-#include <gril.h>
+#include "gril/gril.h"
 
 #define OFONO_API_SUBJECT_TO_CHANGE
 #include <ofono/plugin.h>

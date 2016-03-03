@@ -30,7 +30,7 @@
 #include <ofono/modem.h>
 #include <ofono/cdma-netreg.h>
 
-#include "gatchat.h"
+#include "gatchat/gatchat.h"
 
 #include "huaweimodem.h"
 

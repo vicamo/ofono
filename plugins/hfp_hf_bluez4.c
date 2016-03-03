@@ -30,9 +30,9 @@
 #include <errno.h>
 #include <unistd.h>
 #include <glib.h>
-#include <gatchat.h>
-#include <gattty.h>
-#include <gdbus.h>
+#include "gatchat/gatchat.h"
+#include "gatchat/gattty.h"
+#include "gdbus/gdbus.h"
 #include <ofono.h>
 
 #define OFONO_API_SUBJECT_TO_CHANGE

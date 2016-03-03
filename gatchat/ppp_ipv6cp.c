@@ -32,7 +32,7 @@
 
 #include <glib.h>
 
-#include "gatppp.h"
+#include "gatchat/gatppp.h"
 #include "ppp.h"
 
 #define IPV6CP_SUPPORTED_CODES	((1 << PPPCP_CODE_TYPE_CONFIGURE_REQUEST) | \

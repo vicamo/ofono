@@ -33,8 +33,8 @@
 #include <ofono/ussd.h>
 #include "util.h"
 
-#include "gatchat.h"
-#include "gatresult.h"
+#include "gatchat/gatchat.h"
+#include "gatchat/gatresult.h"
 
 #include "huaweimodem.h"
 

@@ -33,7 +33,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 #include <gatchat/gatserver.h>
 
 #include "unit/stk-test-data.h"

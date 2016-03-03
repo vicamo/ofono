@@ -29,7 +29,7 @@ extern "C" {
 
 #include "gfunc.h"
 #include "parcel.h"
-#include "gril.h"
+#include "gril/gril.h"
 
 int ril_protocol_string_to_ofono_protocol(gchar *protocol_str);
 const char *ril_error_to_string(int error);

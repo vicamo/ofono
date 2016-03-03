@@ -30,7 +30,7 @@
 
 #include <glib.h>
 
-#include "gattty.h"
+#include "gatchat/gattty.h"
 
 static gboolean set_baud(const char *baud, struct termios *ti)
 {

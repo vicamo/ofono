@@ -31,7 +31,7 @@
 #include <string.h>
 #include <signal.h>
 
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 
 #define OFONO_SERVICE	"org.ofono"
 

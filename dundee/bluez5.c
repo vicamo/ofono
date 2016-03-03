@@ -24,7 +24,7 @@
 
 #include <stdint.h>
 #include <sys/socket.h>
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 #include <errno.h>
 
 #include "dundee.h"

@@ -31,8 +31,8 @@
 #include <stdio.h>
 
 #include <glib.h>
-#include <gril.h>
-#include <parcel.h>
+#include "gril/gril.h"
+#include "gril/parcel.h"
 
 #include <ofono/log.h>
 #include <ofono/modem.h>

@@ -39,8 +39,8 @@
 #include <glib.h>
 
 #include <ofono/log.h>
-#include "ringbuffer.h"
-#include "gril.h"
+#include "gatchat/ringbuffer.h"
+#include "gril/gril.h"
 #include "grilutil.h"
 
 #define RIL_TRACE(ril, fmt, arg...) do {	\

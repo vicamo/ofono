@@ -33,8 +33,8 @@
 #include <stdio.h>
 
 #include <glib.h>
-#include <gatmux.h>
-#include <gatchat.h>
+#include "gatchat/gatmux.h"
+#include "gatchat/gatchat.h"
 
 #define OFONO_API_SUBJECT_TO_CHANGE
 #include <ofono/plugin.h>

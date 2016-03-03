@@ -28,7 +28,7 @@
 #include <net/if.h>
 
 #include <glib.h>
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 
 #define OFONO_API_SUBJECT_TO_CHANGE
 #include <ofono/plugin.h>

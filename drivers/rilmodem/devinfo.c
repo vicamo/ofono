@@ -35,7 +35,7 @@
 #include <ofono/modem.h>
 #include <ofono/devinfo.h>
 
-#include "gril.h"
+#include "gril/gril.h"
 
 #include "rilmodem.h"
 

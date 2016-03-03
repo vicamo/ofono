@@ -26,8 +26,8 @@
 #include <errno.h>
 
 #include <glib.h>
-#include <gatchat.h>
-#include <gatresult.h>
+#include "gatchat/gatchat.h"
+#include "gatchat/gatresult.h"
 
 #include <ofono/log.h>
 #include <ofono/modem.h>

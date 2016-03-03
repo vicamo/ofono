@@ -31,7 +31,7 @@
 #include <glib.h>
 #include <arpa/inet.h>
 
-#include "gatppp.h"
+#include "gatchat/gatppp.h"
 #include "ppp.h"
 
 static const char *pppcp_state_strings[] = {

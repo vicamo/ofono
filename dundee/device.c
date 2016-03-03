@@ -29,9 +29,9 @@
 #include <netinet/ether.h>
 
 #include <glib.h>
-#include <gdbus.h>
-#include <gatchat.h>
-#include <gatppp.h>
+#include "gdbus/gdbus.h"
+#include "gatchat/gatchat.h"
+#include "gatchat/gatppp.h"
 
 #include "dundee.h"
 

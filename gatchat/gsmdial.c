@@ -34,9 +34,9 @@
 #include <arpa/inet.h>
 
 #include <glib.h>
-#include <gatchat.h>
-#include <gattty.h>
-#include <gatppp.h>
+#include "gatchat/gatchat.h"
+#include "gatchat/gattty.h"
+#include "gatchat/gatppp.h"
 
 #define IFCONFIG_PATH "/sbin/ifconfig"
 

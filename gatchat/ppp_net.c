@@ -35,7 +35,7 @@
 #include <glib.h>
 
 #include "gatutil.h"
-#include "gatppp.h"
+#include "gatchat/gatppp.h"
 #include "ppp.h"
 
 #define MAX_PACKET 1500

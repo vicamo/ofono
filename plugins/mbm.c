@@ -29,8 +29,8 @@
 #include <string.h>
 
 #include <glib.h>
-#include <gatchat.h>
-#include <gattty.h>
+#include "gatchat/gatchat.h"
+#include "gatchat/gattty.h"
 
 #define OFONO_API_SUBJECT_TO_CHANGE
 #include <ofono/plugin.h>

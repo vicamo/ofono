@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <glib.h>
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 #include <ofono.h>
 
 #define OFONO_API_SUBJECT_TO_CHANGE

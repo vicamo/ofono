@@ -26,7 +26,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 
 #include "ofono.h"
 

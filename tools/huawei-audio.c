@@ -34,7 +34,7 @@
 #include <sys/ioctl.h>
 #include <sys/soundcard.h>
 
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 
 #define OFONO_SERVICE	"org.ofono"
 

@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 #include <string.h>
 
 #define OFONO_API_SUBJECT_TO_CHANGE

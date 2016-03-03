@@ -29,7 +29,7 @@
 #include <stdint.h>
 
 #include <glib.h>
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 #include <errno.h>
 #include <time.h>
 #include <sys/time.h>

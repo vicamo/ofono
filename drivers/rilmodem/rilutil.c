@@ -25,7 +25,7 @@
 #endif
 
 #include <glib.h>
-#include <gril.h>
+#include "gril/gril.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -37,7 +37,7 @@
 #include "rilutil.h"
 #include "simutil.h"
 #include "util.h"
-#include "ril_constants.h"
+#include "gril/ril_constants.h"
 
 void decode_ril_error(struct ofono_error *error, const char *final)
 {

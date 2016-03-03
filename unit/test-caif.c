@@ -34,7 +34,7 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 
-#include <gatchat.h>
+#include "gatchat/gatchat.h"
 
 #include <drivers/stemodem/caif_socket.h>
 #include <drivers/stemodem/if_caif.h>

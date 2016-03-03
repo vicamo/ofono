@@ -27,7 +27,7 @@
 extern "C" {
 #endif
 
-#include "gatchat.h"
+#include "gatchat/gatchat.h"
 
 struct _GAtMux;
 

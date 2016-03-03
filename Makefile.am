@@ -787,12 +787,7 @@ AM_CFLAGS = \
 
 AM_CPPFLAGS = \
   -I$(builddir)/src \
-  -I$(srcdir)/src \
-  -I$(srcdir)/gdbus \
-  -I$(srcdir)/gisi \
-  -I$(srcdir)/gatchat \
-  -I$(srcdir)/btio \
-  -I$(srcdir)/gril
+  -I$(srcdir)/src
 
 doc_files = \
   doc/audio-settings-api.txt \

@@ -31,7 +31,7 @@
 #include <signal.h>
 #include <sys/signalfd.h>
 
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 
 #include "dundee.h"
 

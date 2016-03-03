@@ -44,8 +44,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "gatserver.h"
-#include "gatppp.h"
+#include "gatchat/gatserver.h"
+#include "gatchat/gatppp.h"
 #include "ringbuffer.h"
 
 #define DEFAULT_TCP_PORT 12346

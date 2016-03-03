@@ -28,7 +28,7 @@
 
 #include <glib.h>
 
-#include "gatresult.h"
+#include "gatchat/gatresult.h"
 
 void g_at_result_iter_init(GAtResultIter *iter, GAtResult *result)
 {

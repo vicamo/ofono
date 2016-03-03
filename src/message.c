@@ -24,7 +24,7 @@
 #endif
 
 #include <string.h>
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 #include <stdio.h>
 #include <errno.h>
 

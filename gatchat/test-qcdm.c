@@ -27,7 +27,7 @@
 
 #include <glib.h>
 
-#include "gattty.h"
+#include "gatchat/gattty.h"
 #include "gathdlc.h"
 
 static gboolean option_debug = FALSE;

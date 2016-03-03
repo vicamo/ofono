@@ -35,8 +35,8 @@
 #include <ofono/phonebook.h>
 #include "util.h"
 
-#include "gatchat.h"
-#include "gatresult.h"
+#include "gatchat/gatchat.h"
+#include "gatchat/gatresult.h"
 
 #include "atmodem.h"
 #include "vendor.h"

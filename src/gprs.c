@@ -36,7 +36,7 @@
 #include <arpa/inet.h>
 
 #include <glib.h>
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 
 #include "ofono.h"
 

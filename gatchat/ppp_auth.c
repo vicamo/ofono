@@ -32,7 +32,7 @@
 
 #include <glib.h>
 
-#include "gatppp.h"
+#include "gatchat/gatppp.h"
 #include "ppp.h"
 
 struct chap_header {

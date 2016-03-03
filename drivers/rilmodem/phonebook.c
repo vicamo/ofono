@@ -43,7 +43,7 @@
 #include <simfs.h>
 #include <util.h>
 
-#include "gril.h"
+#include "gril/gril.h"
 #include "simutil.h"
 #include "common.h"
 

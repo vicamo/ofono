@@ -35,9 +35,9 @@
 #include <ofono/modem.h>
 #include <ofono/location-reporting.h>
 
-#include "gatchat.h"
-#include "gatresult.h"
-#include "gattty.h"
+#include "gatchat/gatchat.h"
+#include "gatchat/gatresult.h"
+#include "gatchat/gattty.h"
 
 #include "telitmodem.h"
 

@@ -30,7 +30,7 @@
 #include <glib.h>
 
 #include "ringbuffer.h"
-#include "gatserver.h"
+#include "gatchat/gatserver.h"
 #include "gatio.h"
 
 #define BUF_SIZE 4096

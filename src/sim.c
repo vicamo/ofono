@@ -28,7 +28,7 @@
 #include <stdint.h>
 
 #include <glib.h>
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>

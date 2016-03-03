@@ -35,8 +35,8 @@
 #include <ofono/voicecall.h>
 #include "vendor.h"
 
-#include "gatchat.h"
-#include "gatresult.h"
+#include "gatchat/gatchat.h"
+#include "gatchat/gatresult.h"
 
 #include "common.h"
 

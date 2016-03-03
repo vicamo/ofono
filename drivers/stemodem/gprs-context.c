@@ -41,8 +41,8 @@
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
 
-#include "gatchat.h"
-#include "gatresult.h"
+#include "gatchat/gatchat.h"
+#include "gatchat/gatresult.h"
 #include "stemodem.h"
 #include "caif_socket.h"
 #include "if_caif.h"

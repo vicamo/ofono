@@ -35,9 +35,9 @@
 #include <ofono/modem.h>
 #include <ofono/gprs-context.h>
 
-#include "gatchat.h"
-#include "gatresult.h"
-#include "gatppp.h"
+#include "gatchat/gatchat.h"
+#include "gatchat/gatresult.h"
+#include "gatchat/gatppp.h"
 
 #include "atmodem.h"
 #include "vendor.h"

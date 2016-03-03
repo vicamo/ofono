@@ -34,8 +34,8 @@
 
 #include <glib.h>
 
-#include <gdbus.h>
-#include <gatchat.h>
+#include "gdbus/gdbus.h"
+#include "gatchat/gatchat.h"
 
 #define OFONO_API_SUBJECT_TO_CHANGE
 #include <ofono/modem.h>

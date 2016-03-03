@@ -35,8 +35,8 @@
 #include <ofono/modem.h>
 #include <ofono/voicecall.h>
 
-#include "gatchat.h"
-#include "gatresult.h"
+#include "gatchat/gatchat.h"
+#include "gatchat/gatresult.h"
 #include "common.h"
 
 #include "stemodem.h"

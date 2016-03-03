@@ -36,7 +36,7 @@
 
 #include "gatutil.h"
 #include "gathdlc.h"
-#include "gatppp.h"
+#include "gatchat/gatppp.h"
 #include "crc-ccitt.h"
 #include "ppp.h"
 

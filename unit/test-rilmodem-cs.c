@@ -35,10 +35,10 @@
 #include <ofono/modem.h>
 #include <ofono/types.h>
 #include <ofono/call-settings.h>
-#include <gril.h>
+#include <gril/gril.h>
 
 #include "common.h"
-#include "ril_constants.h"
+#include "gril/ril_constants.h"
 #include "rilmodem-test-server.h"
 
 static GMainLoop *mainloop;

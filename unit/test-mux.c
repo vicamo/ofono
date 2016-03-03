@@ -35,8 +35,8 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 
-#include "gatmux.h"
-#include "gsm0710.h"
+#include "gatchat/gatmux.h"
+#include "gatchat/gsm0710.h"
 
 static int do_connect(const char *address, unsigned short port)
 {

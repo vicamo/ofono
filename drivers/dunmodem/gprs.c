@@ -24,7 +24,7 @@
 #endif
 
 #include <glib.h>
-#include <gatchat.h>
+#include "gatchat/gatchat.h"
 
 #include <ofono/log.h>
 #include <ofono/modem.h>

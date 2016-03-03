@@ -26,7 +26,7 @@
 extern "C" {
 #endif
 
-#include "gatresult.h"
+#include "gatchat/gatresult.h"
 #include "gatutil.h"
 #include "gatio.h"
 

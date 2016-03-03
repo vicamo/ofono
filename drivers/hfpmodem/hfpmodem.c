@@ -28,7 +28,7 @@
 #include <ofono/modem.h>
 
 #include <glib.h>
-#include <gatchat.h>
+#include "gatchat/gatchat.h"
 
 #include "hfpmodem.h"
 

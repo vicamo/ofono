@@ -36,7 +36,7 @@
 #include <ofono/modem.h>
 #include <ofono/handsfree.h>
 
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 #include "ofono.h"
 #include "common.h"
 #include "hfp.h"

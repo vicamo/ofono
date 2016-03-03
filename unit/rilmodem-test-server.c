@@ -30,7 +30,7 @@
 
 #include <ofono/types.h>
 
-#include <gril.h>
+#include "gril/gril.h"
 
 #include "rilmodem-test-server.h"
 

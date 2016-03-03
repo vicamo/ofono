@@ -26,7 +26,7 @@
 #endif
 
 #include <glib.h>
-#include <gatchat.h>
+#include "gatchat/gatchat.h"
 
 #define OFONO_API_SUBJECT_TO_CHANGE
 #include <ofono/plugin.h>

@@ -33,8 +33,8 @@
 #include <ofono/modem.h>
 #include <ofono/call-settings.h>
 
-#include "gatchat.h"
-#include "gatresult.h"
+#include "gatchat/gatchat.h"
+#include "gatchat/gatresult.h"
 
 #include "atmodem.h"
 

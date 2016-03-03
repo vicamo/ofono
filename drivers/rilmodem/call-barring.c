@@ -30,7 +30,7 @@
 #include <ofono/call-barring.h>
 #include "common.h"
 
-#include "gril.h"
+#include "gril/gril.h"
 
 #include "rilmodem.h"
 

@@ -32,7 +32,7 @@
 #include <unistd.h>
 #include <sys/socket.h>
 
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 
 #include <ofono/handsfree-audio.h>
 

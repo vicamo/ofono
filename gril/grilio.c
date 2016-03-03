@@ -32,7 +32,7 @@
 
 #include <glib.h>
 
-#include "ringbuffer.h"
+#include "gatchat/ringbuffer.h"
 #include "grilio.h"
 #include "grilutil.h"
 

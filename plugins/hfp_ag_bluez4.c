@@ -31,7 +31,7 @@
 #include <ofono/plugin.h>
 #include <ofono/log.h>
 #include <ofono/modem.h>
-#include <gdbus.h>
+#include "gdbus/gdbus.h"
 
 #include "bluez4.h"
 

@@ -37,7 +37,7 @@
 #include <smsutil.h>
 #include <util.h>
 
-#include "gril.h"
+#include "gril/gril.h"
 
 #include "rilmodem.h"
 

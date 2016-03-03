@@ -33,7 +33,7 @@
 #include <glib.h>
 
 #include "ringbuffer.h"
-#include "gatchat.h"
+#include "gatchat/gatchat.h"
 #include "gatio.h"
 
 /* #define WRITE_SCHEDULER_DEBUG 1 */
