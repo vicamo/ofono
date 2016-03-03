@@ -58,18 +58,6 @@
 #define MAX_CONTEXTS 256
 #define SUSPEND_TIMEOUT 8
 
-/* 27.007 Section 7.29 */
-enum packet_bearer {
-	PACKET_BEARER_NONE =		0,
-	PACKET_BEARER_GPRS =		1,
-	PACKET_BEARER_EGPRS =		2,
-	PACKET_BEARER_UMTS =		3,
-	PACKET_BEARER_HSUPA =		4,
-	PACKET_BEARER_HSDPA =		5,
-	PACKET_BEARER_HSUPA_HSDPA =	6,
-	PACKET_BEARER_EPS =		7,
-};
-
 struct ofono_gprs {
 	GSList *contexts;
 	ofono_bool_t attached;
@@ -1663,8 +1651,8 @@ static void gprs_netreg_update(struct ofono_gprs *gprs)
 
 	gprs->flags |= GPRS_FLAG_ATTACHING;
 
-	gprs->driver->set_attached(gprs, attach, gprs_attach_callback, gprs);
 	gprs->driver_attached = attach;
+	gprs->driver->set_attached(gprs, attach, gprs_attach_callback, gprs);
 }
 
 static void netreg_status_changed(int status, int lac, int ci, int tech,
@@ -2397,7 +2385,7 @@ static const GDBusSignalTable manager_signals[] = {
 	{ GDBUS_SIGNAL("PropertyChanged",
 			GDBUS_ARGS({ "name", "s" }, { "value", "v" })) },
 	{ GDBUS_SIGNAL("ContextAdded",
-			GDBUS_ARGS({ "path", "o" }, { "properties", "v" })) },
+			GDBUS_ARGS({ "path", "o" }, { "properties", "a{sv}" })) },
 	{ GDBUS_SIGNAL("ContextRemoved", GDBUS_ARGS({ "path", "o" })) },
 	{ }
 };
@@ -2683,6 +2671,12 @@ void ofono_gprs_context_set_type(struct ofono_gprs_context *gc,
 	DBG("type %d", type);
 
 	gc->type = type;
+}
+
+enum ofono_gprs_context_type ofono_gprs_context_get_type(
+						struct ofono_gprs_context *gc)
+{
+	return gc->type;
 }
 
 void ofono_gprs_context_set_interface(struct ofono_gprs_context *gc,
@@ -3213,6 +3207,11 @@ static void spn_read_cb(const char *spn, const char *dc, void *data)
 	ofono_sim_remove_spn_watch(sim, &gprs->spn_watch);
 
 	ofono_gprs_finish_register(gprs);
+}
+
+struct ofono_modem *ofono_gprs_get_modem(struct ofono_gprs *gprs)
+{
+	return __ofono_atom_get_modem(gprs->atom);
 }
 
 void ofono_gprs_register(struct ofono_gprs *gprs)

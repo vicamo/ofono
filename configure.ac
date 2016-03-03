@@ -161,6 +161,11 @@ AC_ARG_ENABLE(isimodem, AC_HELP_STRING([--disable-isimodem],
 					[enable_isimodem=${enableval}])
 AM_CONDITIONAL(ISIMODEM, test "${enable_isimodem}" != "no")
 
+AC_ARG_ENABLE(rilmodem, AC_HELP_STRING([--disable-rilmodem],
+				[disable RIL modem support]),
+					[enable_rilmodem=${enableval}])
+AM_CONDITIONAL(RILMODEM, test "${enable_rilmodem}" != "no")
+
 AC_ARG_ENABLE(qmimodem, AC_HELP_STRING([--disable-qmimodem],
 				[disable Qualcomm QMI modem support]),
 					[enable_qmimodem=${enableval}])
@@ -207,6 +212,11 @@ if (test "${enable_provision}" != "no"); then
 	fi
 fi
 AM_CONDITIONAL(PROVISION, test "${enable_provision}" != "no")
+
+AC_ARG_ENABLE(upower, AC_HELP_STRING([--disable-upower],
+			[disable UPower plugin]),
+					[enable_upower=${enableval}])
+AM_CONDITIONAL(UPOWER, test "${enable_power}" != "no")
 
 AC_ARG_ENABLE(datafiles, AC_HELP_STRING([--disable-datafiles],
 			[do not install configuration and data files]),
