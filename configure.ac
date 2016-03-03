@@ -256,7 +256,7 @@ AC_DEFINE_UNQUOTED(CONFIGDIR, "${configdir}",
 
 AC_CONFIG_FILES([
 	Makefile
-	include/version.h
+	ofono/version.h
 	src/ofono.service
 	ofono.pc
 	dundee/dundee.service

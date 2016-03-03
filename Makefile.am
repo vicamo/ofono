@@ -6,55 +6,50 @@ GITIGNOREFILES =
 noinst_LTLIBRARIES =
 
 pkginclude_HEADERS = \
-  include/audio-settings.h \
-  include/call-barring.h \
-  include/call-forwarding.h \
-  include/call-meter.h \
-  include/call-settings.h \
-  include/call-volume.h \
-  include/cbs.h \
-  include/cdma-connman.h \
-  include/cdma-netreg.h \
-  include/cdma-provision.h \
-  include/cdma-sms.h \
-  include/cdma-voicecall.h \
-  include/ctm.h \
-  include/dbus.h \
-  include/devinfo.h \
-  include/emulator.h \
-  include/gnss.h \
-  include/gprs-context.h \
-  include/gprs-provision.h \
-  include/gprs.h \
-  include/handsfree-audio.h \
-  include/handsfree.h \
-  include/history.h \
-  include/location-reporting.h \
-  include/log.h \
-  include/message-waiting.h \
-  include/modem.h \
-  include/netreg.h \
-  include/nettime.h \
-  include/phonebook.h \
-  include/plugin.h \
-  include/private-network.h \
-  include/radio-settings.h \
-  include/sim-auth.h \
-  include/sim.h \
-  include/siri.h \
-  include/sms.h \
-  include/stk.h \
-  include/types.h \
-  include/ussd.h \
-  include/voicecall.h
+  ofono/audio-settings.h \
+  ofono/call-barring.h \
+  ofono/call-forwarding.h \
+  ofono/call-meter.h \
+  ofono/call-settings.h \
+  ofono/call-volume.h \
+  ofono/cbs.h \
+  ofono/cdma-connman.h \
+  ofono/cdma-netreg.h \
+  ofono/cdma-provision.h \
+  ofono/cdma-sms.h \
+  ofono/cdma-voicecall.h \
+  ofono/ctm.h \
+  ofono/dbus.h \
+  ofono/devinfo.h \
+  ofono/emulator.h \
+  ofono/gnss.h \
+  ofono/gprs-context.h \
+  ofono/gprs-provision.h \
+  ofono/gprs.h \
+  ofono/handsfree-audio.h \
+  ofono/handsfree.h \
+  ofono/history.h \
+  ofono/location-reporting.h \
+  ofono/log.h \
+  ofono/message-waiting.h \
+  ofono/modem.h \
+  ofono/netreg.h \
+  ofono/nettime.h \
+  ofono/phonebook.h \
+  ofono/plugin.h \
+  ofono/private-network.h \
+  ofono/radio-settings.h \
+  ofono/sim-auth.h \
+  ofono/sim.h \
+  ofono/siri.h \
+  ofono/sms.h \
+  ofono/stk.h \
+  ofono/types.h \
+  ofono/ussd.h \
+  ofono/voicecall.h
 
 nodist_pkginclude_HEADERS = \
-  include/version.h
-
-local_headers = \
-  $(foreach file,$(pkginclude_HEADERS) \
-      $(nodist_pkginclude_HEADERS), \
-    include/ofono/$(notdir $(file)))
+  ofono/version.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = ofono.pc
@@ -769,7 +764,6 @@ src_ofonod_LDFLAGS = \
   -Wl,--version-script=$(srcdir)/src/ofono.ver
 
 BUILT_SOURCES = \
-  $(local_headers) \
   src/builtin.h
 
 CLEANFILES = \
@@ -792,7 +786,6 @@ AM_CFLAGS = \
   -DPLUGINDIR=\""$(build_plugindir)"\"
 
 AM_CPPFLAGS = \
-  -I$(builddir)/include \
   -I$(builddir)/src \
   -I$(srcdir)/src \
   -I$(srcdir)/gdbus \
@@ -1238,17 +1231,6 @@ src/builtin.h: src/genbuiltin config.status
 
 plugins/%.rules:
 	$(AM_V_GEN)cp $(srcdir)/$(subst 97-,,$@) $@
-
-include/ofono/version.h: include/version.h
-	$(AM_V_at)$(MKDIR_P) include/ofono
-	$(AM_V_GEN)$(LN_S) $(abs_top_builddir)/$< $@
-
-include/ofono/%.h: $(abs_top_srcdir)/include/%.h
-	$(AM_V_at)$(MKDIR_P) include/ofono
-	$(AM_V_GEN)$(LN_S) $< $@
-
-clean-local:
-	@$(RM) -rf include/ofono
 
 GITIGNOREFILES += $(BUILT_SOURCES)
 
