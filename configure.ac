@@ -74,10 +74,10 @@ PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.28, dummy=yes,
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
-PKG_CHECK_MODULES(GIO, gio-2.0 >= 2.26
+PKG_CHECK_MODULES(GIO, gio-2.0 >= 2.37
 					gio-unix-2.0 >= 2.24,
 				dummy=yes,
-				AC_MSG_ERROR(GIO >= 2.26 is required))
+				AC_MSG_ERROR(GIO >= 2.37 is required))
 AC_SUBST(GIO_CFLAGS)
 AC_SUBST(GIO_LIBS)
 
