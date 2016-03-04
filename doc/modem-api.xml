@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+  <interface name="org.ofono.Modem">
+    <annotation name="org.gtk.GDBus.C.Name" value="Modem"/>
+
+    <!--
+      Powered:
+
+      Boolean representing the power state of the modem device.
+    -->
+    <property name="Powered" type="b" access="readwrite"/>
+
+    <!--
+      Online:
+
+      Boolean representing the rf state of the modem. Online is false
+      in flight mode.
+    -->
+    <property name="Online" type="b" access="readwrite"/>
+
+    <!--
+      Lockdown:
+
+      Boolean representing the lock state of the modem. Setting it to
+      true, makes the calling application hold the modem lock and
+      power it down. Setting to false makes the it release the modem
+      lock. Only the application that holds the lock can power up the
+      modem. If the the application exits Lockdown is set to false.
+    -->
+    <property name="Lockdown" type="b" access="readwrite"/>
+
+    <!--
+      Emergency:
+
+      Boolean representing the emergency mode of the modem. The
+      Emergency is true if an emergency call or related operation is
+      currently active.
+
+      Stability: Unstable
+    -->
+    <property name="Emergency" type="b" access="read"/>
+
+    <!--
+      Name:
+
+      Friendly name of the modem device.  In the case of Bluetooth
+      devices (e.g. Type="sap" or "hfp") this corresponds to the
+      remote device name or it's alias.
+    -->
+    <property name="Name" type="s" access="read"/>
+
+    <!--
+      Manufacturer:
+
+      String representing the manufacturer of the modem device.
+
+      This is usually obtained by the +CGMI AT command.
+    -->
+    <property name="Manufacturer" type="s" access="read"/>
+
+    <!--
+      Model:
+
+      String representing the model of the modem device.
+
+      This is usually obtained by the +CGMM AT command.
+    -->
+    <property name="Model" type="s" access="read"/>
+
+    <!--
+      Revision:
+
+      String representing the revision of the modem device.
+
+      This is usually obtained by using the +CGMR AT command.
+    -->
+    <property name="Revision" type="s" access="read"/>
+
+    <!--
+      Serial:
+
+      String represeting the serial number of the modem device.
+
+      This is usually obtained by using the +CGSN AT command.
+
+      In the case of Bluetooth devices (e.g. Type="sap" or "hfp")
+      this corresponds to the Bluetooth Device Address of the remote
+      device.
+    -->
+    <property name="Serial" type="s" access="read"/>
+
+    <!--
+      Features:
+
+      List of currently enabled features. It uses simple string
+      abbreviations like "sms", "sim" etc.
+
+      Currently available features are:
+      <itemizedlist>
+        <listitem><para>net</para></listitem>
+        <listitem><para>rat</para></listitem>
+        <listitem><para>cbs</para></listitem>
+        <listitem><para>sms</para></listitem>
+        <listitem><para>sim</para></listitem>
+        <listitem><para>stk</para></listitem>
+        <listitem><para>ussd</para></listitem>
+        <listitem><para>gprs</para></listitem>
+        <listitem><para>tty</para></listitem>
+        <listitem><para>gps</para></listitem>
+      </itemizedlist>
+
+      Please note that this is a convenience property, equivalent
+      results can be obtained by reading the Interfaces property
+      directly.
+    -->
+    <property name="Features" type="as" access="read"/>
+
+    <!--
+      Interfaces:
+
+      Set of interfaces currently supported by the mode device. The
+      set depends on the state of the device (registration status, SIM
+      inserted status, network capabilities, device capabilities,
+      etc.)
+
+      Each string in the array is an interface from the set supported
+      by oFono by modem objects.  The set includes:
+      <itemizedlist>
+	<listitem><para>org.ofono.AssistedSatelliteNavigation</para></listitem>
+	<listitem><para>org.ofono.AudioSettings</para></listitem>
+	<listitem><para>org.ofono.CallBarring</para></listitem>
+	<listitem><para>org.ofono.CallForwarding</para></listitem>
+	<listitem><para>org.ofono.CallMeter</para></listitem>
+	<listitem><para>org.ofono.CallSettings</para></listitem>
+	<listitem><para>org.ofono.CallVolume</para></listitem>
+	<listitem><para>org.ofono.CellBroadcast</para></listitem>
+	<listitem><para>org.ofono.Handsfree</para></listitem>
+	<listitem><para>org.ofono.LocationReporting</para></listitem>
+	<listitem><para>org.ofono.MessageManager</para></listitem>
+	<listitem><para>org.ofono.MessageWaiting</para></listitem>
+	<listitem><para>org.ofono.NetworkRegistration</para></listitem>
+	<listitem><para>org.ofono.Phonebook</para></listitem>
+	<listitem><para>org.ofono.PushNotification</para></listitem>
+	<listitem><para>org.ofono.RadioSettings</para></listitem>
+	<listitem><para>org.ofono.SimManager</para></listitem>
+	<listitem><para>org.ofono.SmartMessaging</para></listitem>
+	<listitem><para>org.ofono.SimToolkit</para></listitem>
+	<listitem><para>org.ofono.SupplementaryServices</para></listitem>
+	<listitem><para>org.ofono.TextTelephony</para></listitem>
+	<listitem><para>org.ofono.VoiceCallManager</para></listitem>
+      </itemizedlist>
+
+      It is possible for extension interfaces (e.g. APIs that are not
+      part of the oFono standard API) to be available in this list.
+      Also note that child object interfaces, such as
+      org.ofono.Message, org.ofono.VoiceCall,
+      org.ofono.NetworkOperator, will never be part of this list.
+
+      Please note that the set of Interfaces can and does change
+      frequently (e.g. due to change in Powered and Online
+      properties.)  If a given interface is no longer available, then
+      the application should assume that all data for that interface
+      has become invalid, e.g. calls have been dropped, network
+      registration lost, etc.
+
+      The set of possible interfaces supported is also dependent on
+      the modem hardware and driver support. For example, HFP devices
+      only support org.ofono.VoiceCallManager,
+      org.ofono.NetworkRegistration, org.ofono.Handsfree and
+      org.ofono.CallVolume interfaces.
+    -->
+    <property name="Interfaces" type="as" access="read"/>
+
+    <!--
+      Type:
+
+      Indicates whether the modem is virtual or a real hardware one.
+      This information should only be used to identify which componet
+      (e.g. ConnMan or a phone dialer) should take control over the
+      modem. It does not give any hints on which Interfaces will be
+      supported by this modem.
+
+      Possible values are:
+      <itemizedlist>
+        <listitem><para>test</para></listitem>
+        <listitem><para>hfp</para></listitem>
+        <listitem><para>sap</para></listitem>
+        <listitem><para>hardware</para></listitem>
+      </itemizedlist>
+    -->
+    <property name="Type" type="s" access="read"/>
+  </interface>
+</node>
