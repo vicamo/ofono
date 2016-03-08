@@ -367,18 +367,6 @@ builtin_sources += drivers/atmodem/atutil.h \
 			drivers/ifxmodem/stk.c \
 			drivers/ifxmodem/ctm.c
 
-builtin_modules += stemodem
-builtin_sources += drivers/atmodem/atutil.h \
-			drivers/stemodem/stemodem.h \
-			drivers/stemodem/stemodem.c \
-			drivers/stemodem/voicecall.c \
-			drivers/stemodem/radio-settings.c \
-			drivers/stemodem/caif_rtnl.c \
-			drivers/stemodem/caif_rtnl.h \
-			drivers/stemodem/gprs-context.c \
-			drivers/stemodem/caif_socket.h \
-			drivers/stemodem/if_caif.h
-
 builtin_modules += dunmodem
 builtin_sources += drivers/atmodem/atutil.h \
 			drivers/dunmodem/dunmodem.h \
@@ -461,9 +449,6 @@ builtin_sources += plugins/ste.c
 
 builtin_modules += stemgr
 builtin_sources += plugins/stemgr.c
-
-builtin_modules += caif
-builtin_sources += plugins/caif.c
 
 builtin_modules += cinterion
 builtin_sources += plugins/cinterion.c
@@ -828,7 +813,7 @@ unit_tests = unit/test-common unit/test-util unit/test-idmap \
 				unit/test-rilmodem-cb
 
 noinst_PROGRAMS = $(unit_tests) \
-			unit/test-sms-root unit/test-mux unit/test-caif
+			unit/test-sms-root unit/test-mux
 
 unit_test_common_SOURCES = unit/test-common.c src/common.c src/util.c
 unit_test_common_LDADD = @GLIB_LIBS@
@@ -870,12 +855,6 @@ unit_objects += $(unit_test_sms_root_OBJECTS)
 unit_test_mux_SOURCES = unit/test-mux.c $(gatchat_sources)
 unit_test_mux_LDADD = @GLIB_LIBS@
 unit_objects += $(unit_test_mux_OBJECTS)
-
-unit_test_caif_SOURCES = unit/test-caif.c $(gatchat_sources) \
-					drivers/stemodem/caif_socket.h \
-					drivers/stemodem/if_caif.h
-unit_test_caif_LDADD = @GLIB_LIBS@
-unit_objects += $(unit_test_caif_OBJECTS)
 
 unit_test_grilrequest_SOURCES = unit/test-grilrequest.c $(gril_sources) \
 				src/log.c src/util.c src/simutil.c \
