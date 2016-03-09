@@ -97,6 +97,26 @@ struct reply_oem_hook {
 	void *data;
 };
 
+#define RIL_MAX_UUID_LENGTH 64
+
+struct reply_hardware_config {
+	int type;
+	char uuid[RIL_MAX_UUID_LENGTH + 1];
+	int state;
+	union {
+		struct {
+			int model;
+			guint rat;
+			int max_voice;
+			int max_data;
+			int max_standby;
+		} modem;
+		struct {
+			char modem_uuid[RIL_MAX_UUID_LENGTH + 1];
+		} sim;
+	} cfg;
+};
+
 void g_ril_reply_free_avail_ops(struct reply_avail_ops *reply);
 
 struct reply_avail_ops *g_ril_reply_parse_avail_ops(GRil *gril,
@@ -176,6 +196,9 @@ struct reply_oem_hook *g_ril_reply_oem_hook_raw(GRil *gril,
 						const struct ril_msg *message);
 
 struct parcel_str_array *g_ril_reply_oem_hook_strings(GRil *gril,
+						const struct ril_msg *message);
+
+GSList *g_ril_reply_parse_get_hardware_config(GRil *gril,
 						const struct ril_msg *message);
 
 #ifdef __cplusplus

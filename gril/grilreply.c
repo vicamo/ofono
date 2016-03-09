@@ -1456,3 +1456,122 @@ struct parcel_str_array *g_ril_reply_oem_hook_strings(GRil *gril,
 out:
 	return str_arr;
 }
+
+static struct reply_hardware_config *parse_get_hardware_config(GRil *gril,
+							struct parcel *rilp)
+{
+	struct reply_hardware_config *cur;
+	char *uuid;
+	int len;
+
+	cur = g_try_malloc0(sizeof(*cur));
+	if (cur == NULL) {
+		ofono_error("%s: Out of memory", __func__);
+		goto out;
+	}
+
+	cur->type = parcel_r_int32(rilp);
+	if (cur->type != RIL_HARDWARE_CONFIG_MODEM &&
+			cur->type != RIL_HARDWARE_CONFIG_SIM) {
+		ofono_error("%s: invalid type %d", __func__, cur->type);
+		goto error;
+	}
+
+	uuid = parcel_r_string(rilp);
+	if (uuid == NULL) {
+		ofono_error("%s: invalid uuid", __func__);
+		goto error;
+	}
+
+	len = sizeof(cur->uuid) - 1;
+	len = snprintf(cur->uuid, len, "%s", uuid);
+	cur->uuid[len] = '\0';
+	g_free(uuid);
+
+	cur->state = parcel_r_int32(rilp);
+	if (cur->state < RIL_HARDWARE_CONFIG_STATE_ENABLED ||
+			cur->state > RIL_HARDWARE_CONFIG_STATE_DISABLED) {
+		ofono_error("%s: invalid state %d", __func__, cur->state);
+		goto error;
+	}
+
+	if (cur->type == RIL_HARDWARE_CONFIG_MODEM) {
+		cur->cfg.modem.model = parcel_r_int32(rilp);
+		cur->cfg.modem.rat = parcel_r_int32(rilp);
+		cur->cfg.modem.max_voice = parcel_r_int32(rilp);
+		cur->cfg.modem.max_data = parcel_r_int32(rilp);
+		cur->cfg.modem.max_standby = parcel_r_int32(rilp);
+
+		g_ril_append_print_buf(gril, "%s [%d,%s,%d,%d,%d,%d,%d,%d]",
+					print_buf,
+					cur->type,
+					cur->uuid,
+					cur->state,
+					cur->cfg.modem.model,
+					cur->cfg.modem.rat,
+					cur->cfg.modem.max_voice,
+					cur->cfg.modem.max_data,
+					cur->cfg.modem.max_standby);
+	} else if (cur->type == RIL_HARDWARE_CONFIG_SIM) {
+		uuid = parcel_r_string(rilp);
+		if (uuid == NULL) {
+			ofono_error("%s: invalid modem_uuid", __func__);
+			goto error;
+		}
+
+		len = sizeof(cur->cfg.sim.modem_uuid) - 1;
+		len = snprintf(cur->cfg.sim.modem_uuid, len, "%s", uuid);
+		cur->cfg.sim.modem_uuid[len] = '\0';
+		g_free(uuid);
+
+		g_ril_append_print_buf(gril, "%s [%d,%s,%d,%s]",
+					print_buf,
+					cur->type,
+					cur->uuid,
+					cur->state,
+					cur->cfg.sim.modem_uuid);
+	}
+
+error:
+	g_free(cur);
+	cur = NULL;
+out:
+	return cur;
+}
+
+GSList *g_ril_reply_parse_get_hardware_config(GRil *gril,
+						const struct ril_msg *message)
+{
+	GSList *ret = NULL;
+	struct parcel rilp;
+	struct reply_hardware_config *config;
+	unsigned int len;
+
+	g_ril_init_parcel(message, &rilp);
+
+	len = parcel_r_int32(&rilp);
+	if (len == 0) {
+		/* not really an error; handled in caller */
+		goto out;
+	}
+
+	g_ril_append_print_buf(gril, "{");
+
+	while (len--) {
+		config = parse_get_hardware_config(gril, &rilp);
+		if (config == NULL)
+			goto error;
+
+		ret = g_slist_append(ret, config);
+	}
+
+	g_ril_append_print_buf(gril, "%s}", print_buf);
+	g_ril_print_response(gril, message);
+
+	goto out;
+
+error:
+	g_slist_free_full(ret, g_free);
+out:
+	return ret;
+}

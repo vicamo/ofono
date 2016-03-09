@@ -517,6 +517,8 @@ const char *ril_request_id_to_string(int req)
 		return "RIL_REQUEST_STK_SEND_ENVELOPE_WITH_STATUS";
 	case RIL_REQUEST_SET_INITIAL_ATTACH_APN:
 		return "RIL_REQUEST_SET_INITIAL_ATTACH_APN";
+	case RIL_REQUEST_GET_HARDWARE_CONFIG:
+		return "RIL_REQUEST_GET_HARDWARE_CONFIG";
 	default:
 		return "<INVALID>";
 	}
