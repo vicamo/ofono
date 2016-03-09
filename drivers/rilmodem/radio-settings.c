@@ -218,6 +218,7 @@ static unsigned int default_available_rats(struct ofono_modem *modem)
 	if (ofono_modem_get_boolean(modem, MODEM_PROP_LTE_CAPABLE))
 		available_rats |= OFONO_RADIO_ACCESS_MODE_LTE;
 
+	ofono_error("%s: returning %u", __func__, available_rats);
 	return available_rats;
 }
 
@@ -229,12 +230,17 @@ static void query_available_rats_cb(struct ril_msg *message, gpointer user_data)
 	struct ofono_radio_settings *rs = cbd->user;
 	struct radio_data *rd = ofono_radio_settings_get_data(rs);
 
+	ofono_error("%s: begin", __func__);
+
 	if (message->error == RIL_E_SUCCESS) {
 		GSList *configs;
 
+		ofono_error("%s: 1", __func__);
 		configs = g_ril_reply_parse_get_hardware_config(rd->ril,
 								message);
+		ofono_error("%s: 2", __func__);
 		g_slist_free_full(configs, g_free);
+		ofono_error("%s: 3", __func__);
 	}
 
 	if (!available_rats) {
@@ -245,6 +251,8 @@ static void query_available_rats_cb(struct ril_msg *message, gpointer user_data)
 	CALLBACK_WITH_SUCCESS(cb, available_rats, cbd->data);
 
 	g_free(cbd);
+
+	ofono_error("%s: end", __func__);
 }
 
 void ril_query_available_rats(struct ofono_radio_settings *rs,
@@ -254,15 +262,19 @@ void ril_query_available_rats(struct ofono_radio_settings *rs,
 	struct radio_data *rd = ofono_radio_settings_get_data(rs);
 	struct cb_data *cbd = cb_data_new(cb, data, rs);
 
+	ofono_error("%s: begin", __func__);
 	if (g_ril_send(rd->ril, RIL_REQUEST_GET_HARDWARE_CONFIG, NULL,
 			query_available_rats_cb, cbd, g_free) <= 0) {
 		int available_rats;
 
+		ofono_error("%s: 1", __func__);
 		available_rats = default_available_rats(rd->modem);
 		CALLBACK_WITH_SUCCESS(cb, available_rats, cbd->data);
+		ofono_error("%s: 2", __func__);
 
 		g_free(cbd);
 	}
+	ofono_error("%s: end", __func__);
 }
 
 void ril_delayed_register(const struct ofono_error *error, void *user_data)
