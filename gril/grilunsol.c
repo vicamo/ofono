@@ -37,6 +37,7 @@
 #include "util.h"
 
 #include "common.h"
+#include "grilreply.h"
 #include "grilunsol.h"
 
 /* Minimum size is two int32s version/number of calls */
@@ -635,4 +636,10 @@ error:
 	g_free(ussd);
 
 	return NULL;
+}
+
+GSList *g_ril_unsol_parse_hardware_config_changed(GRil *gril,
+						struct ril_msg *message)
+{
+	return g_ril_reply_parse_get_hardware_config(gril, message);
 }

@@ -597,6 +597,8 @@ const char *ril_unsol_request_to_string(int request)
 		return "UNSOL_EXIT_EMERGENCY_CALLBACK_MODE";
 	case RIL_UNSOL_RIL_CONNECTED:
 		return "UNSOL_RIL_CONNECTED";
+	case RIL_UNSOL_HARDWARE_CONFIG_CHANGED:
+		return "UNSOL_HARDWARE_CONFIG_CHANGED";
 	default:
 		return "<unknown request>";
 	}
