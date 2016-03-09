@@ -208,34 +208,61 @@ void ril_set_fast_dormancy(struct ofono_radio_settings *rs,
 	}
 }
 
-static ofono_bool_t query_available_rats_cb(gpointer user_data)
+static unsigned int default_available_rats(struct ofono_modem *modem)
 {
 	unsigned int available_rats;
+
+	available_rats = OFONO_RADIO_ACCESS_MODE_GSM
+			| OFONO_RADIO_ACCESS_MODE_UMTS;
+
+	if (ofono_modem_get_boolean(modem, MODEM_PROP_LTE_CAPABLE))
+		available_rats |= OFONO_RADIO_ACCESS_MODE_LTE;
+
+	return available_rats;
+}
+
+static void query_available_rats_cb(struct ril_msg *message, gpointer user_data)
+{
+	unsigned int available_rats = 0;
 	struct cb_data *cbd = user_data;
 	ofono_radio_settings_available_rats_query_cb_t cb = cbd->cb;
 	struct ofono_radio_settings *rs = cbd->user;
 	struct radio_data *rd = ofono_radio_settings_get_data(rs);
 
-	available_rats = OFONO_RADIO_ACCESS_MODE_GSM
-				| OFONO_RADIO_ACCESS_MODE_UMTS;
+	if (message->error == RIL_E_SUCCESS) {
+		GSList *configs;
 
-	if (ofono_modem_get_boolean(rd->modem, MODEM_PROP_LTE_CAPABLE))
-		available_rats |= OFONO_RADIO_ACCESS_MODE_LTE;
+		configs = g_ril_reply_parse_get_hardware_config(rd->ril,
+								message);
+		g_slist_free_full(configs, g_free);
+	}
+
+	if (!available_rats) {
+		/* Fallback to MODEM_PROP_LTE_CAPABLE */
+		available_rats = default_available_rats(rd->modem);
+	}
 
 	CALLBACK_WITH_SUCCESS(cb, available_rats, cbd->data);
 
 	g_free(cbd);
-
-	return FALSE;
 }
 
 void ril_query_available_rats(struct ofono_radio_settings *rs,
 			ofono_radio_settings_available_rats_query_cb_t cb,
 			void *data)
 {
+	struct radio_data *rd = ofono_radio_settings_get_data(rs);
 	struct cb_data *cbd = cb_data_new(cb, data, rs);
 
-	g_idle_add(query_available_rats_cb, cbd);
+	if (g_ril_send(rd->ril, RIL_REQUEST_GET_HARDWARE_CONFIG, NULL,
+			query_available_rats_cb, cbd, g_free) <= 0) {
+		int available_rats;
+
+		available_rats = default_available_rats(rd->modem);
+		CALLBACK_WITH_SUCCESS(cb, available_rats, cbd->data);
+
+		g_free(cbd);
+	}
 }
 
 void ril_delayed_register(const struct ofono_error *error, void *user_data)
