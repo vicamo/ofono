@@ -149,8 +149,14 @@ static void query_device_identity_cb(struct ril_msg *message,
 	if (message->error == RIL_E_SUCCESS)
 		reply = g_ril_reply_parse_device_identity(ril, message);
 
-	if (reply == NULL) {
-		CALLBACK_WITH_FAILURE(cb, NULL, data);
+	if (reply == NULL) { /* Fallback to RIL_REQUEST_GET_IMEI */
+		cbd = cb_data_new(cb, data, ril);
+
+		if (g_ril_send(ril, RIL_REQUEST_GET_IMEI, NULL,
+					query_imei_cb, cbd, g_free) == 0) {
+			g_free(cbd);
+			CALLBACK_WITH_FAILURE(cb, NULL, data);
+		}
 		return;
 	}
 
